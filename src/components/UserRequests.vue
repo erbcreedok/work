@@ -2,29 +2,17 @@
     <div class="px-5 py-5">
         <h2 class="mb-5">Мои заявки</h2>
         <div class="row my-5 py-5">
-            <div class="col-12 mb-5 py-5" v-for="(request, index) in requests" :key="index">
-                <div class="row">
-                    <div class="company-profile col-3">
-                        <div class="image-container w-100">
-                            <img :src="request.image.src" alt="" width="100%">
-                        </div>
-                    </div>
-                    <div class="col-7">
-                        <h3>{{request.name}}</h3>
-                        <p v-html="request.description"></p>
-                    </div>
-                    <div class="col-2 d-flex align-items-center">
-                        <el-button>Вакансия</el-button>
-                    </div>
-                </div>
-            </div>
+            <vacancy-item class="col-12 mb-5 py-5" v-for="(request, index) in requests" :key="index" :vacancy="request"></vacancy-item>
         </div>
     </div>
 </template>
 
 <script>
+    import VacancyItem from './VacancyItem.vue'
+
     export default {
         name: 'user-requests',
+        components: {VacancyItem},
         data() {
             return {
                 requests: [

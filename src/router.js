@@ -3,7 +3,11 @@ import Router from 'vue-router'
 import Home from './views/Home.vue'
 import About from './views/About.vue'
 import Profile from './views/Profile.vue'
-
+import Vacancies from './views/Vacancies.vue'
+import LoginModal from './components/ClientModals/LoginModal.vue'
+import RegisterModal from './components/ClientModals/RegisterModal.vue'
+import LoginCompanyModal from './components/CompanyModals/LoginModal.vue'
+import RegisterCompanyModal from './components/CompanyModals/RegisterModal.vue'
 Vue.use(Router)
 
 export default new Router({
@@ -11,7 +15,34 @@ export default new Router({
     {
       path: '/',
       name: 'home',
-      component: Home
+      component: Home,
+      meta: {showModal: false},
+      children: [
+          {
+              path: 'register',
+              name: 'register',
+              component: RegisterModal,
+              meta: {showModal: true},
+          },
+          {
+              path: 'login',
+              name: 'login',
+              component: LoginModal,
+              meta: {showModal: true},
+          },
+          {
+              path: 'register-company',
+              name: 'register-company',
+              component: RegisterCompanyModal,
+              meta: {showModal: true},
+          },
+          {
+              path: 'login-company',
+              name: 'login-company',
+              component: LoginCompanyModal,
+              meta: {showModal: true},
+          },
+      ]
     },
     {
       path: '/about',
@@ -21,12 +52,20 @@ export default new Router({
     {
       path: '/profile',
       name: 'profile',
-      component: Profile
+      component: Profile,
+      children: [
+
+      ]
     },
     {
       path: '/profile/:page',
-      name: 'profile',
+      name: 'profile-page',
       component: Profile
+    },
+    {
+      path: '/vacancies',
+      name: 'vacancies',
+      component: Vacancies
     }
   ]
 })

@@ -3,7 +3,7 @@
         <div class="d-flex profile-info align-items-center mb-5">
             <div class="mr-5">
                 <div class="image-container">
-                    <div class="profile-image" style="background-image: url(https://static.intercomassets.com/avatars/1309094/square_128/lk-1498832667.jpg?1498832667)"></div>
+                    <div class="profile-image" :style="{backgroundImage: `url(${'https://static.intercomassets.com/avatars/1309094/square_128/lk-1498832667.jpg?1498832667'})`}"></div>
                 </div>
             </div>
             <div>

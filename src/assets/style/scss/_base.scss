@@ -5,3 +5,9 @@ body {
   font-size: 1.4rem;
   font-family: 'Gotham Pro', Arial, sans-serif;
 }
+button, button:focus {
+  outline: 0;
+}
+.el-dropdown-menu.el-popper {
+  z-index: 2020 !important;
+}
