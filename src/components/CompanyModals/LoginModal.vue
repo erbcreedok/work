@@ -2,12 +2,14 @@
     <el-dialog
             v-if="!isLogged"
             :visible.sync="dialogVisible"
-            width="30%">
+            width="30%"
+            @closed="this.destroy"
+    >
         <div style="padding: 10px 30px">
             <div class="text-center">
                 <h3>Вход</h3>
                 <p>
-                    Нет аккаунта? <a href="#">Зарегиструйтесь</a>
+                    Нет аккаунта? <router-link to="/register-company">Зарегиструйтесь</router-link>
                 </p>
             </div>
             <el-form ref="form" :model="form" label-width="120px">
@@ -46,6 +48,9 @@
             login() {
                 this.$store.commit('loginCompany')
                 this.$router.push('/profile')
+            },
+            destroy() {
+                this.$router.push('/')
             }
         },
         computed: {
@@ -55,9 +60,6 @@
         },
         mounted() {
             this.dialogVisible = true;
-        },
-        beforeDestroy() {
-            this.dialogVisible = false;
         }
     }
 </script>

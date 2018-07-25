@@ -18,18 +18,18 @@
         <div class="py-5 my-5">
             <h3 class="mb-5">Наши вакансии</h3>
             <div class="col-12">
-                <div class="row my-5 py-4 align-items-center" v-for="i in 8" :key="i">
-                    <div class="col-3">
-                        <div class="profile-image" :style="{backgroundImage: `url(${'https://www.afisha.uz/ui/catalog/2006/09/0090972.jpg'})`}"></div>
-                    </div>
+                <div class="row my-5 py-4 align-items-center" v-for="vacancy in vacancies" :key="vacancy.id">
                     <div class="col-9">
-                        <h3>Консультант по продажам</h3>
-                        <p>
-                            Продавец консультант - это продавец, в задачи которого входит не только выдача товара с витрины, но и консультирование покупателей
-                        </p>
+                        <h3>{{vacancy.name}}</h3>
+                        <p>Требования:</p>
+                        <ul>
+                            <li v-for="(requirement, index) in vacancy.requirements" :key="index">
+                                {{requirement}}
+                            </li>
+                        </ul>
                         <div style="opacity: .5">
-                            <p class="mb-2">Опыт работы: Не требуется</p>
-                            <p class="mb-0">Заработная плата: от 60 000 KZT</p>
+                            <p class="mb-2">Занятость: {{vacancy.employment}}</p>
+                            <p class="mb-0">Заработная плата: {{vacancy.salary}}</p>
                         </div>
                     </div>
                 </div>
@@ -42,6 +42,11 @@
     export default {
         name: 'company-profile',
         components: {
+        },
+        computed: {
+            vacancies() {
+                return this.$store.state.vacancies
+            }
         }
     }
 </script>

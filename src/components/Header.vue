@@ -8,11 +8,11 @@
 
             <b-collapse is-nav id="nav_collapse" v-if="!isLogged()">
                 <ul class="navbar-nav ml-auto">
-                    <li class="nav-item mx-4" @click="loginClient()">
-                        <router-link to="/profile">Найти работу</router-link>
+                    <li class="nav-item mx-4">
+                        <router-link to="/login">Найти работу</router-link>
                     </li>
-                    <li class="nav-item mx-4" @click="loginCompany()">
-                        <router-link to="/profile">Найти работника</router-link>
+                    <li class="nav-item mx-4">
+                        <router-link to="/login-company">Найти работника</router-link>
                     </li>
                     <li class="nav-item mx-4">
                         <router-link to="/vacancies">Вакансии</router-link>
@@ -118,10 +118,6 @@
         methods: {
             isLogged() {
                 return this.$store.state.isLogged
-            },
-            loginCompany() {
-                this.$store.commit('loginCompany')
-                this.$router.push('/profile')
             },
             logout() {
                 console.log('logout')

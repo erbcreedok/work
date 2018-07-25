@@ -3,7 +3,8 @@
             v-if="!isLogged"
             :visible.sync="dialogVisible"
             width="30%"
-            :before-close="handleClose">
+            @closed="this.destroy"
+    >
         <div style="padding: 10px 30px">
             <div class="text-center">
                 <h3>Регистрация</h3>
@@ -57,7 +58,7 @@
                 this.$store.commit('loginClient')
                 this.$router.push('/profile')
             },
-            handleClose() {
+            destroy() {
                 this.$router.push('/')
             }
         },

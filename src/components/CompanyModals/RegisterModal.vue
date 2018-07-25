@@ -3,12 +3,13 @@
             v-if="!isLogged"
             :visible.sync="dialogVisible"
             width="30%"
-            :before-close="handleClose">
+            @closed="this.destroy"
+    >
         <div style="padding: 10px 30px">
             <div class="text-center">
                 <h3>Регистрация</h3>
                 <p>
-                    Уже есть аккаунт? <router-link to="/login">Войти</router-link>
+                    Уже есть аккаунт? <router-link to="/login-company">Войти</router-link>
                 </p>
             </div>
             <el-form ref="form" :model="form" label-width="120px">
@@ -57,7 +58,7 @@
                 this.$store.commit('loginCompany')
                 this.$router.push('/profile')
             },
-            handleClose() {
+            destroy() {
                 this.$router.push('/')
             }
         },

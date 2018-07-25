@@ -1,21 +1,21 @@
 <template>
     <div class="px-5 py-5">
-        <h2 class="mb-5">Мои заявки</h2>
+        <h2 class="mb-5">Заявки компании</h2>
         <el-tabs>
             <el-tab-pane label="Входящие вакансии" :disabled="!income.length">
-                <vacancy-item class="col-12 mb-5 py-5" v-for="vacancy in income" :key="vacancy.id" :vacancyId="vacancy.id"></vacancy-item>
+                <person-item class="col-12 mb-5 py-5" v-for="person in income" :key="person.id" :personId="person.id"></person-item>
                 <h4 v-if="!income.length">Нет входящих заявок</h4>
             </el-tab-pane>
             <el-tab-pane label="Исходящие вакансии" :disabled="!outcome.length">
-                <vacancy-item class="col-12 mb-5 py-5" v-for="vacancy in outcome" :key="vacancy.id" :vacancyId="vacancy.id"></vacancy-item>
+                <person-item class="col-12 mb-5 py-5" v-for="person in outcome" :key="person.id" :personId="person.id"></person-item>
                 <h4 v-if="!outcome.length">Нет входящих заявок</h4>
             </el-tab-pane>
             <el-tab-pane label="Принятые вакансии" :disabled="!accepted.length">
-                <vacancy-item class="col-12 mb-5 py-5" v-for="vacancy in accepted" :key="vacancy.id" :vacancyId="vacancy.id"></vacancy-item>
+                <person-item class="col-12 mb-5 py-5" v-for="person in accepted" :key="person.id" :personId="person.id"></person-item>
                 <h4 v-if="!accepted.length">Нет входящих заявок</h4>
             </el-tab-pane>
             <el-tab-pane label="Отклоненные вакансии" :disabled="!declined.length">
-                <vacancy-item class="col-12 mb-5 py-5" v-for="vacancy in declined" :key="vacancy.id" :vacancyId="vacancy.id"></vacancy-item>
+                <person-item class="col-12 mb-5 py-5" v-for="person in declined" :key="person.id" :personId="person.id"></person-item>
                 <h4 v-if="!declined.length">Нет отклоненных заявок</h4>
             </el-tab-pane>
         </el-tabs>
@@ -23,11 +23,11 @@
 </template>
 
 <script>
-    import VacancyItem from './VacancyItem.vue'
+    import PersonItem from './PersonItem.vue'
 
     export default {
-        name: 'user-requests',
-        components: {VacancyItem},
+        name: 'company-requests',
+        components: {PersonItem},
         props: {
             type: String
         },
@@ -38,19 +38,19 @@
         },
         computed: {
             vacancies() {
-                return this.$store.state.vacancies
+                return this.$store.state.people
             },
             income() {
-                return this.$store.getters.incomeVacancies
+                return this.$store.getters.incomePeople
             },
             outcome() {
-                return this.$store.getters.outcomeVacancies
+                return this.$store.getters.outcomePeople
             },
             accepted() {
-                return this.$store.getters.acceptedVacancies
+                return this.$store.getters.acceptedPeople
             },
             declined() {
-                return this.$store.getters.declinedVacancies
+                return this.$store.getters.declinedPeople
             }
         }
     }

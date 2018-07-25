@@ -2,18 +2,18 @@
   <div class="home">
     <section class="main-section">
       <div class="video-bg d-none d-md-block">
-      <video loop="" autoplay="" class="l_b_c" data-automation="Hero_heroVideo_video">
-        <source :src="videoBG" type="video/mp4"/>
-      </video>
+        <video loop="loop" autoplay="autoplay" class="l_b_c" data-automation="Hero_heroVideo_video">
+          <source :src="videoBG" type="video/mp4"/>
+        </video>
       </div>
       <div class="video-bg d-block d-md-none" :style="{backgroundImage: `url(${ imageBG })`}">
       </div>
       <div class="container">
-        <div class="d-flex py-5 flex-column align-items-center justify-content-center" style="min-height: 100vh;">
-          <h1 class="mb-5">Work - Таланты и деньги в одном месте!</h1>
+        <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 100vh;  padding: 120px 0">
+          <h1 class="mb-5" style="font-size: 3em">Let's Work - Таланты и деньги в одном месте!</h1>
           <div class="d-flex justify-content-center my-5 flex-wrap">
-            <router-link tag="div" to="/login"><el-button class="d-block mx-5 my-md-0 my-4" style="min-width: 200px" type="primary">Найти работу</el-button></router-link>
-            <router-link tag="div" to="/login-company"><el-button class="d-block mx-5 my-md-0 my-4" style="min-width: 200px" type="success">Найти работника</el-button></router-link>
+            <router-link tag="div" to="/login"><el-button class="d-block mx-5 my-md-0 my-4" style="min-width: 200px; font-size: 1.4em" type="primary">Найти работу</el-button></router-link>
+            <router-link tag="div" to="/login-company"><el-button class="d-block mx-5 my-md-0 my-4" style="min-width: 200px; font-size: 1.4em" type="success">Найти работника</el-button></router-link>
           </div>
           <div class="d-flex justify-content-around align-items-center logos w-100 mt-5 flex-wrap">
             <div>
@@ -32,38 +32,42 @@
         </div>
       </div>
     </section>
-    <section>
+    <section class="bg-white">
       <div class="container">
         <div class="d-flex flex-column align-items-center justify-content-center py-5" style="min-height: 100vh">
           <h2 class="my-5">Что делает Let's Work?</h2>
-          <div class="">
+          <div class="my-5 py-5">
             <iframe width="560px" style="max-width: 100%" height="315" src="https://www.youtube.com/embed/bol8uj3tdOQ" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
           </div>
           <div class="d-flex justify-content-around my-5 w-100 flex-wrap">
             <div class="text-center mb-5 mb-md-0" style="max-width: 200px">
-              <div class="circle" style="background: #357cb5">
-                <i class="el-icon-star-on"></i>
+              <div style="height: 80px; line-height:80px; vertical-align: bottom">
+                <img src="https://image.flaticon.com/icons/svg/616/616489.svg" alt="" height="60px" class="mb-4"/>
               </div>
-              <p>Мы помогаем лучшим студентам найти свое место под солнцем</p>
+              <p style="font-size: 1.6rem">Мы помогаем лучшим студентам найти свое место под солнцем</p>
             </div>
             <div class="text-center mb-5 mb-md-0" style="max-width: 200px">
-              <div class="circle" style="background: #ff7448">
-                <i class="el-icon-circle-check-outline"></i>
+              <div style="height: 80px; line-height:80px; vertical-align: bottom">
+                <img src="https://image.flaticon.com/icons/svg/838/838615.svg" alt="" height="70px" class="mb-4"/>
               </div>
-              <p>Компании нанимают тех, кто им подходит и остаются довольны</p>
+              <p style="font-size: 1.6rem">Компании нанимают тех, кто им подходит и остаются довольны</p>
             </div>
             <div class="text-center mb-5 mb-md-0" style="max-width: 200px">
-              <div class="circle" style="background: #ff2256">
-                <i class="el-icon-document"></i>
+              <div style="height: 80px; line-height:80px; vertical-align: bottom">
+                <img src="https://image.flaticon.com/icons/svg/744/744422.svg" alt="" height="60px" class="mb-4">
               </div>
-              <p>На нашем сайте вы пройдете уникальный тест профориентации</p>
+              <p style="font-size: 1.6rem">На нашем сайте вы пройдете уникальный тест профориентации</p>
             </div>
           </div>
         </div>
       </div>
     </section>
-    <section>
-      <div class="d-flex flex-column align-items-center justify-content-center mt-5 py-5">
+    <section class="bg-white" style="overflow: auto; position: relative">
+      <div class="ocean">
+        <div class="wave"></div>
+        <div class="wave"></div>
+      </div>
+      <div class="d-flex flex-column align-items-center justify-content-center mt-5 py-5" style="position: relative">
         <h2 class="mb-4">Вы готовы работать?</h2>
         <div class="d-flex justify-content-center my-5 flex-wrap">
           <router-link tag="div" to="/login"><el-button class="d-block mx-5 mb-4 mb-md-0" style="min-width: 200px" type="primary">Найти работу</el-button></router-link>
@@ -106,6 +110,11 @@ export default {
       }
   },
   components: {
+  },
+  beforeMount() {
+      if (this.$store.state.isLogged) {
+          this.$router.push('/profile')
+      }
   }
 }
 </script>
@@ -127,17 +136,15 @@ export default {
       }
     }
     .video-bg {
-      position: absolute;
+      position: fixed;
       bottom: 0;
       left: 0;
-      margin: auto;
-      min-height: 50%;
-      min-width: 50%;
       right: 0;
       top: 0;
-      width: 100vw;
-      height: 100vh;
+      min-width: 100vw;
+      min-height: 100vh;
       background-size: cover;
+      z-index:-1;
       &:before {
         content: '';
         position: absolute;
@@ -156,7 +163,6 @@ export default {
         left: 0;
         right: 0;
         top: 0;
-        background-image: url(https://blackstarburger.ru/local/templates/bsb/static/image/bg_dots.png);
         background-repeat: repeat;
         background-position: 50%;
         opacity: .5;
@@ -166,12 +172,10 @@ export default {
       position: absolute;
       bottom: 0;
       left: 0;
-      margin: auto;
-      min-height: 50%;
-      min-width: 50%;
+      min-height: 100vh;
+      min-width: 100vw;
       right: 0;
       top: 0;
-      width: 100vw;
     }
     .container {
       position: relative;
@@ -192,5 +196,51 @@ export default {
     line-height: 60px;
     text-align: center;
     font-size: 30px;
+  }
+  .ocean {
+    height: 5%;
+    width:100%;
+    position:absolute;
+    bottom:0;
+    left:0;
+    background: #015871;
+  }
+
+  .wave {
+    background: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/85486/wave.svg) repeat-x;
+    position: absolute;
+    top: -198px;
+    width: 6400px;
+    height: 198px;
+    animation: wave 7s cubic-bezier( 0.36, 0.45, 0.63, 0.53) infinite;
+    transform: translate3d(0, 0, 0);
+  }
+
+  .wave:nth-of-type(2) {
+    top: -175px;
+    animation: wave 7s cubic-bezier( 0.36, 0.45, 0.63, 0.53) -.125s infinite, swell 7s ease -1.25s infinite;
+    opacity: 1;
+  }
+
+  @keyframes wave {
+    0% {
+      margin-left: 0;
+    }
+    100% {
+      margin-left: -1600px;
+    }
+  }
+
+  @keyframes swell {
+    0%, 100% {
+      transform: translate3d(0,-25px,0);
+    }
+    50% {
+      transform: translate3d(0,5px,0);
+    }
+  }
+
+  h2 {
+    font-size: 3rem;
   }
 </style>

@@ -1,23 +1,23 @@
 <template>
     <div class="filter-vacancy">
     <div class="d-flex mb-5">
-        <el-select class="mr-3" placeholder="Возраст" v-model="age.value">
+        <el-select class="mr-3" placeholder="Город" v-model="city.value">
             <el-option
-                    v-for="item in age.options"
+                    v-for="item in city.options"
                     :key="item.value"
                     :label="item.label"
                     :value="item.value">
             </el-option>
         </el-select>
-        <el-select class="mr-3" placeholder="Образование" v-model="education.value">
+        <el-select class="mr-3" placeholder="Занятость" v-model="employment.value">
             <el-option
-                    v-for="item in education.options"
+                    v-for="item in employment.options"
                     :key="item.value"
                     :label="item.label"
                     :value="item.value">
             </el-option>
         </el-select>
-        <el-input class="mr-3" placeholder="Стаж работы" v-model="experience.value" style="width: 200px"></el-input>
+        <el-input class="mr-3" placeholder="Минимальная зарплата" v-model="salary.value" style="width: 200px"></el-input>
         <el-button >Фильтр</el-button>
     </div>
     <div class="d-flex">
@@ -36,42 +36,57 @@
         name: 'filter-vacancy',
         data() {
             return {
-                age: {
+                city: {
                     options: [{
-                        value: '1',
-                        label: '16-18'
+                        value: 'Астана',
+                        label: 'Астана'
                     }, {
-                        value: '2',
-                        label: '18-22'
+                        value: 'Алматы',
+                        label: 'Алматы'
                     }, {
-                        value: '3',
-                        label: '22-27'
+                        value: 'Актобе',
+                        label: 'Актобе'
                     }, {
-                        value: '4',
-                        label: '27 и старше'
+                        value: 'Актау',
+                        label: 'Актау'
+                    }, {
+                        value: 'Атырау',
+                        label: 'Атырау'
+                    }, {
+                        value: 'Караганды',
+                        label: 'Караганды'
+                    }, {
+                        value: 'Шымкент',
+                        label: 'Шымкент'
                     }],
                     value: ''
                 },
-                education: {
+                employment: {
                     options: [{
-                        value: '1',
-                        label: 'Среднее'
+                        value: 'Полная занятость',
+                        label: 'Полная занятость'
                     }, {
-                        value: '2',
-                        label: 'Средне-Специализированное'
+                        value: 'Частичная занятость',
+                        label: 'Частичная занятость'
                     }, {
-                        value: '3',
-                        label: 'Неоконченное Высшее (бакалавр)'
+                        value: 'Проектная работа',
+                        label: 'Проектная работа'
                     }, {
-                        value: '4',
-                        label: 'Высшее (бакалавр)'
+                        value: 'Стажировка',
+                        label: 'Стажировка'
                     }, {
-                        value: '4',
-                        label: 'Высшее (магистр)'
+                        value: 'Практика',
+                        label: 'Практика'
+                    }, {
+                        value: 'Фриланс',
+                        label: 'Фриланс'
+                    }, {
+                        value: 'Волонтерство',
+                        label: 'Волонтерство'
                     }],
                     value: ''
                 },
-                experience: {
+                salary: {
                     value: ''
                 },
                 search: {

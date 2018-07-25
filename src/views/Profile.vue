@@ -10,7 +10,8 @@
         </el-main>
         <el-main v-if="isLogged === 2">
           <company-profile v-if="!$route.params.page || $route.params.page === '' "></company-profile>
-          <user-requests v-else-if="$route.params.page && $route.params.page === 'request' "></user-requests>
+          <company-search v-else-if="$route.params.page && $route.params.page === 'workers' "></company-search>
+          <company-requests v-else-if="$route.params.page && $route.params.page === 'request' "></company-requests>
           <user-settings v-else-if="$route.params.page && $route.params.page === 'settings' "></user-settings>
         </el-main>
       </el-container>
@@ -24,6 +25,8 @@
   import UserRequests from '../components/UserRequests.vue'
   import UserSettings from '../components/UserSettings.vue'
   import CompanyProfile from '../components/CompanyProfile.vue'
+  import CompanySearch from '../components/CompanySearch.vue'
+  import CompanyRequests from '../components/CompanyRequests.vue'
 
   export default {
       name: 'Profile',
@@ -33,10 +36,17 @@
           UserRequests,
           UserSettings,
           CompanyProfile,
+          CompanySearch,
+          CompanyRequests,
       },
       computed: {
           isLogged() {
               return this.$store.state.isLogged
+          }
+      },
+      beforeMount() {
+          if (!this.$store.state.isLogged) {
+              this.$router.push('/')
           }
       }
   }
