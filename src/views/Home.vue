@@ -112,6 +112,7 @@ export default {
   components: {
   },
   beforeMount() {
+      // Временный обход security роутинга, для зарегестрированных пользователей
       if (this.$store.state.isLogged) {
           this.$router.push('/profile')
       }

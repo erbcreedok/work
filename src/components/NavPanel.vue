@@ -47,10 +47,10 @@
                 return this.$store.state.isLogged
             },
             incomeRequestCount() {
-                return this.$store.getters.incomeVacancies.length
+                return this.$store.getters['vacancies/incomeVacancies'].length
             },
             incomePersonRequestCount() {
-                return this.$store.getters.incomePeople.length
+                return this.$store.getters['people/incomePeople'].length
             }
         }
     }

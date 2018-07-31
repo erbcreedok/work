@@ -41,16 +41,16 @@
                 return this.$store.state.vacancies
             },
             income() {
-                return this.$store.getters.incomeVacancies
+                return this.$store.getters['vacancies/incomeVacancies']
             },
             outcome() {
-                return this.$store.getters.outcomeVacancies
+                return this.$store.getters['vacancies/outcomeVacancies']
             },
             accepted() {
-                return this.$store.getters.acceptedVacancies
+                return this.$store.getters['vacancies/acceptedVacancies']
             },
             declined() {
-                return this.$store.getters.declinedVacancies
+                return this.$store.getters['vacancies/declinedVacancies']
             }
         }
     }

@@ -65,6 +65,7 @@
 </template>
 
 <script>
+    import { SET_PERSON_STATUS } from '../store/mutation-types'
     export default {
         name: 'person-item',
         props: {
@@ -77,7 +78,7 @@
         },
         computed: {
             person() {
-                return this.$store.getters.getPersonById(this.personId)
+                return this.$store.getters['people/getPersonById'](this.personId)
             },
             isLogged() {
                 return this.$store.state.isLogged
@@ -85,7 +86,7 @@
         },
         methods: {
             setStatus(val) {
-                this.$store.commit('setPersonStatus', { id: this.person.id, val: val } )
+                this.$store.commit('people/'+SET_PERSON_STATUS, { id: this.person.id, val: val } )
             }
         }
     }

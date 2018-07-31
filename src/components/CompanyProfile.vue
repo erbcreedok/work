@@ -45,7 +45,7 @@
         },
         computed: {
             vacancies() {
-                return this.$store.state.vacancies
+                return this.$store.state.vacancies // Загрузка списка вакансии из store
             }
         }
     }

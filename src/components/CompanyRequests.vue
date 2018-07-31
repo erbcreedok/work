@@ -24,6 +24,7 @@
 
 <script>
     import PersonItem from './PersonItem.vue'
+    import { mapGetters } from 'vuex'
 
     export default {
         name: 'company-requests',
@@ -38,20 +39,14 @@
         },
         computed: {
             vacancies() {
-                return this.$store.state.people
+                return this.$store.state.people // Загрузка списка людей из store
             },
-            income() {
-                return this.$store.getters.incomePeople
-            },
-            outcome() {
-                return this.$store.getters.outcomePeople
-            },
-            accepted() {
-                return this.$store.getters.acceptedPeople
-            },
-            declined() {
-                return this.$store.getters.declinedPeople
-            }
+            ...mapGetters({ // Списки отфильтрованных людей из store
+                income  :   'people/incomePeople',
+                outcome :   'people/outcomePeople',
+                accepted:   'people/acceptedPeople',
+                declined:   'people/declinedPeople',
+            })
         }
     }
 </script>

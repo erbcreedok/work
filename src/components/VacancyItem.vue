@@ -82,6 +82,8 @@
 </template>
 
 <script>
+    import { SET_VACANCY_STATUS } from '../store/mutation-types'
+
     export default {
         name: 'vacancy-item',
         props: {
@@ -96,15 +98,16 @@
         },
         computed: {
             vacancy(){
-                return this.$store.getters.getVacancyById(this.vacancyId)
+                return this.$store.getters['vacancies/getVacancyById'](this.vacancyId)
             },
             isLogged() {
                 return this.$store.state.isLogged
-            }
+            },
+
         },
         methods: {
             setStatus(val) {
-                this.$store.commit('setVacancyStatus', { id: this.vacancy.id, val: val } )
+                this.$store.commit('vacancies/' + SET_VACANCY_STATUS, { id: this.vacancy.id, val: val } )
             }
         }
     }

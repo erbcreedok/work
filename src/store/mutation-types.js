@@ -1,0 +1,6 @@
+export const SET_VACANCY_STATUS = 'SET_VACANCY_STATUS'
+export const SET_VACANCIES = 'SET_VACANCIES'
+
+export const SET_PERSON_STATUS = 'SET_PERSON_STATUS'
+export const SET_PEOPLE = 'SET_PEOPLE'
+

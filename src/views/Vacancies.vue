@@ -18,7 +18,7 @@
         name: 'vacancies',
         data() {
             return {
-                vacancies: this.$store.state.vacancies
+                vacancies: this.$store.state.vacancies // Загрузка данных вакансии из store
             }
         }
     }
