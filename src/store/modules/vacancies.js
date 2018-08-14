@@ -1,6 +1,6 @@
 import {SET_VACANCY_STATUS, SET_VACANCIES, CREATE_VACANCY} from '../mutation-types'
 import api from '../api/main'
-import {GET_ALL_VACANCIES, GET_OWN_VACANCIES, MERGE_VACANCIES} from "../types/vacancies";
+import {GET_ALL_VACANCIES, GET_OWN_VACANCIES, GET_VACANCY, MERGE_VACANCIES} from "../types/vacancies";
 
 const state = {
     mock: [
@@ -104,7 +104,6 @@ const state = {
         }
     ],
     all: {},
-    list: []
 }
 
 
@@ -126,12 +125,16 @@ const getters = {
     },
     [GET_OWN_VACANCIES]: (state, getters, rootState) => {
         const companyId = rootState.companyProfile.profile.id
-        return state.list.filter(v => {
-            console.log(v.vacancyName, companyId)
+        return getters[GET_ALL_VACANCIES].filter(v => {
             return v.companyId === companyId
         }).sort((a, b) => a.order - b.order)
     },
-    [GET_ALL_VACANCIES]: state => state.list.sort((a, b) => a.order - b.order)
+    [GET_ALL_VACANCIES]: state => {
+        return Object.values(state.all).sort((a, b) => a.order - b.order)
+    },
+    [GET_VACANCY]: state => id => {
+        return state.all[id] || null
+    }
 }
 
 const mutations = {
@@ -143,12 +146,13 @@ const mutations = {
         state = payload
     },
     [MERGE_VACANCIES](state, payload) {
+        const all = {}
         payload.forEach(i => {
             i.id = i._id || i.id
             delete i._id
-            state.all[i.id] = i
+            all[i.id] = i
         })
-        state.list = Object.values(state.all)
+        state.all = JSON.parse(JSON.stringify(all))
     }
 }
 const actions = {
@@ -167,10 +171,12 @@ const actions = {
                 const vacancies = res.data.map((i, index) => { i.order = index; return i })
                 commit(MERGE_VACANCIES, vacancies)
                 resolve(res)
+                return res
             })
             .catch(err => {
                 console.log(err)
                 reject(err)
+                return err
             })
     }),
     [GET_OWN_VACANCIES]: ({commit}) => new Promise((resolve, reject) => {

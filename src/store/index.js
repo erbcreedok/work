@@ -6,6 +6,7 @@ import auth from "./modules/auth";
 import profile from "./modules/profile";
 import userProfile from "./modules/userProfile";
 import companyProfile from "./modules/companyProfile";
+import companies from "./modules/companies";
 
 Vue.use(Vuex)
 
@@ -41,6 +42,7 @@ export default new Vuex.Store({
         people,
         profile,
         userProfile,
-        companyProfile
+        companyProfile,
+        companies
     },
 })

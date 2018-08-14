@@ -4,6 +4,7 @@ import {
     COMPANY_LOGIN, USER, USER_CREATE, USER_LOGIN
 } from '../mutation-types';
 import {loginActions, logoutActions} from "../../actions/auth";
+import {IS_LOGGED} from "../types/auth";
 
 const state = {
     status: '',
@@ -13,6 +14,7 @@ const state = {
 
 const getters = {
     isLogged: state => state.token ? state.role : false,
+    [IS_LOGGED]: state => state.token ? state.role : false,
     authStatus: state => state.status
 }
 
@@ -83,10 +85,10 @@ const actions = {
             })
         })
     },
-    [USER_LOGIN]: ({commit}, company) => {
+    [USER_LOGIN]: ({commit}, student) => {
         return new Promise((resolve, reject) => { // The Promise used for router redirect in login
             commit(AUTH_REQUEST)
-            authUser(company).then(res => {
+            authUser(student).then(res => {
                 const token = res.data.token
                 loginActions(token, USER)
                 commit(AUTH_SUCCESS, {token, role: USER})

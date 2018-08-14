@@ -18,7 +18,7 @@ const actions = {
         return new Promise (() => {
             getProfile()
                 .then(res => console.log(res.data))
-                .catch(err => console.log(err, axios.defaults.headers.common['Authorization']))
+                .catch(err => console.log(err, delete axios.defaults.headers.common['Authorization']))
         })
     }
 }

@@ -12,14 +12,21 @@
 <script>
     import VacancyItem from '../components/VacancyItem.vue'
     import FilterVacancy from '../components/FilterVacancy.vue'
+    import {GET_ALL_VACANCIES, VACANCIES} from "../store/types/vacancies";
 
     export default {
         components: { VacancyItem, FilterVacancy },
         name: 'vacancies',
         data() {
-            return {
-                vacancies: this.$store.state.vacancies // Загрузка данных вакансии из store
+            return {}
+        },
+        computed: {
+            vacancies() {
+                return this.$store.getters[VACANCIES + GET_ALL_VACANCIES]
             }
+        },
+        mounted() {
+            this.$store.dispatch(VACANCIES + GET_ALL_VACANCIES)
         }
     }
 </script>

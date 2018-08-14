@@ -1,24 +1,24 @@
 <template>
     <div>
         <div class="row align-items-center">
-            <div class="company-profile col-md-2 col-2">
+            <div class="company-profile col-md-2 col-2 d-none d-md-block">
                 <div class="image-container w-100">
-                    <img :src="vacancy.image.src" alt="" width="100%">
+                    <!--<img :src="vacancy.image.src" alt="" width="100%">-->
                 </div>
             </div>
-            <div class="col-7">
-                <h3>{{vacancy.name}} | {{ vacancy.company }}</h3>
+            <div class="col-8 col-md-7">
+                <h3>{{vacancy.vacancyName}} | {{ vacancy.vacancyField }}</h3>
                 <p v-html="vacancy.description"></p>
                 <div style="opacity: .5">
-                    <p class="mb-2">Занятость: {{vacancy.employment}}</p>
-                    <p class="mb-0">Заработная плата: {{vacancy.salary}}</p>
+                    <p class="mb-2" v-if="vacancy.type.length > 0">Занятость: {{vacancy.type.join(', ')}}</p>
+                    <p class="mb-0">Заработная плата: {{vacancy.minSalary}} - {{vacancy.maxSalary}}</p>
                 </div>
             </div>
-            <div class="col-3 d-flex align-items-center flex-column justify-content-center" v-if="isLogged !== 1">
+            <div class="col-4 col-md-3 d-flex align-items-center flex-column justify-content-center" v-if="isLogged !== USER">
                 <el-button class="mb-3 ml-0 w-100"
                            @click="dialogVisible = true" >Подробнее</el-button>
             </div>
-            <div class="col-3 d-flex align-items-center flex-column justify-content-center" v-if="isLogged === 1">
+            <div class="col-4 col-md-3 d-flex align-items-center flex-column justify-content-center" v-if="isLogged === USER">
                 <el-button class="mb-3 ml-0 w-100"
                            type="success"
                            size="small"
@@ -53,24 +53,26 @@
                            @click="dialogVisible = true" >Подробнее</el-button>
             </div>
             <el-dialog
-                    :title="vacancy.name"
+                    :title="vacancy.vacancyName"
                     :visible.sync="dialogVisible"
                     width="50%"
             >
-                <p class="mb-4">Компания: {{vacancy.company}}</p>
+                <p class="mb-4">Компания: {{vacancy.companyId}}</p>
+                <template v-if="vacancy.demands.length > 0">
                 <p>Требования:</p>
                 <ul class="mb-4">
-                    <li v-for="(requirement, index) in vacancy.requirements" :key="index">
+                    <li v-for="(requirement, index) in vacancy.demands" :key="index">
                         {{requirement}}
                     </li>
                 </ul>
+                </template>
                 <div style="opacity: .5">
-                    <p class="mb-2">Занятость: {{vacancy.employment}}</p>
-                    <p class="mb-0">Заработная плата: {{vacancy.salary}}</p>
+                    <p class="mb-2" v-if="vacancy.type.length > 0">Занятость: {{vacancy.type.join(', ')}}</p>
+                    <p class="mb-0">Заработная плата: {{vacancy.minSalary}} - {{vacancy.maxSalary}}</p>
                 </div>
             </el-dialog>
             <el-dialog
-                    :title="'Контакты ' + vacancy.name"
+                    :title="'Контакты ' + vacancy.vacancyName"
                     :visible.sync="contactsVisible"
                     width="30%"
             >
@@ -82,26 +84,29 @@
 </template>
 
 <script>
-    import { SET_VACANCY_STATUS } from '../store/mutation-types'
+    import {SET_VACANCY_STATUS, USER} from '../store/mutation-types'
+    import {GET_VACANCY, VACANCIES} from "../store/types/vacancies";
+    import {AUTH, IS_LOGGED} from '../store/types/auth';
 
     export default {
         name: 'vacancy-item',
         props: {
-            vacancyId: Number,
+            vacancyId: String,
             type: String
         },
         data() {
             return {
                 dialogVisible: false,
                 contactsVisible: false,
+                USER: USER
             }
         },
         computed: {
-            vacancy(){
-                return this.$store.getters['vacancies/getVacancyById'](this.vacancyId)
+            vacancy() {
+                return this.$store.getters[VACANCIES + GET_VACANCY](this.vacancyId)
             },
             isLogged() {
-                return this.$store.state.isLogged
+                return this.$store.getters[AUTH + IS_LOGGED]
             },
 
         },

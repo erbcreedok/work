@@ -22,10 +22,10 @@
                 <el-button type="primary" class="w-100" @click="submitForm('form')">Войти</el-button>
             </el-form>
             <p class="my-3 text-center">или</p>
-            <div class="text-center">
-                <el-button class="mx-3 px-0" style="width: 56px"><i style="font-size: 2rem" class="fab fa-facebook-square"></i></el-button>
-                <el-button class="mx-3 px-0" style="width: 56px"><i style="font-size: 2rem" class="fab fa-google-plus-square"></i></el-button>
-                <el-button class="mx-3 px-0" style="width: 56px"><i style="font-size: 2rem" class="fab fa-vk"></i></el-button>
+            <div class="text-center text-nowrap">
+                <el-button class="mx-3 mb-3 px-0" style="width: 56px"><i style="font-size: 2rem" class="fab fa-facebook-square"></i></el-button>
+                <el-button class="mx-3 mb-3 px-0" style="width: 56px"><i style="font-size: 2rem" class="fab fa-google-plus-square"></i></el-button>
+                <el-button class="mx-3 mb-3 px-0" style="width: 56px"><i style="font-size: 2rem" class="fab fa-vk"></i></el-button>
             </div>
         </div>
     </el-dialog>
@@ -33,6 +33,7 @@
 
 <script>
     import {USER_LOGIN} from "../../store/mutation-types";
+    import {AUTH} from "../../store/types/auth";
     export default {
         name: 'login-modal',
         data() {
@@ -53,7 +54,7 @@
                             email: this.form.email,
                             password: this.form.password,
                         }
-                        this.$store.dispatch('auth/' + USER_LOGIN, data).then(() => {
+                        this.$store.dispatch(AUTH + USER_LOGIN, data).then(() => {
                             this.loading = false
                             setTimeout(() => {
                                 this.$router.push('/profile')
@@ -87,7 +88,4 @@
 </script>
 
 <style scoped="">
-    .el-dialog {
-        min-width: 310px;
-    }
 </style>

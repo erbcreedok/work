@@ -21,6 +21,11 @@
                                             Профиль
                                         </el-dropdown-item>
                                     </router-link>
+                                    <router-link to="/vacancies" class="d-block d-md-none">
+                                        <el-dropdown-item>
+                                            Все вакансии
+                                        </el-dropdown-item>
+                                    </router-link>
                                     <router-link to="/profile/request">
                                         <el-dropdown-item>
                                             Заявки
@@ -56,6 +61,11 @@
                                     <router-link to="/profile">
                                         <el-dropdown-item>
                                             Профиль
+                                        </el-dropdown-item>
+                                    </router-link>
+                                    <router-link to="/vacancies" class="d-block d-md-none">
+                                        <el-dropdown-item>
+                                            Все вакансии
                                         </el-dropdown-item>
                                     </router-link>
                                     <router-link to="/profile/request">
