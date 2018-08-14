@@ -14,8 +14,8 @@
                     </p>
                 </div>
                 <div class="socials" style="max-width: 300px">
-                    <a href="tel: +7777777777"> +7 702 343-22-31</a>
-                    <a href="mailto: info@letswork.me">info@letswork.me</a>
+                    <a href="tel: +77083330201"> +7 708 333-02-01</a>
+                    <a href="mailto: alibek.adilbekov@gmail.com">alibek.adilbekov@gmail.com</a>
                     <a href="http://facebook.com">Facebook</a>
                     <a href="http://instagram.com">Instagram</a>
                     <a href="http://vk.com">VK</a>

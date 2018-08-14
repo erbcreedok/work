@@ -2,6 +2,10 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import vacancies from './modules/vacancies'
 import people from './modules/people'
+import auth from "./modules/auth";
+import profile from "./modules/profile";
+import userProfile from "./modules/userProfile";
+import companyProfile from "./modules/companyProfile";
 
 Vue.use(Vuex)
 
@@ -32,7 +36,11 @@ export default new Vuex.Store({
         },
     },
     modules: {
+        auth,
         vacancies,
-        people
+        people,
+        profile,
+        userProfile,
+        companyProfile
     },
 })

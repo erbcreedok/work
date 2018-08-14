@@ -1,7 +1,9 @@
-import { SET_VACANCY_STATUS, SET_VACANCIES } from '../mutation-types'
+import {SET_VACANCY_STATUS, SET_VACANCIES, CREATE_VACANCY} from '../mutation-types'
+import api from '../api/main'
+import {GET_ALL_VACANCIES, GET_OWN_VACANCIES, MERGE_VACANCIES} from "../types/vacancies";
 
-
-const state = [
+const state = {
+    mock: [
         {
             id: 0,
             name: 'Бухгалтер',
@@ -100,24 +102,36 @@ const state = [
             image: {src: 'https://miro.medium.com/fit/c/240/240/0*CbyZvfqlbjX6Ap64.'},
             status: 'accept'
         }
-    ]
+    ],
+    all: {},
+    list: []
+}
+
 
 const getters = {
     incomeVacancies: state => {
-        return state.filter(v => v.status === 'income')
+        return state.mock.filter(v => v.status === 'income')
     },
     outcomeVacancies: state => {
-        return state.filter(v => v.status === 'outcome')
+        return state.mock.filter(v => v.status === 'outcome')
     },
     acceptedVacancies: state => {
-        return state.filter(v => v.status === 'accept')
+        return state.mock.filter(v => v.status === 'accept')
     },
     declinedVacancies: state => {
-        return state.filter(v => v.status === 'decline')
+        return state.mock.filter(v => v.status === 'decline')
     },
     getVacancyById: (state) => (id) => {
-        return state.find(v => v.id === id)
+        return state.mock.find(v => v.id === id)
     },
+    [GET_OWN_VACANCIES]: (state, getters, rootState) => {
+        const companyId = rootState.companyProfile.profile.id
+        return state.list.filter(v => {
+            console.log(v.vacancyName, companyId)
+            return v.companyId === companyId
+        }).sort((a, b) => a.order - b.order)
+    },
+    [GET_ALL_VACANCIES]: state => state.list.sort((a, b) => a.order - b.order)
 }
 
 const mutations = {
@@ -128,11 +142,55 @@ const mutations = {
     [SET_VACANCIES](state, payload) {
         state = payload
     },
+    [MERGE_VACANCIES](state, payload) {
+        payload.forEach(i => {
+            i.id = i._id || i.id
+            delete i._id
+            state.all[i.id] = i
+        })
+        state.list = Object.values(state.all)
+    }
 }
+const actions = {
+    [CREATE_VACANCY]: (_, payload) => new Promise((resolve, reject) => {
+        return api.post('/company/vacancy/', payload)
+            .then(res => {
+                resolve(res)
+            })
+            .catch(err => {
+                reject(err)
+            })
+    }),
+    [GET_ALL_VACANCIES]: ({commit}) => new Promise((resolve, reject) => {
+        return api.post('vacancy/0/200')
+            .then(res => {
+                const vacancies = res.data.map((i, index) => { i.order = index; return i })
+                commit(MERGE_VACANCIES, vacancies)
+                resolve(res)
+            })
+            .catch(err => {
+                console.log(err)
+                reject(err)
+            })
+    }),
+    [GET_OWN_VACANCIES]: ({commit}) => new Promise((resolve, reject) => {
+        return api.post('vacancy/0/200')
+            .then(res => {
+                const vacancies = res.data.map((i, index) => { i.order = index; return i })
+                commit(MERGE_VACANCIES, vacancies)
+                resolve(res)
+            })
+            .catch(err => {
+                console.log(err)
+                reject(err)
+            })
+    })
 
+}
 export default {
     namespaced: true,
     state,
     getters,
     mutations,
+    actions
 }

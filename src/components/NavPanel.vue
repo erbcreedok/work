@@ -1,6 +1,6 @@
 <template>
     <el-aside width="auto">
-        <el-menu class="py-5" style="height: 100%" :collapse="false" default-active="1" :router="true" v-if="isLogged===1">
+        <el-menu class="py-0 py-md-5" style="height: 100%" :collapse="false" default-active="1" :router="true" v-if="isLogged===USER">
             <el-menu-item index="/profile">
                 <i class="fa fa-user"></i> <span slot="title">Мой профиль</span>
             </el-menu-item>
@@ -11,7 +11,7 @@
                 <i class="fa fa-cogs"></i> <span slot="title">Настройки</span>
             </el-menu-item>
         </el-menu>
-        <el-menu class="py-5" style="height: 100%" :collapse="false" default-active="1" :router="true" v-if="isLogged===2">
+        <el-menu class="py-0 py-md-5" style="height: 100%" :collapse="false" default-active="1" :router="true" v-if="isLogged===COMPANY">
             <el-menu-item index="/profile">
                 <i class="fa fa-user"></i> <span slot="title">Профиль</span>
             </el-menu-item>
@@ -31,7 +31,7 @@
     </el-aside>
 </template>
 
-<style scoped="">
+<style scoped="" lang="scss">
     i.fa, i.fab {
         display: inline-block;
         width: 25px;
@@ -41,10 +41,17 @@
 </style>
 
 <script>
+    import {COMPANY, USER} from "../store/mutation-types";
     export default {
+        data() {
+            return {
+                USER: USER,
+                COMPANY: COMPANY
+            }
+        },
         computed: {
             isLogged() {
-                return this.$store.state.isLogged
+                return this.$store.getters['auth/isLogged']
             },
             incomeRequestCount() {
                 return this.$store.getters['vacancies/incomeVacancies'].length

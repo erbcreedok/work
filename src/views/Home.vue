@@ -63,10 +63,10 @@
       </div>
     </section>
     <section class="bg-white" style="overflow: auto; position: relative">
-      <div class="ocean">
-        <div class="wave"></div>
-        <div class="wave"></div>
-      </div>
+      <!--<div class="ocean">-->
+        <!--<div class="wave"></div>-->
+        <!--<div class="wave"></div>-->
+      <!--</div>-->
       <div class="d-flex flex-column align-items-center justify-content-center mt-5 py-5" style="position: relative">
         <h2 class="mb-4">Вы готовы работать?</h2>
         <div class="d-flex justify-content-center my-5 flex-wrap">
@@ -94,26 +94,14 @@ export default {
   },
   methods: {
       isLogged() {
-          return this.$store.state.isLogged
+          return this.$store.getters['auth/isLogged']
       },
-      loginClient() {
-          this.$store.commit('loginClient')
-          this.$router.push('/profile')
-      },
-      loginCompany() {
-          this.$store.commit('loginCompany')
-          this.$router.push('/profile')
-      },
-      logout() {
-          this.$store.commit('logout')
-          this.$router.push('/')
-      }
   },
   components: {
   },
   beforeMount() {
       // Временный обход security роутинга, для зарегестрированных пользователей
-      if (this.$store.state.isLogged) {
+      if (this.$store.getters['auth/isLogged']) {
           this.$router.push('/profile')
       }
   }

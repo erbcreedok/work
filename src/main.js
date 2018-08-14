@@ -10,11 +10,18 @@ import locale from 'element-ui/lib/locale/lang/en'
 import 'element-ui/lib/theme-chalk/index.css'
 import './assets/style/scss/index.scss'
 import '@fortawesome/fontawesome-free/css/all.css'
+import {setAuth} from "./store/api/main";
 
 
 Vue.config.productionTip = false
 Vue.use(ElementUI, { locale })
 Vue.use(BootstrapVue)
+
+// Auto authentication
+const token = localStorage.getItem('user-token')
+if (token) {
+    setAuth(token)
+}
 
 new Vue({
   router,

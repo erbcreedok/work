@@ -1,5 +1,5 @@
 <template>
-    <div class="px-5 py-5">
+    <div class="px-0 py-5 px-md-5">
         <h2 class="mb-5">Мои заявки</h2>
         <el-tabs>
             <el-tab-pane label="Входящие вакансии" :disabled="!income.length">

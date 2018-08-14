@@ -1,5 +1,5 @@
 <template>
-    <div class="px-5 py-5">
+    <div class="px-0 py-5 px-md-5">
         <h2 class="mb-5">Поиск работников</h2>
         <filter-people></filter-people>
         <div class="row my-5 py-5">
