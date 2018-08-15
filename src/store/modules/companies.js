@@ -1,10 +1,10 @@
-import {GET_COMPANY, SET_COMPANY} from "../types/companies";
+import {COMPANY_CLEAN, GET_COMPANY, SET_COMPANY} from "../types/companies";
 import api from '../api/main'
 
 export const state = {
     all: {},
     list: [],
-    state: 'clear'
+    status: 'clean'
 }
 
 export const getters = {
@@ -20,6 +20,11 @@ export const mutations = {
             all[i.id] = i
         })
         state.all[payload.id] = payload
+    },
+    [COMPANY_CLEAN](state) {
+        state.all = {}
+        state.list = []
+        state.status = 'clean'
     }
 }
 

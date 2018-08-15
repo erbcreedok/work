@@ -48,7 +48,7 @@
             </div>
             <div class="text-right">
                 <el-button @click="clearForm('form')">Отмена</el-button>
-                <el-button type="primary" @click="submitForm('form')">Зарегистрироваться</el-button>
+                <el-button type="primary" @click="submitForm('form')">Создать</el-button>
             </div>
         </el-form>
     </div>

@@ -47,7 +47,7 @@
                 </div>
             </div>
         </div>
-        <el-dialog title="Новая вакансия" :visible.sync="dialogFormVisible">
+        <el-dialog title="Новая вакансия" :visible.sync="dialogFormVisible" v-if="dialogFormVisible">
             <new-vacancy @success="dialogFormVisible = false; loadVacancies()" @cancel="dialogFormVisible = false"></new-vacancy>
         </el-dialog>
     </div>

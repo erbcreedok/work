@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div :class="{'accepted': vacancy.status === 'user accepted' || vacancy.status === 'company accepted'}">
         <div class="row align-items-center">
             <div class="company-profile col-md-2 col-2 d-none d-md-block">
                 <div class="image-container w-100">
@@ -19,35 +19,44 @@
                            @click="dialogVisible = true" >Подробнее</el-button>
             </div>
             <div class="col-4 col-md-3 d-flex align-items-center flex-column justify-content-center" v-if="isLogged === USER">
-                <el-button class="mb-3 ml-0 w-100"
-                           type="success"
-                           size="small"
-                           @click="setStatus('accept')"
-                           v-if="vacancy.status=== 'income'" >Принять</el-button>
-                <el-button class="mb-3 ml-0 w-100"
-                           type="danger"
-                           size="small"
-                           @click="setStatus('decline')"
-                           v-if="vacancy.status=== 'income'" >Отклонить</el-button>
-                <el-button class="mb-3 ml-0 w-100"
-                           type="danger"
-                           @click="setStatus('')"
-                           v-if="vacancy.status === 'outcome'" >Отменить</el-button>
-                <el-button class="mb-3 ml-0 w-100"
-                           type="primary"
-                           size="small"
-                           @click="contactsVisible = true"
-                           v-if="vacancy.status === 'accept'" >Контакты</el-button>
-                <el-button class="mb-3 ml-0 w-100"
-                           type="warning"
-                           size="small"
-                           @click="setStatus('')"
-                           v-if="vacancy.status === 'decline'" >Убрать</el-button>
-                <el-button class="mb-3 ml-0 w-100"
-                           type="primary"
-                           size="small"
-                           @click="setStatus('outcome')"
-                           v-if="vacancy.status === ''" >Подать заявку</el-button>
+                <template v-if="vacancy.status=== 'company pending'">
+                    <p style="opacity: .6;">Входящая заявка</p>
+                    <el-button-group class="w-100 mb-3" size="small">
+                        <el-tooltip class="item" effect="dark" content="Принять" placement="left">
+                            <el-button type="success" class="w-50" icon="el-icon-check" size="small" @click="accept()"></el-button>
+                        </el-tooltip>
+                        <el-tooltip class="item" effect="dark" content="Отклонить" placement="right">
+                            <el-button type="danger" class="w-50" icon="el-icon-delete" size="small" @click="reject()"></el-button>
+                        </el-tooltip>
+                    </el-button-group>
+                </template>
+                <template v-if="vacancy.status === 'user pending'">
+                    <p style="opacity: .6;">Исходящая заявка</p>
+                    <el-button class="mb-3 ml-0 w-100"
+                               type="danger"
+                               size="small"
+                               @click="discard()">Отменить</el-button>
+                </template>
+                <template v-if="vacancy.status === 'user accepted' || vacancy.status === 'company accepted'">
+                    <p style="opacity: .6;">Вакансия принята</p>
+                    <el-button class="mb-3 ml-0 w-100"
+                               type="primary"
+                               size="small"
+                               @click="contactsVisible = true">Контакты</el-button>
+                </template>
+                <template v-if="vacancy.status === 'user reject' || vacancy.status === 'company reject'">
+                    <p style="opacity: .6;">Вакансия отклонена</p>
+                    <el-button class="mb-3 ml-0 w-100"
+                               type="warning"
+                               size="small"
+                               @click="discard()">Убрать</el-button>
+                </template>
+                <template v-if="vacancy.status === ''">
+                    <el-button class="mb-3 ml-0 w-100"
+                               type="primary"
+                               size="small"
+                               @click="apply()" >Подать заявку</el-button>
+                </template>
                 <el-button class="mb-3 ml-0 w-100"
                            size="small"
                            @click="dialogVisible = true" >Подробнее</el-button>
@@ -87,6 +96,13 @@
     import {SET_VACANCY_STATUS, USER} from '../store/mutation-types'
     import {GET_VACANCY, VACANCIES} from "../store/types/vacancies";
     import {AUTH, IS_LOGGED} from '../store/types/auth';
+    import {
+        ACCEPT_VACANCY,
+        APPLICATIONS,
+        APPLY_VACANCY,
+        DISCARD_VACANCY,
+        REJECT_VACANCY
+    } from "../store/types/applications";
 
     export default {
         name: 'vacancy-item',
@@ -111,9 +127,35 @@
 
         },
         methods: {
+            apply() {
+                this.$store.dispatch(APPLICATIONS + APPLY_VACANCY, this.vacancyId).then(() => {
+                    this.$store.dispatch(VACANCIES + GET_VACANCY, this.vacancyId)
+                })
+            },
+            accept() {
+                this.$store.dispatch(APPLICATIONS + ACCEPT_VACANCY, this.vacancyId).then(() => {
+                    this.$store.dispatch(VACANCIES + GET_VACANCY, this.vacancyId)
+                })
+            },
+            reject() {
+                this.$store.dispatch(APPLICATIONS + REJECT_VACANCY, this.vacancyId).then(() => {
+                    this.$store.dispatch(VACANCIES + GET_VACANCY, this.vacancyId)
+                })
+            },
+            discard() {
+                this.$store.dispatch(APPLICATIONS + DISCARD_VACANCY, this.vacancyId).then(() => {
+                    this.$store.dispatch(VACANCIES + GET_VACANCY, this.vacancyId)
+                })
+            },
             setStatus(val) {
                 this.$store.commit('vacancies/' + SET_VACANCY_STATUS, { id: this.vacancy.id, val: val } )
             }
         }
     }
 </script>
+
+<style scoped="" lang="scss">
+    .accepted {
+        background: rgba(197, 234, 184, 0.19);
+    }
+</style>

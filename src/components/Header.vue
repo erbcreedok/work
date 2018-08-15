@@ -68,6 +68,11 @@
                                             Все вакансии
                                         </el-dropdown-item>
                                     </router-link>
+                                    <router-link to="/profile/workers">
+                                        <el-dropdown-item>
+                                            Найти работника
+                                        </el-dropdown-item>
+                                    </router-link>
                                     <router-link to="/profile/request">
                                         <el-dropdown-item>
                                             Заявки
@@ -76,6 +81,11 @@
                                     <router-link to="/profile/settings">
                                         <el-dropdown-item>
                                             Настройки
+                                        </el-dropdown-item>
+                                    </router-link>
+                                    <router-link to="/profile/premium">
+                                        <el-dropdown-item>
+                                            Премиум
                                         </el-dropdown-item>
                                     </router-link>
                                     <div @click="logout">
@@ -148,10 +158,18 @@
             }
         },
         mounted() {
-            if (this.$store.state.userProfile.status === '' && this.isLogged === USER) {
+            if (this.$store.state.userProfile.status === 'clean' && this.isLogged === USER) {
                 this.$store.dispatch(USER_PROFILE + GET_PROFILE)
             }
-            if (this.$store.state.companyProfile.status === '' && this.isLogged === COMPANY) {
+            if (this.$store.state.companyProfile.status === 'clean' && this.isLogged === COMPANY) {
+                this.$store.dispatch(COMPANY_PROFILE + GET_PROFILE)
+            }
+        },
+        updated() {
+            if (this.$store.state.userProfile.status === 'clean' && this.isLogged === USER) {
+                this.$store.dispatch(USER_PROFILE + GET_PROFILE)
+            }
+            if (this.$store.state.companyProfile.status === 'clean' && this.isLogged === COMPANY) {
                 this.$store.dispatch(COMPANY_PROFILE + GET_PROFILE)
             }
         }

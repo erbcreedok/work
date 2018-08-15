@@ -1,7 +1,10 @@
 import api from '../api/main'
-import {GET_PROFILE, MERGE_PROFILE, PROFILE_ERROR, PROFILE_REQUEST, PROFILE_SUCCESS} from "../types/companyProfile";
+import {
+    GET_PROFILE, MERGE_PROFILE, PROFILE_CLEAN, PROFILE_ERROR, PROFILE_REQUEST,
+    PROFILE_SUCCESS
+} from "../types/companyProfile";
 const state = {
-    status: '',
+    status: 'clean',
     profile: {
         id: null,
         name: null,
@@ -28,6 +31,17 @@ const mutations = {
     },
     [PROFILE_ERROR]: state => {
         state.status = 'error'
+    },
+    [PROFILE_CLEAN]: state => {
+        state.status = 'clean'
+        state.profile = {
+            id: null,
+            name: null,
+            phone: null,
+            email: null,
+            image: 'https://www.afisha.uz/ui/catalog/2006/09/0090972.jpg',
+            description: null
+        }
     }
 }
 

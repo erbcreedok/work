@@ -42,6 +42,12 @@
 
 <script>
     import {COMPANY, USER} from "../store/mutation-types";
+    import {
+        GET_ALL_VACANCIES,
+        GET_INCOME_CVS,
+        GET_INCOME_VACANCIES,
+        VACANCIES
+    } from "../store/types/vacancies";
     export default {
         data() {
             return {
@@ -54,11 +60,14 @@
                 return this.$store.getters['auth/isLogged']
             },
             incomeRequestCount() {
-                return this.$store.getters['vacancies/incomeVacancies'].length
+                return this.$store.getters[VACANCIES + GET_INCOME_VACANCIES].length
             },
             incomePersonRequestCount() {
-                return this.$store.getters['people/incomePeople'].length
+                return this.$store.getters[VACANCIES + GET_INCOME_CVS].length
             }
+        },
+        mounted() {
+            this.$store.dispatch(VACANCIES + GET_ALL_VACANCIES)
         }
     }
 </script>

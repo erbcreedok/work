@@ -3,19 +3,39 @@
         <h2 class="mb-5">Заявки компании</h2>
         <el-tabs>
             <el-tab-pane label="Входящие вакансии" :disabled="!income.length">
-                <person-item class="col-12 mb-5 py-5" v-for="person in income" :key="person.id" :personId="person.id"></person-item>
+                <student-vacancy-item class="col-12 mb-5 py-5"
+                                      v-for="application in income"
+                                      :key="application.studentId + application.vacancyId"
+                                      :vacancyId="application.vacancyId"
+                                      :personId="application.studentId"
+                                      :status="'income'"></student-vacancy-item>
                 <h4 v-if="!income.length">Нет входящих заявок</h4>
             </el-tab-pane>
             <el-tab-pane label="Исходящие вакансии" :disabled="!outcome.length">
-                <person-item class="col-12 mb-5 py-5" v-for="person in outcome" :key="person.id" :personId="person.id"></person-item>
+                <student-vacancy-item class="col-12 mb-5 py-5"
+                                      v-for="application in outcome"
+                                      :key="application.studentId + application.vacancyId"
+                                      :vacancyId="application.vacancyId"
+                                      :personId="application.studentId"
+                                      :status="'outcome'"></student-vacancy-item>
                 <h4 v-if="!outcome.length">Нет входящих заявок</h4>
             </el-tab-pane>
             <el-tab-pane label="Принятые вакансии" :disabled="!accepted.length">
-                <person-item class="col-12 mb-5 py-5" v-for="person in accepted" :key="person.id" :personId="person.id"></person-item>
+                <student-vacancy-item class="col-12 mb-5 py-5"
+                                      v-for="application in accepted"
+                                      :key="application.studentId + application.vacancyId"
+                                      :vacancyId="application.vacancyId"
+                                      :personId="application.studentId"
+                                      :status="'accept'"></student-vacancy-item>
                 <h4 v-if="!accepted.length">Нет входящих заявок</h4>
             </el-tab-pane>
             <el-tab-pane label="Отклоненные вакансии" :disabled="!declined.length">
-                <person-item class="col-12 mb-5 py-5" v-for="person in declined" :key="person.id" :personId="person.id"></person-item>
+                <student-vacancy-item class="col-12 mb-5 py-5"
+                                      v-for="application in declined"
+                                      :key="application.studentId + application.vacancyId"
+                                      :vacancyId="application.vacancyId"
+                                      :personId="application.studentId"
+                                      :status="'reject'"></student-vacancy-item>
                 <h4 v-if="!declined.length">Нет отклоненных заявок</h4>
             </el-tab-pane>
         </el-tabs>
@@ -23,12 +43,22 @@
 </template>
 
 <script>
-    import PersonItem from './PersonItem.vue'
     import { mapGetters } from 'vuex'
+    import {
+        GET_ACCEPTED_CVS,
+        GET_INCOME_CVS,
+        GET_OUTCOME_CVS,
+        GET_OWN_VACANCIES,
+        GET_REJECTED_CVS,
+        VACANCIES
+    } from "../store/types/vacancies";
+    import {GET_ALL_STUDENTS, STUDENTS} from "../store/types/students";
+    import StudentVacancyItem from "./StudentVacancyItem";
 
     export default {
         name: 'company-requests',
-        components: {PersonItem},
+        components: {
+            StudentVacancyItem},
         props: {
             type: String
         },
@@ -41,12 +71,19 @@
             vacancies() {
                 return this.$store.state.people // Загрузка списка людей из store
             },
+            students() {
+                return this.$store.getters(STUDENTS + GET_ALL_STUDENTS)
+            },
             ...mapGetters({ // Списки отфильтрованных людей из store
-                income  :   'people/incomePeople',
-                outcome :   'people/outcomePeople',
-                accepted:   'people/acceptedPeople',
-                declined:   'people/declinedPeople',
+                income  :   VACANCIES + GET_INCOME_CVS,
+                outcome :   VACANCIES + GET_OUTCOME_CVS,
+                accepted:   VACANCIES + GET_ACCEPTED_CVS,
+                declined:   VACANCIES + GET_REJECTED_CVS,
             })
+        },
+        mounted() {
+            this.$store.dispatch(STUDENTS + GET_ALL_STUDENTS)
+            this.$store.dispatch(VACANCIES + GET_OWN_VACANCIES)
         }
     }
 </script>

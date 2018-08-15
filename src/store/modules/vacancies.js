@@ -1,127 +1,96 @@
-import {SET_VACANCY_STATUS, SET_VACANCIES, CREATE_VACANCY} from '../mutation-types'
+import {SET_VACANCY_STATUS, SET_VACANCIES, CREATE_VACANCY, USER, COMPANY} from '../mutation-types'
 import api from '../api/main'
-import {GET_ALL_VACANCIES, GET_OWN_VACANCIES, GET_VACANCY, MERGE_VACANCIES} from "../types/vacancies";
+import {
+    GET_ACCEPTED_CVS,
+    GET_ACCEPTED_VACANCIES,
+    GET_ALL_VACANCIES, GET_INCOME_CVS, GET_INCOME_VACANCIES, GET_OUTCOME_CVS, GET_OUTCOME_VACANCIES, GET_OWN_VACANCIES,
+    GET_REJECTED_CVS,
+    GET_REJECTED_VACANCIES,
+    GET_VACANCY,
+    MERGE_VACANCIES, MERGE_VACANCY, VACANCY_CLEAN, VACANCY_ERROR, VACANCY_REQUEST, VACANCY_SUCCESS
+} from "../types/vacancies";
 
 const state = {
-    mock: [
-        {
-            id: 0,
-            name: 'Бухгалтер',
-            company: 'ZARA',
-            employment: 'Полная занятость, полный день',
-            description: 'За́ра — ведущая торговая сеть группы компаний Inditex, принадлежит испанскому магнату Амансио Ортеге, который также является владельцем таких брендов как Massimo Dutti, Pull and Bear, Oysho, Zara Home, Uterqüe, Stradivarius, Lefties и Bershka.',
-            requirements: [
-                'Знания бухгалтерского учета',
-                'Реализация ТМЗ',
-                'Знание нормативных актов и постановлений',
-                'Математический склад ума',
-                'Образование экономическое'
-            ],
-            salary: '100 000 KZT на руки',
-            image: {src: 'https://www.afisha.uz/ui/catalog/2006/09/0090972.jpg'},
-            status: 'income'
-        },
-        {
-            id: 1,
-            name: 'Менеджер по продажам',
-            employment: 'Полная занятость, полный день',
-            description: 'Chocolife.me – это крупнейший сервис коллективных покупок в Казахстане, занимающий лидирующую позицию на рынке электронной коммерции',
-            requirements: [
-                'Поиск и привлечение новых клиентов (обработка входящих заявок, активный поиск клиентов "в поле", переговоры, заключение договоров).',
-                'Прием и обработка заказов клиентов, оформление необходимых документов.',
-                'Выяснение потребности клиентов в продукции, реализуемой компанией, и согласование заказов с клиентом в соответствии с его потребностями и наличием ассортимента.',
-                'Мотивация клиентов на работу с компанией',
-                'Выполнение ежемесячного плана продаж.',
-                'Ведение отчетности по продажам и отгрузкам клиентам компании.',
-                'Участие в разработке и реализации проектов, связанных с деятельностью отдела продаж.',
-                'Ведение клиентской базы.',
-                'Контроль отгрузки продукции клиентам.',
-                'Контроль оплаты покупателями товаров по заключенным договорам.'
-            ],
-            salary: 'от 62 000 до 200 000 KZT на руки',
-            company: 'Chocolife',
-            image: {src: 'https://lh3.googleusercontent.com/0H4TtEK9jlKGGPIfeJS199Siqq1i7COPEOFEDgvarZBvWcDStV4XuV4tfDIhzl3VLgA'},
-            status: 'decline'
-        },
-        {
-            id: 2,
-            name: 'Руководитель отдела исследований',
-            employment: 'Частичная занятость',
-            description: 'Chocolife.me – это крупнейший сервис коллективных покупок в Казахстане, занимающий лидирующую позицию на рынке электронной коммерции',
-            requirements: [
-                'Наличие управленческого опыта (планирование и контроль, обучение, управления проектами и проектными командами, коммуникационные навыки, предупреждение и решение возникающих трудностей).',
-                'Опыт разработки и внедрения новых продуктов, услуг, разработка бизнес-процессов, инструкций, обучающих материалов.',
-                'Минимум 5 лет опыта работы в маркетинговых и социологических исследованиях.',
-                'Знание количественных и качественных методов исследований.',
-                'Отличное знание статистики и методов статистического анализа данных.',
-                'Отличные навыки работы в SPSS, Excel, MS Office.',
-                'Свободный русский язык.',
-                'Английский язык - не ниже intermediate.'
-            ],
-            salary: 'з/п не указана',
-            company: 'RahmetApp',
-            image: {src: 'https://is3-ssl.mzstatic.com/image/thumb/Purple115/v4/f9/e0/72/f9e07219-d121-63c8-41e4-6f50a96eb515/AppIcon-1x_U007emarketing-85-220-0-9.png/246x0w.jpg'},
-            status: 'income'
-        },
-        {
-            id: 3,
-            name: 'Дизайнер',
-            employment: 'Вне штата',
-            description: 'Привет, это Automato.<br/>Мы занимаемся автоматизацией, созданием  чат-ботов и сложных SaaS продуктов.',
-            requirements: [
-                'Наличие управленческого опыта (планирование и контроль, обучение, управления проектами и проектными командами, коммуникационные навыки, предупреждение и решение возникающих трудностей).',
-                'Опыт разработки и внедрения новых продуктов, услуг, разработка бизнес-процессов, инструкций, обучающих материалов.',
-                'Минимум 5 лет опыта работы в маркетинговых и социологических исследованиях.',
-                'Знание количественных и качественных методов исследований.',
-                'Отличное знание статистики и методов статистического анализа данных.',
-                'Отличные навыки работы в SPSS, Excel, MS Office.',
-                'Свободный русский язык.',
-                'Английский язык - не ниже intermediate.'
-            ],
-            salary: 'от 100 000 до 150 000 KZT до вычета НДФЛ',
-            company: 'Automato',
-            image: {src: 'https://miro.medium.com/fit/c/240/240/0*CbyZvfqlbjX6Ap64.'},
-            status: 'outcome'
-        },
-        {
-            id: 4,
-            name: 'Frontend-разработчик',
-            employment: 'Проектная работа',
-            description: 'Мы будем рады принять в наши ряды уверенного в себе, профессионального, стремящегося к развитию разработчика. Мы предлагаем интересные, масштабные и амбициозные проекты, участие в создании нового качественного продукта. Обеспечим благодатную почву для профессионального роста, творческую атмосферу, официальное трудоустройство, конкурентную заработную плату.',
-            requirements: [
-                'Опыт разработки веб-сайтов (от 1 года), плюсом будет опыт дизайна и верстки шаблонов.',
-                'Знакомство с HTML5 / CSS3 / JavaScript, VueJS, Bootstrap 3+, Typescript',
-                'Аналитика, решение проблем, навыки отладки',
-                'Опыт разработки программного обеспечения в объектно-ориентированном дизайне и применение свободно связанных распределенных шаблонов проектирования для реализации веб-приложений среднего и большого размера.',
-                'Единичные и интеграционные тесты. Опыт работы с модулями тестирования веб-приложений, такими как Jasmine.',
-                'Опыт работы с командой в agile/scrum, желательно с использованием JIRA',
-                'Прочное понимание процесса разработки программного обеспечения и опыта работы с гибкими командами'
-            ],
-            salary: 'з/п не указана',
-            company: 'Automato',
-            image: {src: 'https://miro.medium.com/fit/c/240/240/0*CbyZvfqlbjX6Ap64.'},
-            status: 'accept'
-        }
-    ],
     all: {},
+    list: [],
+    status: 'clear'
 }
 
 
 const getters = {
-    incomeVacancies: state => {
-        return state.mock.filter(v => v.status === 'income')
+    [GET_INCOME_VACANCIES]: (state, getters) => {
+        return getters[GET_ALL_VACANCIES].filter(v => v.status === 'user pending')
     },
-    outcomeVacancies: state => {
-        return state.mock.filter(v => v.status === 'outcome')
+    [GET_OUTCOME_VACANCIES]: (state, getters) => {
+        return getters[GET_ALL_VACANCIES].filter(v => v.status === 'company pending')
     },
-    acceptedVacancies: state => {
-        return state.mock.filter(v => v.status === 'accept')
+    [GET_ACCEPTED_VACANCIES]: (state, getters) => {
+        return getters[GET_ALL_VACANCIES].filter(v => v.status === 'user accepted' || v.status === 'company accepted')
     },
-    declinedVacancies: state => {
-        return state.mock.filter(v => v.status === 'decline')
+    [GET_REJECTED_VACANCIES]: (state, getters) => {
+        return getters[GET_ALL_VACANCIES].filter(v => v.status === 'user reject' || v.status === 'company reject')
     },
-    getVacancyById: (state) => (id) => {
-        return state.mock.find(v => v.id === id)
+    [GET_INCOME_CVS]: (state, getters, rootState) => {
+        const r = []
+        if (rootState.auth.role === COMPANY) {
+            getters[GET_OWN_VACANCIES].forEach(vacancy => {
+                vacancy.studentApplied.forEach( application => {
+                    if (application.status === 'pending') {
+                        r.push({studentId: application.studentId, vacancyId: vacancy.id})
+                    }
+                })
+            })
+        }
+        return r
+    },
+    [GET_OUTCOME_CVS]: (state, getters, rootState) => {
+        const r = []
+        if (rootState.auth.role === COMPANY) {
+            getters[GET_OWN_VACANCIES].forEach(vacancy => {
+                vacancy.companyApplied.forEach( application => {
+                    if (application.status === 'pending') {
+                        r.push({studentId: application.studentId, vacancyId: vacancy.id})
+                    }
+                })
+            })
+        }
+        return r
+    },
+    [GET_ACCEPTED_CVS]: (state, getters, rootState) => {
+        const r = []
+        if (rootState.auth.role === COMPANY) {
+            getters[GET_OWN_VACANCIES].forEach(vacancy => {
+                vacancy.studentApplied.forEach( application => {
+                    if (application.status === 'accepted') {
+                        r.push({studentId: application.studentId, vacancyId: vacancy.id})
+                    }
+                })
+                vacancy.companyApplied.forEach( application => {
+                    if (application.status === 'accepted') {
+                        r.push({studentId: application.studentId, vacancyId: vacancy.id})
+                    }
+                })
+            })
+        }
+        return r
+    },
+    [GET_REJECTED_CVS]: (state, getters, rootState) => {
+        const r = []
+        if (rootState.auth.role === COMPANY) {
+            getters[GET_OWN_VACANCIES].forEach(vacancy => {
+                vacancy.studentApplied.forEach( application => {
+                    if (application.status === 'reject') {
+                        r.push({studentId: application.studentId, vacancyId: vacancy.id})
+                    }
+                })
+                vacancy.companyApplied.forEach( application => {
+                    if (application.status === 'reject') {
+                        r.push({studentId: application.studentId, vacancyId: vacancy.id})
+                    }
+                })
+            })
+        }
+        return r
     },
     [GET_OWN_VACANCIES]: (state, getters, rootState) => {
         const companyId = rootState.companyProfile.profile.id
@@ -129,11 +98,41 @@ const getters = {
             return v.companyId === companyId
         }).sort((a, b) => a.order - b.order)
     },
-    [GET_ALL_VACANCIES]: state => {
-        return Object.values(state.all).sort((a, b) => a.order - b.order)
+    [GET_ALL_VACANCIES]: (state, getters, rootState) => {
+        const list =  Object.values(state.all).sort((a, b) => a.order - b.order)
+        if(rootState.auth.role === USER) {
+            const userId = rootState.userProfile.profile.id
+            list.map(v => {
+                v.status = ''
+                const userApplication = v.companyApplied.find(c => c.studentId === userId)
+                const companyApplication = v.studentApplied.find(c => c.studentId === userId)
+                if (companyApplication) {
+                    v.status = 'company ' + companyApplication.status
+                }
+                if (userApplication) {
+                    v.status = 'user ' + userApplication.status
+                }
+                return v
+            })
+        }
+        return list
     },
-    [GET_VACANCY]: state => id => {
-        return state.all[id] || null
+    [GET_VACANCY]: (state, getters, rootState) => id => {
+        if (!state.all[id]) return null
+        const vacancy = state.all[id]
+        if(rootState.auth.role === USER) {
+            const userId = rootState.userProfile.profile.id
+            vacancy.status = ''
+            const companyApplication = vacancy.companyApplied.find(c => c.studentId === userId)
+            const userApplication = vacancy.studentApplied.find(c => c.studentId === userId)
+            if (companyApplication) {
+                vacancy.status = 'company ' + companyApplication.status
+            }
+            if (userApplication) {
+                vacancy.status = 'user ' + userApplication.status
+            }
+        }
+        return vacancy
     }
 }
 
@@ -142,18 +141,41 @@ const mutations = {
         state.find(v => v.id === payload.id).status = payload.val
         localStorage.setItem('vacancies', JSON.stringify(state))
     },
+    [VACANCY_REQUEST] (state) {
+        state.status = 'loading'
+    },
+    [VACANCY_SUCCESS] (state) {
+        state.status = 'success'
+    },
+    [VACANCY_ERROR] (state) {
+        state.status = 'error'
+    },
+    [VACANCY_CLEAN] (state) {
+        state.status = 'clean'
+        state.all = {}
+        state.list = []
+    },
     [SET_VACANCIES](state, payload) {
         state = payload
     },
     [MERGE_VACANCIES](state, payload) {
-        const all = {}
+        const all = state.all
         payload.forEach(i => {
             i.id = i._id || i.id
             delete i._id
             all[i.id] = i
         })
         state.all = JSON.parse(JSON.stringify(all))
-    }
+        state.list = Object.values(state.all).sort((a, b) => a.order - b.order)
+    },
+    [MERGE_VACANCY](state, payload) {
+        payload.id = payload._id || payload.id
+        delete payload._id
+        payload.order = state.all[payload.id].order || state.all.length
+        state.all[payload.id] = payload
+        state.all = JSON.parse(JSON.stringify(state.all))
+        state.list = Object.values(state.all).sort((a, b) => a.order - b.order)
+    },
 }
 const actions = {
     [CREATE_VACANCY]: (_, payload) => new Promise((resolve, reject) => {
@@ -166,31 +188,50 @@ const actions = {
             })
     }),
     [GET_ALL_VACANCIES]: ({commit}) => new Promise((resolve, reject) => {
+        commit(VACANCY_REQUEST)
         return api.post('vacancy/0/200')
             .then(res => {
                 const vacancies = res.data.map((i, index) => { i.order = index; return i })
                 commit(MERGE_VACANCIES, vacancies)
+                commit(VACANCY_SUCCESS)
                 resolve(res)
-                return res
             })
             .catch(err => {
-                console.log(err)
+                console.log(err.response.status)
+                commit(VACANCY_ERROR)
                 reject(err)
-                return err
             })
     }),
     [GET_OWN_VACANCIES]: ({commit}) => new Promise((resolve, reject) => {
+        commit(VACANCY_REQUEST)
         return api.post('vacancy/0/200')
             .then(res => {
                 const vacancies = res.data.map((i, index) => { i.order = index; return i })
                 commit(MERGE_VACANCIES, vacancies)
+                commit(VACANCY_SUCCESS)
                 resolve(res)
             })
             .catch(err => {
                 console.log(err)
+                commit(VACANCY_ERROR)
                 reject(err)
             })
-    })
+    }),
+    [GET_VACANCY]: ({commit}, id) => new Promise((resolve, reject) => {
+        commit(VACANCY_REQUEST)
+        return api.post('vacancy/' + id)
+            .then(res => {
+                const vacancy = res.data
+                commit(MERGE_VACANCY, vacancy)
+                commit(VACANCY_SUCCESS)
+                resolve(res)
+            })
+            .catch(err => {
+                console.log(err)
+                commit(VACANCY_ERROR)
+                reject(err)
+            })
+    }),
 
 }
 export default {

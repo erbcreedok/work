@@ -7,10 +7,12 @@ import profile from "./modules/profile";
 import userProfile from "./modules/userProfile";
 import companyProfile from "./modules/companyProfile";
 import companies from "./modules/companies";
+import applications from "./modules/applications";
+import students from "./modules/students";
 
 Vue.use(Vuex)
 
-export default new Vuex.Store({
+const store = new Vuex.Store({
     state: {
         isLogged: 0,
     },
@@ -43,6 +45,9 @@ export default new Vuex.Store({
         profile,
         userProfile,
         companyProfile,
-        companies
+        companies,
+        students,
+        applications
     },
 })
+export default store

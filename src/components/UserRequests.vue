@@ -24,6 +24,12 @@
 
 <script>
     import VacancyItem from './VacancyItem.vue'
+    import {
+        GET_ACCEPTED_VACANCIES,
+        GET_INCOME_VACANCIES,
+        GET_OUTCOME_VACANCIES, GET_OWN_VACANCIES, GET_REJECTED_VACANCIES,
+        VACANCIES
+    } from "../store/types/vacancies";
 
     export default {
         name: 'user-requests',
@@ -41,16 +47,21 @@
                 return this.$store.state.vacancies
             },
             income() {
-                return this.$store.getters['vacancies/incomeVacancies']
+                return this.$store.getters[VACANCIES + GET_INCOME_VACANCIES]
             },
             outcome() {
-                return this.$store.getters['vacancies/outcomeVacancies']
+                return this.$store.getters[VACANCIES + GET_OUTCOME_VACANCIES]
             },
             accepted() {
-                return this.$store.getters['vacancies/acceptedVacancies']
+                return this.$store.getters[VACANCIES + GET_ACCEPTED_VACANCIES]
             },
             declined() {
-                return this.$store.getters['vacancies/declinedVacancies']
+                return this.$store.getters[VACANCIES + GET_REJECTED_VACANCIES]
+            }
+        },
+        mounted() {
+            if (this.$store.state.vacancies.status === 'clear') {
+                this.$store.dispatch(VACANCIES + GET_OWN_VACANCIES)
             }
         }
     }

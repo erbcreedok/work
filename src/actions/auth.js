@@ -11,4 +11,5 @@ export const logoutActions = () => {
     localStorage.removeItem('user-token')
     localStorage.removeItem('user-role')
     removeAuth()
+    window.location.reload()
 }

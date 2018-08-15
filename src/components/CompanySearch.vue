@@ -3,25 +3,36 @@
         <h2 class="mb-5">Поиск работников</h2>
         <filter-people></filter-people>
         <div class="row my-5 py-5">
-            <user-item class="col-12 mb-5" v-for="(person, index) in people" :key="index + '-person'" :personId="person.id" action="contacts"></user-item>
+            <student-item class="col-12 mb-5" v-for="(person, index) in people" :key="index + '-person'" :personId="person.id" action="contacts"></student-item>
         </div>
     </div>
 </template>
 
 <script>
     import FilterPeople from './FilterPeople.vue'
-    import UserItem from './PersonItem.vue'
+    import {GET_ALL_STUDENTS, STUDENTS} from "../store/types/students";
+    import StudentItem from "./StudentItem";
+    import {GET_OWN_VACANCIES, VACANCIES} from "../store/types/vacancies";
 
     export default {
         name: 'company-search',
         components: {
+            StudentItem,
             FilterPeople,
-            UserItem
         },
         data() {
-            return {
-                people: this.$store.state.people
+            return {}
+        },
+        computed: {
+            people(){
+                return this.$store.getters[STUDENTS + GET_ALL_STUDENTS]
             }
+        },
+        mounted() {
+            this.$store.dispatch(STUDENTS + GET_ALL_STUDENTS).then(res => {
+                console.log(res)
+            })
+            this.$store.dispatch(VACANCIES + GET_OWN_VACANCIES)
         }
     }
 </script>
