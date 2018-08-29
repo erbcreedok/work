@@ -29,9 +29,7 @@
             }
         },
         mounted() {
-            this.$store.dispatch(STUDENTS + GET_ALL_STUDENTS).then(res => {
-                console.log(res)
-            })
+            this.$store.dispatch(STUDENTS + GET_ALL_STUDENTS)
             this.$store.dispatch(VACANCIES + GET_OWN_VACANCIES)
         }
     }

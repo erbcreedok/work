@@ -1,16 +1,17 @@
 <template>
     <div v-loading="loading">
         <el-form ref="form" :model="form" :rules="rules" status-icon>
-            <el-form-item class="mb-3" prop="vacancyField" label="Сфера деятельности">
+            <el-form-item class="a-ui" prop="vacancyField" label="Сфера деятельности">
                 <el-input placeholder="IT, Маркетинг..." v-model="form.vacancyField"></el-input>
             </el-form-item>
-            <el-form-item class="mb-3" prop="vacancyName" label="Название вакансии">
+            <el-form-item class="a-ui" prop="vacancyName" label="Название вакансии">
                 <el-input placeholder="SMM Копирайтер, Риэлтор..." v-model="form.vacancyName"></el-input>
             </el-form-item>
-            <el-form-item class="mb-3" prop="description" label="Описание">
-                <el-input placeholder="Опишите вашу вакансию" v-model="form.description"></el-input>
+            <el-form-item class="a-ui" prop="description" label="Описание">
+                <wysiwyg class="mt-5" v-model="form.description" placeholder="Опишите вашу вакансию"/>
+                <!--<el-input placeholder="Опишите вашу вакансию" v-model="form.description"></el-input>-->
             </el-form-item>
-            <el-form-item class="mb-3" prop="demands" label="Требования">
+            <el-form-item class="a-ui" prop="demands" label="Требования">
                 <el-select
                         v-model="form.demands"
                         multiple
@@ -22,7 +23,7 @@
                 >
                 </el-select>
             </el-form-item>
-            <el-form-item class="mb-3" prop="type" label="Тип занятости">
+            <el-form-item class="a-ui" prop="type" label="Тип занятости">
                 <el-select
                         v-model="form.type"
                         multiple
@@ -36,13 +37,13 @@
             </el-form-item>
             <div class="row mb-5">
                 <div class="col-md-6">
-                    <el-form-item class="mb-3" prop="minSalary" label="Минимальная зарплата">
-                        <el-input-number :min="0" v-model="form.minSalary"></el-input-number>
+                    <el-form-item class="a-ui" prop="minSalary" label="Минимальная зарплата">
+                        <el-input-number :min="0" :max="form.maxSalary - 1" :step="1000" v-model="form.minSalary"></el-input-number>
                     </el-form-item>
                 </div>
                 <div class="col-md-6">
-                    <el-form-item class="mb-3" prop="maxSalary" label="Максимальная зарплата">
-                        <el-input-number :min="0" v-model="form.maxSalary"></el-input-number>
+                    <el-form-item class="a-ui" prop="maxSalary" label="Максимальная зарплата">
+                        <el-input-number :min="form.minSalary" :step="1000" v-model="form.maxSalary"></el-input-number>
                     </el-form-item>
                 </div>
             </div>

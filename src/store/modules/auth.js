@@ -4,7 +4,7 @@ import {
     COMPANY_LOGIN, USER, USER_CREATE, USER_LOGIN
 } from '../mutation-types';
 import {loginActions, logoutActions} from "../../actions/auth";
-import {IS_LOGGED} from "../types/auth";
+import {GET_TOKEN, IS_LOGGED} from "../types/auth";
 
 const state = {
     status: '',
@@ -15,7 +15,8 @@ const state = {
 const getters = {
     isLogged: state => state.token ? state.role : false,
     [IS_LOGGED]: state => state.token ? state.role : false,
-    authStatus: state => state.status
+    authStatus: state => state.status,
+    [GET_TOKEN]: state => state.token
 }
 
 const mutations = {

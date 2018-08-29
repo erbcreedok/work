@@ -101,7 +101,6 @@ const actions = {
         commit(APPLICATIONS_REQUEST)
         api.post('/company/vacancy/apply/', payload)
             .then(res => {
-                console.log(res)
                 respond(res)
                 commit(APPLICATIONS_SUCCESS)
                 return res

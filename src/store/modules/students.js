@@ -1,4 +1,4 @@
-import api from '../api/main'
+import api, {baseURL} from '../api/main'
 import {
     GET_ALL_STUDENTS, GET_STUDENT, MERGE_STUDENT, MERGE_STUDENTS, STUDENT_CLEAN, STUDENT_ERROR, STUDENT_REQUEST,
     STUDENT_SUCCESS
@@ -37,13 +37,11 @@ const mutations = {
     },
     [MERGE_STUDENTS](state, payload) {
         const all = state.all
-        console.log(all)
         payload.forEach(i => {
             i.id = i._id || i.id
             delete i._id
             all[i.id] = i
         })
-        console.log(all)
         state.all = JSON.parse(JSON.stringify(all))
     },
     [MERGE_STUDENT](state, payload) {
@@ -60,7 +58,10 @@ const actions = {
         commit(STUDENT_REQUEST)
         return api.post('student/0/200')
             .then(res => {
-                const data = res.data.map((i, index) => { i.order = index; return i })
+                const data = res.data.map((i, index) => {
+                    i.order = index;
+                    i.image = baseURL + '/student/image-avatar/' + i._id + '.png';
+                    return i })
                 commit(MERGE_STUDENTS, data)
                 commit(STUDENT_SUCCESS)
                 return data
@@ -75,6 +76,7 @@ const actions = {
         commit(STUDENT_REQUEST)
         return api.post('student/' + payload)
             .then(res => {
+                res.data.image = baseURL + '/student/image-avatar/' + res.data._id + '.png'
                 commit(MERGE_STUDENT, res.data)
                 commit(STUDENT_SUCCESS)
             })

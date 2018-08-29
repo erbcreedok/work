@@ -1,3 +1,101 @@
 .el-form-item.is-error {
   margin-bottom: 3rem !important;
 }
+.a-ui {
+  $label-color: #525962;
+  $label-background: #F4F7F9;
+  $input-color: #989898;
+  $danger-color: #FF4777;
+  $success-color: #67c23a;
+  &.el-form-item {
+    margin-bottom: 36.5px;
+  }
+  &.is-required .el-form-item__label:before {
+    content: '';
+    margin-right: 0;
+  }
+  &.is-required .el-form-item__label:after {
+    content: '*';
+    color: $danger-color;
+    margin-left: 4px;
+  }
+  .el-form-item__label {
+    color: $label-color;
+    line-height: 16px;
+    font-weight: bold;
+    text-transform: uppercase;
+    margin-bottom: 8.5px;
+  }
+  .el-input .el-input__inner {
+    background-color: $label-background;
+    border-color: $label-background;
+    color: $input-color;
+    font-size: 16px;
+    min-height: 52px;
+    line-height: 52px;
+  }
+  .el-input-number {
+    .el-input-number__decrease, .el-input-number__increase {
+      background-color: white;
+      border-color: $light-gray;
+      line-height: 50px;
+      transition: .3s;
+      &.is-disabled {
+        color: #c0c4cc;
+        cursor: not-allowed;
+        opacity: .5;
+      }
+    }
+    .el-input__inner {
+      border-color: $light-gray;
+    }
+  }
+  &.el-form-item.is-error .el-input__inner,
+  &.el-form-item.is-error .el-textarea__inner,
+  .el-message-box__input input.invalid {
+    border-color: $danger-color;
+  }
+  &.el-form-item.is-error .el-input__inner:focus,
+  &.el-form-item.is-error .el-textarea__inner:focus,
+  .el-message-box__input input.invalid:focus {
+    border-color: $label-background;
+  }
+  &.el-form-item.is-success .el-input__inner,
+  &.el-form-item.is-success .el-input__inner:focus,
+  &.el-form-item.is-success .el-textarea__inner,
+  &.el-form-item.is-success .el-textarea__inner:focus {
+    border-color: $success-color;
+  }
+  .el-select .el-tag {
+    background-color: #4DA1FF;
+    color: white;
+  }
+}
+.el-select-dropdown__item {
+  line-height: 48px;
+  height: 48px;
+}
+
+.avatar-uploader .el-upload {
+  border: 1px dashed #d9d9d9;
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+.avatar-uploader .el-upload:hover {
+  border-color: #409EFF;
+}
+.avatar-uploader-icon {
+  font-size: 28px;
+  color: #8c939d;
+  width: 120px;
+  height: 120px;
+  line-height: 120px;
+  text-align: center;
+}
+.avatar {
+  width: 120px;
+  height: 120px;
+  display: block;
+}

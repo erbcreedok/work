@@ -1,9 +1,9 @@
 <template>
     <div>
         <div class="row align-items-center py-3">
-            <div class="company-profile col-md-2 col-2">
+            <div class="student-profile col-md-2 col-2">
                 <div class="image-container w-100">
-                    <img :src="'http://institutogoldenprana.com.br/wp-content/uploads/2015/08/no-avatar-25359d55aa3c93ab3466622fd2ce712d1.jpg'" alt="" width="100%">
+                    <img :src="person.image" alt="" width="100%">
                 </div>
             </div>
             <div class="col-7">

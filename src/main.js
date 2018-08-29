@@ -10,12 +10,13 @@ import locale from 'element-ui/lib/locale/lang/en'
 import 'element-ui/lib/theme-chalk/index.css'
 import './assets/style/scss/index.scss'
 import '@fortawesome/fontawesome-free/css/all.css'
-import {setAuth} from "./store/api/main";
-
+import {setAuth} from './store/api/main'
+import wysiwyg from 'vue-wysiwyg'
 
 Vue.config.productionTip = false
 Vue.use(ElementUI, { locale })
 Vue.use(BootstrapVue)
+Vue.use(wysiwyg, {})
 
 // Auto authentication
 const token = localStorage.getItem('user-token')

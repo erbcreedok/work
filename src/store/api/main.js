@@ -1,7 +1,9 @@
 import axios from 'axios'
 
+export const baseURL = 'http://letswork.tk:3000'
+
 const api = axios.create({
-    baseURL: 'http://letswork.tk:3000/',
+    baseURL: baseURL,
     // baseURL: 'http://localhost:3000/',
     headers: {
         'Content-Type': 'application/json',

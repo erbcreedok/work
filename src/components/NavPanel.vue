@@ -1,6 +1,6 @@
 <template>
     <el-aside width="auto">
-        <el-menu class="py-0 py-md-5" style="height: 100%" :collapse="false" default-active="1" :router="true" v-if="isLogged===USER">
+        <el-menu class="py-0 py-md-5" style="height: 100%" :collapse="false" :default-active="activeRoute" :router="true" v-if="isLogged===USER">
             <el-menu-item index="/profile">
                 <i class="fa fa-user"></i> <span slot="title">Мой профиль</span>
             </el-menu-item>
@@ -11,7 +11,7 @@
                 <i class="fa fa-cogs"></i> <span slot="title">Настройки</span>
             </el-menu-item>
         </el-menu>
-        <el-menu class="py-0 py-md-5" style="height: 100%" :collapse="false" default-active="1" :router="true" v-if="isLogged===COMPANY">
+        <el-menu class="py-0 py-md-5" style="height: 100%" :default-active="activeRoute" :collapse="false" :router="true" v-if="isLogged===COMPANY">
             <el-menu-item index="/profile">
                 <i class="fa fa-user"></i> <span slot="title">Профиль</span>
             </el-menu-item>
@@ -52,7 +52,8 @@
         data() {
             return {
                 USER: USER,
-                COMPANY: COMPANY
+                COMPANY: COMPANY,
+                activeRoute: '',
             }
         },
         computed: {
@@ -67,7 +68,14 @@
             }
         },
         mounted() {
+            this.activeRoute = this.$route.fullPath
             this.$store.dispatch(VACANCIES + GET_ALL_VACANCIES)
+        },
+        watch:{
+            $route (to){
+                this.activeRoute = to.fullPath
+            }
         }
+
     }
 </script>

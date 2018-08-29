@@ -1,4 +1,4 @@
-import api from '../api/main'
+import api, {baseURL} from '../api/main'
 import {
     GET_PROFILE, MERGE_PROFILE, PROFILE_CLEAN, PROFILE_ERROR, PROFILE_REQUEST,
     PROFILE_SUCCESS
@@ -11,7 +11,7 @@ const state = {
         rate: 5,
         phone: null,
         email: null,
-        image: 'https://static.intercomassets.com/avatars/1309094/square_128/lk-1498832667.jpg?1498832667',
+        image: null,
         description: null
     }
 }
@@ -40,7 +40,7 @@ const mutations = {
             name: null,
             phone: null,
             email: null,
-            image: 'https://www.afisha.uz/ui/catalog/2006/09/0090972.jpg',
+            image: null,
             description: null
         }
     }
@@ -50,6 +50,7 @@ const actions = {
     [GET_PROFILE]: ({commit}) => new Promise(() => {
         commit(PROFILE_REQUEST)
         api.get('student/private/profile').then(res => {
+            res.data.image = baseURL + '/student/image-avatar/' + res.data.id + '.png'
             commit(PROFILE_SUCCESS)
             commit(MERGE_PROFILE, res.data)
         }).catch(err => {

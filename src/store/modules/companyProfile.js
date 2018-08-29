@@ -1,8 +1,8 @@
-import api from '../api/main'
+import api, {baseURL} from '../api/main'
 import {
     GET_PROFILE, MERGE_PROFILE, PROFILE_CLEAN, PROFILE_ERROR, PROFILE_REQUEST,
     PROFILE_SUCCESS
-} from "../types/companyProfile";
+} from '../types/companyProfile';
 const state = {
     status: 'clean',
     profile: {
@@ -10,7 +10,7 @@ const state = {
         name: null,
         phone: null,
         email: null,
-        image: 'https://www.afisha.uz/ui/catalog/2006/09/0090972.jpg',
+        image: null,
         description: null
     }
 }
@@ -39,7 +39,7 @@ const mutations = {
             name: null,
             phone: null,
             email: null,
-            image: 'https://www.afisha.uz/ui/catalog/2006/09/0090972.jpg',
+            image: null,
             description: null
         }
     }
@@ -50,6 +50,7 @@ const actions = {
         commit(PROFILE_REQUEST)
         api.get('company/private/profile').then(res => {
             commit(PROFILE_SUCCESS)
+            res.data.image = baseURL + '/company/image-avatar/' + res.data.id + '.png'
             commit(MERGE_PROFILE, res.data)
             respond(res)
         }).catch(err => {

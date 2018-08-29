@@ -1,0 +1,24 @@
+@font-face {
+	font-family: 'Etelka Text Pro';
+	src: url('EtelkaTextPro.otf');
+	font-weight: normal;
+	font-style: normal;
+}
+@font-face {
+	font-family: 'Etelka Text Pro';
+	src: url('EtelkaTextProBold.otf');
+	font-weight: bold;
+	font-style: normal;
+}
+@font-face {
+	font-family: 'Etelka Text Pro';
+	src: url('EtelkaTextProBoldItalic.otf');
+	font-weight: bold;
+	font-style: italic;
+}
+@font-face {
+	font-family: 'Etelka Text Pro';
+	src: url('EtelkaTextProLight.otf');
+	font-weight: 300;
+	font-style: normal;
+}

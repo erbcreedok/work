@@ -3,7 +3,7 @@
         <div class="row align-items-center py-3">
             <div class="company-profile col-md-2 col-2">
                 <div class="image-container w-100">
-                    <img :src="'http://institutogoldenprana.com.br/wp-content/uploads/2015/08/no-avatar-25359d55aa3c93ab3466622fd2ce712d1.jpg'" alt="" width="100%">
+                    <img :src="person.image" alt="" width="100%">
                 </div>
             </div>
             <div class="col-7">
@@ -55,10 +55,10 @@
                     title="Контакты"
                     :visible.sync="dialogVisible"
                     width="30%">
-                <template v-if="person.credentials.phone || person.credentials.email || person.credentials.about">
-                    <p v-if="person.credentials.phone">Телефон: <a target="_blank" :href="'tel:'  +  person.credentials.phone">{{person.credentials.phone}}</a></p>
+                <template v-if="person.phone || person.credentials.email || person.description">
+                    <p v-if="person.phone">Телефон: <a target="_blank" :href="'tel:'  +  person.phone">{{person.phone}}</a></p>
                     <p v-if="person.credentials.email">Почта: <a target="_blank" :href="'mailto:'  +  person.credentials.email">{{person.credentials.email}}</a></p>
-                    <p class="mb-3" v-if="person.credentials.about" v-html="person.credentials.about"></p>
+                    <p class="mb-3" v-if="person.description" v-html="person.description"></p>
                 </template>
                 <template v-else>
                     <h4>Не имеет информации</h4>
