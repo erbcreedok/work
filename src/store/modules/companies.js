@@ -1,4 +1,4 @@
-import {COMPANY_CLEAN, GET_COMPANY, SET_COMPANY} from "../types/companies";
+import {COMPANY_CLEAN, GET_COMPANY, SET_COMPANIES} from "../types/companies";
 import api from '../api/main'
 
 export const state = {
@@ -12,7 +12,7 @@ export const getters = {
 }
 
 export const mutations = {
-    [SET_COMPANY](state, payload) {
+    [SET_COMPANIES](state, payload) {
         const all = {}
         payload.forEach(i => {
             i.id = i._id || i.id

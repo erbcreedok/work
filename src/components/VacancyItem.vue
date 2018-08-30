@@ -103,6 +103,7 @@
         DISCARD_VACANCY,
         REJECT_VACANCY
     } from "../store/types/applications";
+    import {COMPANIES} from "../store/types/companies";
 
     export default {
         name: 'vacancy-item',
