@@ -8,6 +8,8 @@ const state = {
     profile: {
         id: null,
         name: null,
+        firstName: null,
+        lastName: null,
         rate: 5,
         phone: null,
         email: null,
@@ -38,6 +40,8 @@ const mutations = {
         state.profile = {
             id: null,
             name: null,
+            firstName: null,
+            lastName: null,
             phone: null,
             email: null,
             image: null,
@@ -51,6 +55,7 @@ const actions = {
         commit(PROFILE_REQUEST)
         api.get('student/private/profile').then(res => {
             res.data.image = baseURL + '/student/image-avatar/' + res.data.id + '.png'
+            console.log(res.data)
             commit(PROFILE_SUCCESS)
             commit(MERGE_PROFILE, res.data)
         }).catch(err => {

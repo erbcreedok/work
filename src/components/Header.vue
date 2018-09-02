@@ -13,7 +13,7 @@
                             <el-dropdown class="" trigger="click">
                             <span class="el-dropdown-link d-flex align-items-center" style="outline: none;">
                                 <div class="d-inline-block mr-3 profile-image" :style="{backgroundImage: `url(${user.image})`}"></div>
-                                <span>{{user.name || user.email}}</span>
+                                <span>{{user.firstName || user.email}}</span>
                             </span>
                                 <el-dropdown-menu slot="dropdown">
                                     <router-link to="/profile">

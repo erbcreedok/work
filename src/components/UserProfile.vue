@@ -8,8 +8,8 @@
             </div>
             <div>
                 <div class="d-flex align-items-center mb-3">
-                    <h2 class="mr-3" v-if="user.name">{{user.name}}</h2>
-                    <h2 class="mr-3" v-if="!user.name">Имя не указано</h2>
+                    <h2 class="mr-3" v-if="user.firstName || user.lastName">{{ (user.firstName || '') + ' ' + (user.lastName || '')}}</h2>
+                    <h2 class="mr-3" v-if="!user.firstName && !user.lastName">Имя не указано</h2>
                     <el-rate
                             class="text-nowrap"
                             v-model="user.rate"
@@ -59,7 +59,16 @@
             </div>
             <div class="mr-5">
                 <div class="d-flex align-items-center mb-4">
-                    <el-input v-model="user.name" size="medium"></el-input>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label>Имя</label>
+                            <el-input v-model="user.firstName" size="medium"></el-input>
+                        </div>
+                        <div class="col-md-6">
+                            <label>Фамилия</label>
+                            <el-input v-model="user.lastName" size="medium"></el-input>
+                        </div>
+                    </div>
                 </div>
                 <div class="mb-3">
                     <el-input size="mini" class="mb-3" v-model="user.email" placeholder="Почта" disabled=""></el-input>
@@ -154,7 +163,8 @@
             },
             async saveData() {
                 this.loading = true
-                await api.post('student/private/firstName', {firstName: this.user.name})
+                await api.post('student/private/firstName', {firstName: this.user.firstName})
+                await api.post('student/private/lastName', {lastName: this.user.lastName})
                 await api.post('student/private/phone', {phone: this.user.phone})
                 await api.post('student/private/description', {description: this.user.description})
                 this.loading = false
