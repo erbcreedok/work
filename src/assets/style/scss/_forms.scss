@@ -70,6 +70,10 @@
     background-color: #4DA1FF;
     color: white;
   }
+  &.one-line-tags .el-select__tags > span {
+    white-space: nowrap;
+    overflow-x: auto;
+  }
 }
 .el-select-dropdown__item {
   line-height: 48px;

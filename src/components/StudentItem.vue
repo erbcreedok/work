@@ -2,13 +2,16 @@
     <div>
         <div class="row align-items-center py-3">
             <div class="student-profile col-md-2 col-2">
-                <div class="image-container w-100">
+                <div class="image-container w-100 item-avatar">
                     <img :src="person.image" alt="" width="100%">
                 </div>
             </div>
             <div class="col-7">
-                <h3 class="mb-4">{{person.credentials.name || person.credentials.email}}</h3>
-                <p v-if="person.credentials.name">{{person.credentials.email}}</p>
+                <h3 class="mb-4">
+                    <template v-if="person.firstName || person.lastName ">{{(person.firstName || '') + ' ' + (person.lastName || '')}}</template>
+                    <template v-if="!person.firstName && !person.lastName ">{{person.credentials.email}}</template>
+                </h3>
+                <p v-if="person.firstName || person.lastName">{{person.credentials.email}}</p>
                 <p class="mb-3" v-if="person.about" v-html="person.about"></p>
             </div>
             <div class="col-3 d-flex align-items-center flex-column justify-content-center">

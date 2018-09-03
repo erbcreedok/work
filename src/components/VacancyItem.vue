@@ -2,11 +2,12 @@
     <div :class="{'accepted': vacancy.status === 'user accepted' || vacancy.status === 'company accepted'}">
         <div class="row align-items-center">
             <div class="company-profile col-md-2 col-2 d-none d-md-block">
-                <div class="image-container w-100">
-                    <!--<img :src="vacancy.image.src" alt="" width="100%">-->
+                <div class="image-container w-100 item-avatar">
+                    <img :src="vacancy.image" alt="" width="100%">
                 </div>
             </div>
             <div class="col-8 col-md-7">
+                <p style="opacity: .5" class="mb-1" v-if="vacancy.companyName">{{vacancy.companyName}}</p>
                 <h3>{{vacancy.vacancyName}} | {{ vacancy.vacancyField }}</h3>
                 <p v-html="vacancy.description"></p>
                 <div style="opacity: .5">
@@ -66,7 +67,7 @@
                     :visible.sync="dialogVisible"
                     width="50%"
             >
-                <p class="mb-4">Компания: {{vacancy.companyId}}</p>
+                <p class="mb-4">Компания: {{vacancy.companyName}}</p>
                 <template v-if="vacancy.demands.length > 0">
                 <p>Требования:</p>
                 <ul class="mb-4">
@@ -103,7 +104,6 @@
         DISCARD_VACANCY,
         REJECT_VACANCY
     } from "../store/types/applications";
-    import {COMPANIES} from "../store/types/companies";
 
     export default {
         name: 'vacancy-item',

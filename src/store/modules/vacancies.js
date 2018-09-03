@@ -1,18 +1,22 @@
 import {SET_VACANCY_STATUS, SET_VACANCIES, CREATE_VACANCY, USER, COMPANY} from '../mutation-types'
-import api from '../api/main'
+import api, {baseURL} from '../api/main'
 import {
     GET_ACCEPTED_CVS,
     GET_ACCEPTED_VACANCIES,
-    GET_ALL_VACANCIES, GET_INCOME_CVS, GET_INCOME_VACANCIES, GET_OUTCOME_CVS, GET_OUTCOME_VACANCIES, GET_OWN_VACANCIES,
+    GET_ALL_VACANCIES, GET_FILTERED_VACANCIES, GET_INCOME_CVS, GET_INCOME_VACANCIES, GET_LOAD_VACANCIES,
+    GET_LOADING_STATUS,
+    GET_OUTCOME_CVS, GET_OUTCOME_VACANCIES,
+    GET_OWN_VACANCIES,
     GET_REJECTED_CVS,
     GET_REJECTED_VACANCIES,
     GET_VACANCY,
-    MERGE_VACANCIES, MERGE_VACANCY, VACANCY_CLEAN, VACANCY_ERROR, VACANCY_REQUEST, VACANCY_SUCCESS
+    MERGE_VACANCIES, MERGE_VACANCY, SET_LOADED_VACANCY, VACANCY_CLEAN, VACANCY_ERROR, VACANCY_REQUEST, VACANCY_SUCCESS
 } from "../types/vacancies";
 
 const state = {
     all: {},
     list: [],
+    loadedList: [],
     status: 'clear'
 }
 
@@ -133,6 +137,12 @@ const getters = {
             }
         }
         return vacancy
+    },
+    [GET_LOAD_VACANCIES]: (state) => {
+        return state.loadedList.slice()
+    },
+    [GET_LOADING_STATUS]: (state) => {
+        return state.status
     }
 }
 
@@ -154,6 +164,7 @@ const mutations = {
         state.status = 'clean'
         state.all = {}
         state.list = []
+        state.loadedList = []
     },
     [SET_VACANCIES](state, payload) {
         state = payload
@@ -163,6 +174,7 @@ const mutations = {
         payload.forEach(i => {
             i.id = i._id || i.id
             delete i._id
+            i.image = baseURL + '/company/image-avatar/' + i.companyId + '.png';
             all[i.id] = i
         })
         state.all = JSON.parse(JSON.stringify(all))
@@ -171,11 +183,18 @@ const mutations = {
     [MERGE_VACANCY](state, payload) {
         payload.id = payload._id || payload.id
         delete payload._id
+        payload.image = baseURL + '/company/image-avatar/' + payload.companyId + '.png';
         payload.order = state.all[payload.id].order || state.all.length
         state.all[payload.id] = payload
         state.all = JSON.parse(JSON.stringify(state.all))
         state.list = Object.values(state.all).sort((a, b) => a.order - b.order)
     },
+    [SET_LOADED_VACANCY](state, payload) {
+        state.loadedList = []
+        payload.forEach(v => {
+            state.loadedList.push(state.all[v.id])
+        })
+    }
 }
 const actions = {
     [CREATE_VACANCY]: (_, payload) => new Promise((resolve, reject) => {
@@ -191,8 +210,31 @@ const actions = {
         commit(VACANCY_REQUEST)
         return api.post('vacancy/0/200')
             .then(res => {
-                const vacancies = res.data.map((i, index) => { i.order = index; return i })
+                const vacancies = res.data.map((i, index) => {
+                    i.order = index;
+                    return i
+                })
                 commit(MERGE_VACANCIES, vacancies)
+                commit(SET_LOADED_VACANCY, vacancies)
+                commit(VACANCY_SUCCESS)
+                resolve(res)
+            })
+            .catch(err => {
+                console.log(err.response.status)
+                commit(VACANCY_ERROR)
+                reject(err)
+            })
+    }),
+    [GET_FILTERED_VACANCIES]: ({commit}, payload = {}) => new Promise((resolve, reject) => {
+        commit(VACANCY_REQUEST)
+        return api.post('vacancy/0/200', {filter: payload})
+            .then(res => {
+                const vacancies = res.data.map((i, index) => {
+                    i.order = index;
+                    return i
+                })
+                commit(MERGE_VACANCIES, vacancies)
+                commit(SET_LOADED_VACANCY, vacancies)
                 commit(VACANCY_SUCCESS)
                 resolve(res)
             })
@@ -206,8 +248,12 @@ const actions = {
         commit(VACANCY_REQUEST)
         return api.post('vacancy/0/200')
             .then(res => {
-                const vacancies = res.data.map((i, index) => { i.order = index; return i })
+                const vacancies = res.data.map((i, index) => {
+                    i.order = index;
+                    return i
+                })
                 commit(MERGE_VACANCIES, vacancies)
+                commit(SET_LOADED_VACANCY, vacancies)
                 commit(VACANCY_SUCCESS)
                 resolve(res)
             })

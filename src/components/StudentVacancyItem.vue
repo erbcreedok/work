@@ -2,15 +2,16 @@
     <div>
         <div class="row align-items-center py-3">
             <div class="company-profile col-md-2 col-2">
-                <div class="image-container w-100">
+                <div class="image-container w-100 item-avatar">
                     <img :src="person.image" alt="" width="100%">
                 </div>
             </div>
             <div class="col-7">
-                <div class="mb-4">
-                    <h3 class="mb-1">{{person.credentials.name || person.credentials.email}}</h3>
-                    <p v-if="person.credentials.name" class="mb-0">{{person.credentials.email}}</p>
-                </div>
+                <h3 class="mb-4">
+                    <template v-if="person.firstName || person.lastName ">{{(person.firstName || '') + ' ' + (person.lastName || '')}}</template>
+                    <template v-if="!person.firstName && !person.lastName ">{{person.credentials.email}}</template>
+                </h3>
+                <p v-if="person.firstName || person.lastName">{{person.credentials.email}}</p>
                 <p style="opacity: .6;" class="mb-1">пробуется на вакансию: </p>
                 <h4>{{vacancy.vacancyName}}</h4>
             </div>
@@ -39,7 +40,7 @@
                         <el-button class="mb-3 ml-0 w-100"
                                    type="primary"
                                    size="small"
-                                   @click="contactsVisible = true">Контакты</el-button>
+                                   @click="dialogVisible = true">Контакты</el-button>
                     </template>
                     <template v-if="status === 'reject'">
                         <p style="opacity: .6;">Вакансия отклонена</p>
@@ -49,7 +50,7 @@
                                    @click="discard()">Убрать</el-button>
                     </template>
                 </template>
-                <el-button class="ml-0 w-100" size="small" @click="dialogVisible = true">Информация</el-button>
+                <el-button v-if="status !== 'accept'" class="ml-0 w-100" size="small" @click="dialogVisible = true">Информация</el-button>
             </div>
             <el-dialog
                     title="Контакты"
