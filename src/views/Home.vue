@@ -10,7 +10,7 @@
       </div>
       <div class="container">
         <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 100vh;  padding: 120px 0">
-          <h1 class="mb-5" style="font-size: 3em">Let's Work - Таланты и деньги в одном месте!</h1>
+          <h1 class="mb-5" style="font-size: 3em">Love2Work - Таланты и деньги в одном месте!</h1>
           <div class="d-flex justify-content-center my-5 flex-wrap">
             <router-link tag="div" to="/login"><el-button class="d-block mx-5 my-md-0 my-4" style="min-width: 200px; font-size: 1.4em" type="primary">Найти работу</el-button></router-link>
             <router-link tag="div" to="/login-company"><el-button class="d-block mx-5 my-md-0 my-4" style="min-width: 200px; font-size: 1.4em" type="success">Найти работника</el-button></router-link>
@@ -35,7 +35,7 @@
     <section class="bg-white">
       <div class="container">
         <div class="d-flex flex-column align-items-center justify-content-center py-5" style="min-height: 100vh">
-          <h2 class="my-5">Что делает Let's Work?</h2>
+          <h2 class="my-5">Что делает Love2Work</h2>
           <div class="my-5 py-5">
             <iframe width="560px" style="max-width: 100%" height="315" src="https://www.youtube.com/embed/bol8uj3tdOQ" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
           </div>

@@ -2,7 +2,7 @@
     <header>
         <b-navbar toggleable="md" fixed="top">
             <div class="container h-100">
-                <router-link to="/">Let's Work</router-link>
+                <router-link to="/">Love2Work</router-link>
                 <b-navbar-toggle v-if="!isLogged" target="nav_collapse"></b-navbar-toggle>
                 <div v-if="isLogged === USER">
                     <ul class="flex-nowrap navbar-nav ml-auto align-items-center">
