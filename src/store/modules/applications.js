@@ -3,6 +3,8 @@ import {
     ACCEPT_STUDENT_VACANCY,
     ACCEPT_VACANCY, APPLICATIONS_CLEAN,
     APPLICATIONS_ERROR, APPLICATIONS_REQUEST, APPLICATIONS_SUCCESS, APPLY_STUDENT_VACANCY, APPLY_VACANCY,
+    CANCEL_STUDENT_VACANCY,
+    CANCEL_VACANCY,
     DISCARD_STUDENT_VACANCY,
     DISCARD_VACANCY,
     GET_APPLICATIONS, REJECT_STUDENT_VACANCY,
@@ -67,6 +69,21 @@ const actions = {
                 reject(err)
             })
     }),
+    [CANCEL_VACANCY]: ({commit}, payload) => new Promise((respond, reject) => {
+        commit(APPLICATIONS_REQUEST)
+        api.post('/student/vacancy/cancel/', {vacancyId: payload})
+            .then(res => {
+                console.log(res)
+                respond(res)
+                commit(APPLICATIONS_SUCCESS)
+                return res
+            })
+            .catch(err => {
+                console.log(err)
+                commit(APPLICATIONS_ERROR)
+                reject(err)
+            })
+    }),
     [REJECT_VACANCY]: ({commit}, payload) => new Promise((respond, reject) => {
         commit(APPLICATIONS_REQUEST)
         api.post('/student/vacancy/reject/', {vacancyId: payload})
@@ -114,6 +131,21 @@ const actions = {
     [ACCEPT_STUDENT_VACANCY]: ({commit}, payload) => new Promise((respond, reject) => {
         commit(APPLICATIONS_REQUEST)
         api.post('/company/vacancy/accept/', payload)
+            .then(res => {
+                console.log(res)
+                respond(res)
+                commit(APPLICATIONS_SUCCESS)
+                return res
+            })
+            .catch(err => {
+                console.log(err)
+                commit(APPLICATIONS_ERROR)
+                reject(err)
+            })
+    }),
+    [CANCEL_STUDENT_VACANCY]: ({commit}, payload) => new Promise((respond, reject) => {
+        commit(APPLICATIONS_REQUEST)
+        api.post('/company/vacancy/cancel/', payload)
             .then(res => {
                 console.log(res)
                 respond(res)

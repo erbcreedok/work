@@ -36,7 +36,7 @@
                     <el-button class="mb-3 ml-0 w-100"
                                type="danger"
                                size="small"
-                               @click="discard()">Отменить</el-button>
+                               @click="cancel()">Отменить</el-button>
                 </template>
                 <template v-if="vacancy.status === 'user accepted' || vacancy.status === 'company accepted'">
                     <p style="opacity: .6;">Вакансия принята</p>
@@ -100,7 +100,7 @@
     import {
         ACCEPT_VACANCY,
         APPLICATIONS,
-        APPLY_VACANCY,
+        APPLY_VACANCY, CANCEL_VACANCY,
         DISCARD_VACANCY,
         REJECT_VACANCY
     } from "../store/types/applications";
@@ -135,6 +135,11 @@
             },
             accept() {
                 this.$store.dispatch(APPLICATIONS + ACCEPT_VACANCY, this.vacancyId).then(() => {
+                    this.$store.dispatch(VACANCIES + GET_VACANCY, this.vacancyId)
+                })
+            },
+            cancel() {
+                this.$store.dispatch(APPLICATIONS + CANCEL_VACANCY, this.vacancyId).then(() => {
                     this.$store.dispatch(VACANCIES + GET_VACANCY, this.vacancyId)
                 })
             },

@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-export const baseURL = 'http://letswork.tk:3000'
+export const baseURL = 'http://love2work.kz:3000'
 
 const api = axios.create({
     baseURL: baseURL,
