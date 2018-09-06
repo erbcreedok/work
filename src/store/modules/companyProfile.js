@@ -3,6 +3,7 @@ import {
     GET_PROFILE, MERGE_PROFILE, PROFILE_CLEAN, PROFILE_ERROR, PROFILE_REQUEST,
     PROFILE_SUCCESS
 } from '../types/companyProfile';
+import {logoutActions} from "../../actions/auth";
 const state = {
     status: 'clean',
     profile: {
@@ -51,11 +52,12 @@ const actions = {
         api.get('company/private/profile').then(res => {
             console.log(res);
             res.data.image = baseURL + '/company/image-avatar/' + res.data.id + '.png'
-            console.log('im here')
             commit(MERGE_PROFILE, res.data)
             commit(PROFILE_SUCCESS)
-            console.log('im here success muthafucka')
         }).catch(err => {
+            if (err.response && (err.response.status === 401 || err.response.status === 403)) {
+                logoutActions()
+            }
             commit(PROFILE_ERROR)
             console.log(err)
         })

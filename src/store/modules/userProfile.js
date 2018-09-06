@@ -3,6 +3,7 @@ import {
     GET_PROFILE, MERGE_PROFILE, PROFILE_CLEAN, PROFILE_ERROR, PROFILE_REQUEST,
     PROFILE_SUCCESS
 } from "../types/userProfile";
+import {logoutActions} from "../../actions/auth";
 const state = {
     status: 'clean',
     profile: {
@@ -60,6 +61,9 @@ const actions = {
             commit(PROFILE_SUCCESS)
             commit(MERGE_PROFILE, res.data)
         }).catch(err => {
+            if (err.response.status === 401 || err.response.status === 403) {
+                logoutActions()
+            }
             console.log(err)
             commit(PROFILE_ERROR)
         })

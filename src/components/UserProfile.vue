@@ -45,7 +45,7 @@
                     <el-tooltip class="item" effect="dark" content="Изменить изображение" placement="top-start">
                         <el-upload
                                 class="avatar-uploader"
-                                action="http://letswork.tk:3000/student/private/image-avatar"
+                                :action="baseURL + '/student/private/image-avatar'"
                                 name="avatar"
                                 :headers="{'Authorization': token}"
                                 :show-file-list="false"
@@ -116,7 +116,7 @@
     import {GET_PROFILE, USER_PROFILE} from "../store/types/userProfile"
     import { mask } from 'vue-the-mask'
     import {AUTH, GET_TOKEN} from "../store/types/auth";
-    import api from "../store/api/main";
+    import api, {baseURL} from "../store/api/main";
     import ElInput from "../../node_modules/element-ui/packages/input/src/input";
 
     export default {
@@ -128,6 +128,7 @@
         },
         data() {
             return {
+                baseURL: baseURL,
                 loading: false,
                 edit: false
             }

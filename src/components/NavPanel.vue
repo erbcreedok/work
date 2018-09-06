@@ -61,10 +61,10 @@
                 return this.$store.getters['auth/isLogged']
             },
             incomeRequestCount() {
-                return this.$store.getters[VACANCIES + GET_INCOME_VACANCIES].length
+                return this.$store.getters[VACANCIES + GET_INCOME_VACANCIES].length || null
             },
             incomePersonRequestCount() {
-                return this.$store.getters[VACANCIES + GET_INCOME_CVS].length
+                return this.$store.getters[VACANCIES + GET_INCOME_CVS].length || null
             }
         },
         mounted() {

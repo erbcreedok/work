@@ -13,6 +13,14 @@ import {
     MERGE_VACANCIES, MERGE_VACANCY, SET_LOADED_VACANCY, VACANCY_CLEAN, VACANCY_ERROR, VACANCY_REQUEST, VACANCY_SUCCESS
 } from "../types/vacancies";
 
+const getRandom = (num) => Math.floor(Math.random() * (num + 1))
+const students = [
+    '5b858b0fe96833624959c954',
+    '5b85a704e96833624959c99d',
+    '5b8c30b93e530769da65d40a',
+    '5b8cf1be3e530769da65d439'
+]
+
 const state = {
     all: {},
     list: [],
@@ -36,62 +44,36 @@ const getters = {
     },
     [GET_INCOME_CVS]: (state, getters, rootState) => {
         const r = []
-        if (rootState.auth.role === COMPANY) {
+        if (rootState.auth.role === COMPANY && getters[GET_OWN_VACANCIES]) {
             getters[GET_OWN_VACANCIES].forEach(vacancy => {
-                vacancy.studentApplied.forEach( application => {
-                    if (application.status === 'pending') {
-                        r.push({studentId: application.studentId, vacancyId: vacancy.id})
-                    }
-                })
-            })
+                r.push({studentId: students[getRandom(3)], vacancyId: vacancy.id})
+            });
         }
         return r
     },
     [GET_OUTCOME_CVS]: (state, getters, rootState) => {
         const r = []
-        if (rootState.auth.role === COMPANY) {
+        if (rootState.auth.role === COMPANY && getters[GET_OWN_VACANCIES]) {
             getters[GET_OWN_VACANCIES].forEach(vacancy => {
-                vacancy.companyApplied.forEach( application => {
-                    if (application.status === 'pending') {
-                        r.push({studentId: application.studentId, vacancyId: vacancy.id})
-                    }
-                })
+                r.push({studentId: students[getRandom(3)], vacancyId: vacancy.id})
             })
         }
         return r
     },
     [GET_ACCEPTED_CVS]: (state, getters, rootState) => {
         const r = []
-        if (rootState.auth.role === COMPANY) {
+        if (rootState.auth.role === COMPANY && getters[GET_OWN_VACANCIES]) {
             getters[GET_OWN_VACANCIES].forEach(vacancy => {
-                vacancy.studentApplied.forEach( application => {
-                    if (application.status === 'accepted') {
-                        r.push({studentId: application.studentId, vacancyId: vacancy.id})
-                    }
-                })
-                vacancy.companyApplied.forEach( application => {
-                    if (application.status === 'accepted') {
-                        r.push({studentId: application.studentId, vacancyId: vacancy.id})
-                    }
-                })
+                r.push({studentId: students[getRandom(3)], vacancyId: vacancy.id})
             })
         }
         return r
     },
     [GET_REJECTED_CVS]: (state, getters, rootState) => {
         const r = []
-        if (rootState.auth.role === COMPANY) {
+        if (rootState.auth.role === COMPANY && getters[GET_OWN_VACANCIES]) {
             getters[GET_OWN_VACANCIES].forEach(vacancy => {
-                vacancy.studentApplied.forEach( application => {
-                    if (application.status === 'reject') {
-                        r.push({studentId: application.studentId, vacancyId: vacancy.id})
-                    }
-                })
-                vacancy.companyApplied.forEach( application => {
-                    if (application.status === 'reject') {
-                        r.push({studentId: application.studentId, vacancyId: vacancy.id})
-                    }
-                })
+                r.push({studentId: students[getRandom(3)], vacancyId: vacancy.id})
             })
         }
         return r
@@ -105,17 +87,9 @@ const getters = {
     [GET_ALL_VACANCIES]: (state, getters, rootState) => {
         const list =  Object.values(state.all).sort((a, b) => a.order - b.order)
         if(rootState.auth.role === USER) {
-            const userId = rootState.userProfile.profile.id
             list.map(v => {
                 v.status = ''
-                const userApplication = v.companyApplied.find(c => c.studentId === userId)
-                const companyApplication = v.studentApplied.find(c => c.studentId === userId)
-                if (companyApplication) {
-                    v.status = 'company ' + companyApplication.status
-                }
-                if (userApplication) {
-                    v.status = 'user ' + userApplication.status
-                }
+                console.log(JSON.parse(JSON.stringify(v)));
                 return v
             })
         }
@@ -125,16 +99,7 @@ const getters = {
         if (!state.all[id]) return null
         const vacancy = state.all[id]
         if(rootState.auth.role === USER) {
-            const userId = rootState.userProfile.profile.id
             vacancy.status = ''
-            const companyApplication = vacancy.companyApplied.find(c => c.studentId === userId)
-            const userApplication = vacancy.studentApplied.find(c => c.studentId === userId)
-            if (companyApplication) {
-                vacancy.status = 'company ' + companyApplication.status
-            }
-            if (userApplication) {
-                vacancy.status = 'user ' + userApplication.status
-            }
         }
         return vacancy
     },
@@ -220,7 +185,6 @@ const actions = {
                 resolve(res)
             })
             .catch(err => {
-                console.log(err.response.status)
                 commit(VACANCY_ERROR)
                 reject(err)
             })

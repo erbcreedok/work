@@ -26,7 +26,7 @@
                     <el-tooltip class="item" effect="dark" content="Изменить изображение" placement="top-start">
                         <el-upload
                                 class="avatar-uploader"
-                                action="http://letswork.tk:3000/company/private/image-avatar"
+                                :action="baseURL + '/company/private/image-avatar'"
                                 name="avatar"
                                 :headers="{'Authorization': token}"
                                 :show-file-list="false"
@@ -93,12 +93,13 @@
     import {GET_OWN_VACANCIES, VACANCIES} from "../store/types/vacancies"
     import { mask } from 'vue-the-mask'
     import {AUTH, GET_TOKEN} from "../store/types/auth";
-    import api from "../store/api/main";
+    import api, {baseURL} from "../store/api/main";
 
     export default {
         name: 'company-profile',
         data() {
             return {
+                baseURL: baseURL,
                 dialogFormVisible: false,
                 edit: false,
                 loading: false
