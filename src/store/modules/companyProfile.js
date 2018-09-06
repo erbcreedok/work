@@ -46,17 +46,18 @@ const mutations = {
 }
 
 const actions = {
-    [GET_PROFILE]: ({commit}) => new Promise((respond, reject) => {
+    [GET_PROFILE]: ({commit}) => new Promise(() => {
         commit(PROFILE_REQUEST)
         api.get('company/private/profile').then(res => {
-            commit(PROFILE_SUCCESS)
+            console.log(res);
             res.data.image = baseURL + '/company/image-avatar/' + res.data.id + '.png'
+            console.log('im here')
             commit(MERGE_PROFILE, res.data)
-            respond(res)
+            commit(PROFILE_SUCCESS)
+            console.log('im here success muthafucka')
         }).catch(err => {
             commit(PROFILE_ERROR)
             console.log(err)
-            reject(err)
         })
     })
 }

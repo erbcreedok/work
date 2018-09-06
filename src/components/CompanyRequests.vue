@@ -54,6 +54,7 @@
     } from "../store/types/vacancies";
     import {GET_ALL_STUDENTS, STUDENTS} from "../store/types/students";
     import StudentVacancyItem from "./StudentVacancyItem";
+    import {COMPANY_PROFILE, GET_PROFILE} from "../store/types/companyProfile";
 
     export default {
         name: 'company-requests',
@@ -82,6 +83,9 @@
             })
         },
         mounted() {
+            if (this.$store.state.companyProfile.status === 'clean') {
+                this.$store.dispatch(COMPANY_PROFILE + GET_PROFILE)
+            }
             this.$store.dispatch(STUDENTS + GET_ALL_STUDENTS)
             this.$store.dispatch(VACANCIES + GET_OWN_VACANCIES)
         }

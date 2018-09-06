@@ -13,6 +13,7 @@
     import {GET_ALL_STUDENTS, STUDENTS} from "../store/types/students";
     import StudentItem from "./StudentItem";
     import {GET_OWN_VACANCIES, VACANCIES} from "../store/types/vacancies";
+    import {COMPANY_PROFILE, GET_PROFILE} from "../store/types/companyProfile";
 
     export default {
         name: 'company-search',
@@ -29,6 +30,9 @@
             }
         },
         mounted() {
+            if (this.$store.state.companyProfile.status === 'clean') {
+                this.$store.dispatch(COMPANY_PROFILE + GET_PROFILE)
+            }
             this.$store.dispatch(STUDENTS + GET_ALL_STUDENTS)
             this.$store.dispatch(VACANCIES + GET_OWN_VACANCIES)
         }

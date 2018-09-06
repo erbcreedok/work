@@ -46,3 +46,10 @@
         },
     }
 </script>
+
+<style scoped="">
+    .vacancies {
+        min-height: 100vh;
+        min-height: calc(100vh - 335px);
+    }
+</style>

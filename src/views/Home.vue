@@ -1,12 +1,11 @@
 <template>
   <div class="home">
     <section class="main-section">
-      <div class="video-bg d-none d-md-block">
-        <video loop="loop" autoplay="autoplay" class="l_b_c" data-automation="Hero_heroVideo_video">
-          <source :src="videoBG" type="video/mp4"/>
-        </video>
-      </div>
-      <div class="video-bg d-block d-md-none" :style="{backgroundImage: `url(${ imageBG })`}">
+      <div class="video-bg" :style="{backgroundImage: `url(${ imageBGSrc })`}">
+        <progressive-img
+                :src="imageBGHD"
+                :placeholder="imageBGThumb"
+        ></progressive-img>
       </div>
       <div class="container">
         <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 100vh;  padding: 120px 0">
@@ -81,15 +80,21 @@
 </template>
 
 <script>
-import videoBG from '../assets/videos/Blur Office Background.mp4'
-import imageBG from '../assets/images/bg.jpg'
+import imageBGThumb from '../assets/images/bg@.5x.jpg'
+import imageBGSrc from '../assets/images/bg@1x.jpg'
+import imageBGHD from '../assets/images/bg@2x.jpg'
+import Vue from 'vue'
+import VueProgressiveImage from 'vue-progressive-image'
+
+Vue.use(VueProgressiveImage)
 
 export default {
   name: 'home',
   data() {
       return {
-          videoBG: videoBG,
-          imageBG: imageBG,
+          imageBGThumb: imageBGThumb,
+          imageBGSrc: imageBGSrc,
+          imageBGHD: imageBGHD,
       }
   },
   methods: {

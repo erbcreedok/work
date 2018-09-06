@@ -153,7 +153,7 @@
             }
         },
         mounted() {
-            if (this.$store.state.companyProfile.status === '') {
+            if (this.$store.state.companyProfile.status === 'clean') {
                 this.$store.dispatch(COMPANY_PROFILE + GET_PROFILE)
             }
             this.loadVacancies()

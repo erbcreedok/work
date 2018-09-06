@@ -29,6 +29,8 @@
   import CompanySearch from '../components/CompanySearch.vue'
   import CompanyRequests from '../components/CompanyRequests.vue'
   import {COMPANY, USER} from "../store/mutation-types";
+  import {USER_PROFILE, GET_PROFILE} from "../store/types/userProfile";
+  import {COMPANY_PROFILE} from "../store/types/companyProfile";
 
   export default {
       name: 'Profile',
@@ -55,8 +57,13 @@
       },
       beforeMount() {
           // Временный обход security роутинга, для не зарегестрированных пользователей
-          if (!this.$store.getters['auth/isLogged']) {
+          const isLogged = this.$store.getters['auth/isLogged']
+          if (!isLogged) {
               this.$router.push('/')
+          } else if (isLogged === USER) {
+              this.$store.dispatch(USER_PROFILE + GET_PROFILE)
+          } else if (isLogged === COMPANY) {
+              this.$store.dispatch(COMPANY_PROFILE + GET_PROFILE)
           }
       }
   }
