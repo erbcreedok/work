@@ -1,11 +1,8 @@
 <template>
   <div class="home">
     <section class="main-section">
-      <div class="video-bg" :style="{backgroundImage: `url(${ imageBGSrc })`}">
-        <progressive-img
-                :src="imageBGHD"
-                :placeholder="imageBGThumb"
-        ></progressive-img>
+      <div class="video-bg" :style="{backgroundImage: `url(${ imageBGHD })`, backgroundColor: '#ffcf47'}">
+        <!--<progressive-img :src="imageBGHD" :placeholder="imageBGThumb"></progressive-img>-->
       </div>
       <div class="container">
         <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 100vh;  padding: 120px 0">

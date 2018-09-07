@@ -20,6 +20,14 @@ const students = [
     '5b8c30b93e530769da65d40a',
     '5b8cf1be3e530769da65d439'
 ]
+const statuses = [
+    'user pending',
+    'company pending',
+    'user accepted',
+    'company accepted',
+    'user reject',
+    'company reject',
+]
 
 const state = {
     all: {},
@@ -88,7 +96,6 @@ const getters = {
         const list =  Object.values(state.all).sort((a, b) => a.order - b.order)
         if(rootState.auth.role === USER) {
             list.map(v => {
-                v.status = ''
                 console.log(JSON.parse(JSON.stringify(v)));
                 return v
             })
@@ -99,7 +106,6 @@ const getters = {
         if (!state.all[id]) return null
         const vacancy = state.all[id]
         if(rootState.auth.role === USER) {
-            vacancy.status = ''
         }
         return vacancy
     },
@@ -138,6 +144,7 @@ const mutations = {
         const all = state.all
         payload.forEach(i => {
             i.id = i._id || i.id
+            i.status = statuses[getRandom(4)]
             delete i._id
             i.image = baseURL + '/company/image-avatar/' + i.companyId + '.png';
             all[i.id] = i
@@ -150,6 +157,7 @@ const mutations = {
         delete payload._id
         payload.image = baseURL + '/company/image-avatar/' + payload.companyId + '.png';
         payload.order = state.all[payload.id].order || state.all.length
+        payload.status = statuses[getRandom(4)]
         state.all[payload.id] = payload
         state.all = JSON.parse(JSON.stringify(state.all))
         state.list = Object.values(state.all).sort((a, b) => a.order - b.order)
