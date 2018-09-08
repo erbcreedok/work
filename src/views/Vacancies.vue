@@ -15,12 +15,15 @@
     import VacancyItem from '../components/VacancyItem.vue'
     import FilterVacancy from '../components/FilterVacancy.vue'
     import {
+        GET_ALL_STUDENT_VACANCIES,
         GET_ALL_VACANCIES,
         GET_FILTERED_VACANCIES,
         GET_LOAD_VACANCIES,
         GET_LOADING_STATUS,
         VACANCIES
     } from "../store/types/vacancies";
+    import {AUTH, IS_LOGGED} from "../store/types/auth";
+    import {USER} from "../store/mutation-types";
 
     export default {
         components: { VacancyItem, FilterVacancy },
@@ -29,6 +32,9 @@
             return {}
         },
         computed: {
+            isLogged() {
+                return this.$store.getters[AUTH + IS_LOGGED]
+            },
             vacancies() {
                 return this.$store.getters[VACANCIES + GET_LOAD_VACANCIES]
             },
@@ -43,6 +49,11 @@
         },
         mounted() {
             this.$store.dispatch(VACANCIES + GET_ALL_VACANCIES)
+            if (this.isLogged === USER) {
+                this.$store.dispatch(VACANCIES + GET_ALL_STUDENT_VACANCIES)
+            } else {
+                this.$store.dispatch(VACANCIES + GET_ALL_VACANCIES)
+            }
         },
     }
 </script>

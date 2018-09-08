@@ -43,11 +43,13 @@
 <script>
     import {COMPANY, USER} from "../store/mutation-types";
     import {
+        GET_ALL_STUDENT_VACANCIES,
         GET_ALL_VACANCIES,
         GET_INCOME_CVS,
         GET_INCOME_VACANCIES,
         VACANCIES
     } from "../store/types/vacancies";
+    import {APPLICATIONS, GET_INCOME_APPLICATIONS} from "../store/types/applications";
     export default {
         data() {
             return {
@@ -64,12 +66,16 @@
                 return this.$store.getters[VACANCIES + GET_INCOME_VACANCIES].length || null
             },
             incomePersonRequestCount() {
-                return this.$store.getters[VACANCIES + GET_INCOME_CVS].length || null
+                return this.$store.getters[APPLICATIONS + GET_INCOME_APPLICATIONS].length || null
             }
         },
         mounted() {
             this.activeRoute = this.$route.fullPath
-            this.$store.dispatch(VACANCIES + GET_ALL_VACANCIES)
+            if (this.isLogged === USER) {
+                this.$store.dispatch(VACANCIES + GET_ALL_STUDENT_VACANCIES)
+            } else {
+                this.$store.dispatch(VACANCIES + GET_ALL_VACANCIES)
+            }
         },
         watch:{
             $route (to){

@@ -2,8 +2,9 @@ import {SET_VACANCY_STATUS, SET_VACANCIES, CREATE_VACANCY, USER, COMPANY} from '
 import api, {baseURL} from '../api/main'
 import {
     GET_ACCEPTED_CVS,
-    GET_ACCEPTED_VACANCIES,
-    GET_ALL_VACANCIES, GET_FILTERED_VACANCIES, GET_INCOME_CVS, GET_INCOME_VACANCIES, GET_LOAD_VACANCIES,
+    GET_ACCEPTED_VACANCIES, GET_ALL_STUDENT_VACANCIES,
+    GET_ALL_VACANCIES, GET_FILTERED_STUDENT_VACANCIES, GET_FILTERED_VACANCIES, GET_INCOME_CVS, GET_INCOME_VACANCIES,
+    GET_LOAD_VACANCIES,
     GET_LOADING_STATUS,
     GET_OUTCOME_CVS, GET_OUTCOME_VACANCIES,
     GET_OWN_VACANCIES,
@@ -39,16 +40,16 @@ const state = {
 
 const getters = {
     [GET_INCOME_VACANCIES]: (state, getters) => {
-        return getters[GET_ALL_VACANCIES].filter(v => v.status === 'user pending')
+        return getters[GET_ALL_VACANCIES].filter(v => v.status === 1)
     },
     [GET_OUTCOME_VACANCIES]: (state, getters) => {
-        return getters[GET_ALL_VACANCIES].filter(v => v.status === 'company pending')
+        return getters[GET_ALL_VACANCIES].filter(v => v.status === 2)
     },
     [GET_ACCEPTED_VACANCIES]: (state, getters) => {
-        return getters[GET_ALL_VACANCIES].filter(v => v.status === 'user accepted' || v.status === 'company accepted')
+        return getters[GET_ALL_VACANCIES].filter(v => v.status === 3)
     },
     [GET_REJECTED_VACANCIES]: (state, getters) => {
-        return getters[GET_ALL_VACANCIES].filter(v => v.status === 'user reject' || v.status === 'company reject')
+        return getters[GET_ALL_VACANCIES].filter(v => v.status === 4)
     },
     [GET_INCOME_CVS]: (state, getters, rootState) => {
         const r = []
@@ -144,7 +145,6 @@ const mutations = {
         const all = state.all
         payload.forEach(i => {
             i.id = i._id || i.id
-            i.status = statuses[getRandom(4)]
             delete i._id
             i.image = baseURL + '/company/image-avatar/' + i.companyId + '.png';
             all[i.id] = i
@@ -157,7 +157,6 @@ const mutations = {
         delete payload._id
         payload.image = baseURL + '/company/image-avatar/' + payload.companyId + '.png';
         payload.order = state.all[payload.id].order || state.all.length
-        payload.status = statuses[getRandom(4)]
         state.all[payload.id] = payload
         state.all = JSON.parse(JSON.stringify(state.all))
         state.list = Object.values(state.all).sort((a, b) => a.order - b.order)
@@ -184,7 +183,27 @@ const actions = {
         return api.post('vacancy/0/200')
             .then(res => {
                 const vacancies = res.data.map((i, index) => {
-                    i.order = index;
+                    i.order = index
+                    i.status = 0
+                    return i
+                })
+                commit(MERGE_VACANCIES, vacancies)
+                commit(SET_LOADED_VACANCY, vacancies)
+                commit(VACANCY_SUCCESS)
+                resolve(res)
+            })
+            .catch(err => {
+                commit(VACANCY_ERROR)
+                reject(err)
+            })
+    }),
+    [GET_ALL_STUDENT_VACANCIES]: ({commit}) => new Promise((resolve, reject) => {
+        commit(VACANCY_REQUEST)
+        return api.post('student/vacancy/0/200')
+            .then(res => {
+                const vacancies = res.data.vacancies.map((i, index) => {
+                    i.order = index
+                    i.status = i.status
                     return i
                 })
                 commit(MERGE_VACANCIES, vacancies)
@@ -202,7 +221,28 @@ const actions = {
         return api.post('vacancy/0/200', {filter: payload})
             .then(res => {
                 const vacancies = res.data.map((i, index) => {
-                    i.order = index;
+                    i.order = index
+                    i.status = 0
+                    return i
+                })
+                commit(MERGE_VACANCIES, vacancies)
+                commit(SET_LOADED_VACANCY, vacancies)
+                commit(VACANCY_SUCCESS)
+                resolve(res)
+            })
+            .catch(err => {
+                console.log(err.response.status)
+                commit(VACANCY_ERROR)
+                reject(err)
+            })
+    }),
+    [GET_FILTERED_STUDENT_VACANCIES]: ({commit}, payload = {}) => new Promise((resolve, reject) => {
+        commit(VACANCY_REQUEST)
+        return api.post('student/vacancy/0/200', {filter: payload})
+            .then(res => {
+                const vacancies = res.data.vacancies.map((i, index) => {
+                    i.order = index
+                    i.status = i.status || 0
                     return i
                 })
                 commit(MERGE_VACANCIES, vacancies)
@@ -221,7 +261,8 @@ const actions = {
         return api.post('vacancy/0/200')
             .then(res => {
                 const vacancies = res.data.map((i, index) => {
-                    i.order = index;
+                    i.order = index
+                    i.status = 0
                     return i
                 })
                 commit(MERGE_VACANCIES, vacancies)
@@ -240,6 +281,7 @@ const actions = {
         return api.post('vacancy/' + id)
             .then(res => {
                 const vacancy = res.data
+                vacancy.status = vacancy.status || 0
                 commit(MERGE_VACANCY, vacancy)
                 commit(VACANCY_SUCCESS)
                 resolve(res)

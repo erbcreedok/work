@@ -55,6 +55,13 @@
     import {GET_ALL_STUDENTS, STUDENTS} from "../store/types/students";
     import StudentVacancyItem from "./StudentVacancyItem";
     import {COMPANY_PROFILE, GET_PROFILE} from "../store/types/companyProfile";
+    import {GET_COMPANY_APPLICATIONS} from "../store/mutation-types";
+    import {
+        APPLICATIONS,
+        GET_ACCEPTED_APPLICATIONS,
+        GET_APPLICATIONS, GET_INCOME_APPLICATIONS, GET_OUTCOME_APPLICATIONS,
+        GET_REJECTED_APPLICATIONS
+    } from "../store/types/applications";
 
     export default {
         name: 'company-requests',
@@ -69,25 +76,18 @@
             }
         },
         computed: {
-            vacancies() {
-                return this.$store.state.people // Загрузка списка людей из store
-            },
-            students() {
-                return this.$store.getters(STUDENTS + GET_ALL_STUDENTS)
-            },
             ...mapGetters({ // Списки отфильтрованных людей из store
-                income  :   VACANCIES + GET_INCOME_CVS,
-                outcome :   VACANCIES + GET_OUTCOME_CVS,
-                accepted:   VACANCIES + GET_ACCEPTED_CVS,
-                declined:   VACANCIES + GET_REJECTED_CVS,
+                income  :   APPLICATIONS + GET_INCOME_APPLICATIONS,
+                outcome :   APPLICATIONS + GET_OUTCOME_APPLICATIONS,
+                accepted:   APPLICATIONS + GET_ACCEPTED_APPLICATIONS,
+                declined:   APPLICATIONS + GET_REJECTED_APPLICATIONS,
             })
         },
         mounted() {
             if (this.$store.state.companyProfile.status === 'clean') {
                 this.$store.dispatch(COMPANY_PROFILE + GET_PROFILE)
             }
-            this.$store.dispatch(STUDENTS + GET_ALL_STUDENTS)
-            this.$store.dispatch(VACANCIES + GET_OWN_VACANCIES)
+            this.$store.dispatch(APPLICATIONS + GET_APPLICATIONS)
         }
     }
 </script>

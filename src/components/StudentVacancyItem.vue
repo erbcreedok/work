@@ -1,6 +1,6 @@
 <template>
-    <div>
-        <div class="row align-items-center py-3">
+    <div class="Application Item">
+        <div class="row align-items-center py-3" v-if="person && vacancy">
             <div class="company-profile col-md-2 col-2">
                 <div class="image-container w-100 item-avatar">
                     <img :src="person.image" alt="" width="100%">
@@ -77,7 +77,7 @@
     import {
         ACCEPT_STUDENT_VACANCY,
         APPLICATIONS, APPLY_STUDENT_VACANCY, CANCEL_STUDENT_VACANCY,
-        DISCARD_STUDENT_VACANCY,
+        DISCARD_STUDENT_VACANCY, GET_APPLICATIONS,
         REJECT_STUDENT_VACANCY
     } from "../store/types/applications";
     export default {
@@ -96,49 +96,53 @@
         },
         computed: {
             person() {
-                return this.$store.getters[STUDENTS + GET_STUDENT](this.personId)
+                return this.$store.getters[APPLICATIONS + GET_STUDENT](this.personId)
             },
             vacancy() {
-                return this.$store.getters[VACANCIES + GET_VACANCY](this.vacancyId)
+                return this.$store.getters[APPLICATIONS + GET_VACANCY](this.vacancyId)
             },
             isLogged() {
                 return this.$store.getters[AUTH + IS_LOGGED]
             }
         },
         methods: {
+            updateApplication() {
+//                this.$store.dispatch(VACANCIES + GET_VACANCY, this.vacancyId)
+                this.$store.dispatch(APPLICATIONS + GET_APPLICATIONS)
+            },
             apply() {
                 this.$store.dispatch(APPLICATIONS + APPLY_STUDENT_VACANCY, {vacancyId: this.vacancyId, studentId: this.personId}).then(() => {
-                    this.$store.dispatch(VACANCIES + GET_VACANCY, this.vacancyId)
+                    this.updateApplication()
                 })
             },
             accept() {
                 this.$store.dispatch(APPLICATIONS + ACCEPT_STUDENT_VACANCY, {vacancyId: this.vacancyId, studentId: this.personId}).then(() => {
-                    this.$store.dispatch(VACANCIES + GET_VACANCY, this.vacancyId)
+                    this.updateApplication()
                 })
             },
             cancel() {
                 this.$store.dispatch(APPLICATIONS + CANCEL_STUDENT_VACANCY, {vacancyId: this.vacancyId, studentId: this.personId}).then(() => {
-                    this.$store.dispatch(VACANCIES + GET_VACANCY, this.vacancyId)
+                    this.updateApplication()
                 })
             },
             reject() {
                 this.$store.dispatch(APPLICATIONS + REJECT_STUDENT_VACANCY, {vacancyId: this.vacancyId, studentId: this.personId}).then(() => {
-                    this.$store.dispatch(VACANCIES + GET_VACANCY, this.vacancyId)
+                    this.updateApplication()
                 })
             },
             discard() {
                 this.$store.dispatch(APPLICATIONS + DISCARD_STUDENT_VACANCY, {vacancyId: this.vacancyId, studentId: this.personId}).then(() => {
-                    this.$store.dispatch(VACANCIES + GET_VACANCY, this.vacancyId)
+                    this.updateApplication()
                 })
             },
         },
         mounted() {
-            if (!this.person) {
-                this.$store.dispatch(STUDENTS + GET_STUDENT, this.personId)
-            }
-            if (!this.vacancy) {
-                this.$store.dispatch(VACANCIES + GET_VACANCY, this.vacancyId)
-            }
+//            if (!this.person) {
+//                this.$store.dispatch(STUDENTS + GET_STUDENT, this.personId)
+//            }
+//            if (!this.vacancy) {
+//                this.$store.dispatch(VACANCIES + GET_VACANCY, this.vacancyId)
+//            }
         }
     }
 </script>

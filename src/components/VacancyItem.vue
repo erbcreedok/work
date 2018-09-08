@@ -1,5 +1,5 @@
 <template>
-    <div :class="{'accepted': vacancy.status === 'user accepted' || vacancy.status === 'company accepted'}">
+    <div :class="{'accepted': vacancy.status === 3}">
         <div class="row align-items-center">
             <div class="company-profile col-md-2 col-2 d-none d-md-block">
                 <div class="image-container w-100 item-avatar">
@@ -20,7 +20,7 @@
                            @click="dialogVisible = true" >Подробнее</el-button>
             </div>
             <div class="col-4 col-md-3 d-flex align-items-center flex-column justify-content-center" v-if="isLogged === USER">
-                <template v-if="vacancy.status=== 'company pending'">
+                <template v-if="vacancy.status=== 1">
                     <p style="opacity: .6;">Входящая заявка</p>
                     <el-button-group class="w-100 mb-3" size="small">
                         <el-tooltip class="item" effect="dark" content="Принять" placement="left">
@@ -31,28 +31,28 @@
                         </el-tooltip>
                     </el-button-group>
                 </template>
-                <template v-if="vacancy.status === 'user pending'">
+                <template v-if="vacancy.status === 2">
                     <p style="opacity: .6;">Исходящая заявка</p>
                     <el-button class="mb-3 ml-0 w-100"
                                type="danger"
                                size="small"
                                @click="cancel()">Отменить</el-button>
                 </template>
-                <template v-if="vacancy.status === 'user accepted' || vacancy.status === 'company accepted'">
+                <template v-if="vacancy.status === 3">
                     <p style="opacity: .6;">Вакансия принята</p>
                     <el-button class="mb-3 ml-0 w-100"
                                type="primary"
                                size="small"
                                @click="contactsVisible = true">Контакты</el-button>
                 </template>
-                <template v-if="vacancy.status === 'user reject' || vacancy.status === 'company reject'">
+                <template v-if="vacancy.status === 4">
                     <p style="opacity: .6;">Вакансия отклонена</p>
                     <el-button class="mb-3 ml-0 w-100"
                                type="warning"
                                size="small"
                                @click="discard()">Убрать</el-button>
                 </template>
-                <template v-if="vacancy.status === ''">
+                <template v-if="vacancy.status === 0">
                     <el-button class="mb-3 ml-0 w-100"
                                type="primary"
                                size="small"
@@ -95,7 +95,7 @@
 
 <script>
     import {SET_VACANCY_STATUS, USER} from '../store/mutation-types'
-    import {GET_VACANCY, VACANCIES} from "../store/types/vacancies";
+    import {GET_ALL_STUDENT_VACANCIES, GET_VACANCY, VACANCIES} from "../store/types/vacancies";
     import {AUTH, IS_LOGGED} from '../store/types/auth';
     import {
         ACCEPT_VACANCY,
@@ -128,29 +128,33 @@
 
         },
         methods: {
+            updateVacancy() {
+//                this.$store.dispatch(VACANCIES + GET_VACANCY, this.vacancyId)
+                this.$store.dispatch(VACANCIES + GET_ALL_STUDENT_VACANCIES)
+            },
             apply() {
                 this.$store.dispatch(APPLICATIONS + APPLY_VACANCY, this.vacancyId).then(() => {
-                    this.$store.dispatch(VACANCIES + GET_VACANCY, this.vacancyId)
+                    this.updateVacancy()
                 })
             },
             accept() {
                 this.$store.dispatch(APPLICATIONS + ACCEPT_VACANCY, this.vacancyId).then(() => {
-                    this.$store.dispatch(VACANCIES + GET_VACANCY, this.vacancyId)
+                    this.updateVacancy()
                 })
             },
             cancel() {
                 this.$store.dispatch(APPLICATIONS + CANCEL_VACANCY, this.vacancyId).then(() => {
-                    this.$store.dispatch(VACANCIES + GET_VACANCY, this.vacancyId)
+                    this.updateVacancy()
                 })
             },
             reject() {
                 this.$store.dispatch(APPLICATIONS + REJECT_VACANCY, this.vacancyId).then(() => {
-                    this.$store.dispatch(VACANCIES + GET_VACANCY, this.vacancyId)
+                    this.updateVacancy()
                 })
             },
             discard() {
                 this.$store.dispatch(APPLICATIONS + DISCARD_VACANCY, this.vacancyId).then(() => {
-                    this.$store.dispatch(VACANCIES + GET_VACANCY, this.vacancyId)
+                    this.updateVacancy()
                 })
             },
             setStatus(val) {

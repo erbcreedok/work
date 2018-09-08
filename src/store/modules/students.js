@@ -43,6 +43,7 @@ const mutations = {
             all[i.id] = i
         })
         state.all = JSON.parse(JSON.stringify(all))
+        state.list = Object.values(state.all).sort((a, b) => a.order - b.order)
     },
     [MERGE_STUDENT](state, payload) {
         payload.id = payload._id || payload.id

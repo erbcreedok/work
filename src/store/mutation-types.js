@@ -16,6 +16,7 @@ export const COMPANY_CREATE = 'COMPANY_CREATE'
 export const COMPANY_LOGIN = 'COMPANY_LOGIN'
 
 export const GET_COMPANY_PROFILE = 'GET_COMPANY_PROFILE'
+export const GET_COMPANY_APPLICATIONS = 'GET_COMPANY_APPLICATIONS'
 
 export const USER = 'user'
 export const COMPANY = 'company'

@@ -25,7 +25,7 @@
 <script>
     import VacancyItem from './VacancyItem.vue'
     import {
-        GET_ACCEPTED_VACANCIES,
+        GET_ACCEPTED_VACANCIES, GET_ALL_STUDENT_VACANCIES,
         GET_INCOME_VACANCIES,
         GET_OUTCOME_VACANCIES, GET_OWN_VACANCIES, GET_REJECTED_VACANCIES,
         VACANCIES
@@ -61,7 +61,7 @@
         },
         mounted() {
             if (this.$store.state.vacancies.status === 'clear') {
-                this.$store.dispatch(VACANCIES + GET_OWN_VACANCIES)
+                this.$store.dispatch(VACANCIES + GET_ALL_STUDENT_VACANCIES)
             }
         }
     }
