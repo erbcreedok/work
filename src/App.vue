@@ -21,19 +21,23 @@
           Footer
       },
       computed: {
+
           isLogged() {
-              return this.$store.getters['auth/isLogged'] // Проверка на логин через store
+              // Проверка авторизации в storage.
+              // Возвращает false(не авторизован),
+              //            'USER'(авторизован от лца студента),
+              //            'COMPANY'(авторизован от лица компании)
+              return this.$store.getters['auth/isLogged']
           },
 
       },
       beforeMount() {
-          const isLogged = this.$store.getters['auth/isLogged']
-          if (!isLogged) {
-              this.$router.push('/')
-          } else if (isLogged === USER) {
-              this.$store.dispatch(USER_PROFILE + USER_GET_PROFILE)
-          } else if (isLogged === COMPANY) {
-              this.$store.dispatch(COMPANY_PROFILE + COMPANY_GET_PROFILE)
+          if (this.isLogged) { //isLogged - переменная из computed()
+              this.$router.push('/') //Переадресация на корневую страницы в случае не авторизованности
+          } else if (this.isLogged === USER) {
+              this.$store.dispatch(USER_PROFILE + USER_GET_PROFILE) //Загрузка профиля студента из Бэка при случае авторизации от лица студента
+          } else if (this.isLogged === COMPANY) {
+              this.$store.dispatch(COMPANY_PROFILE + COMPANY_GET_PROFILE)  //Загрузка профиля компании из Бэка при случае авторизации от лица компании
           }
       }
   }

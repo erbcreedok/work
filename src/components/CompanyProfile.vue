@@ -8,7 +8,7 @@
             </div>
             <div class="mr-5">
                 <div class="d-flex align-items-center mb-3">
-                    <h2 class="mr-3">{{company.name}}</h2>
+                    <h3 class="mr-3">{{company.name}}</h3>
                 </div>
                 <div class="mb-3">
                     <p>Brand</p>
@@ -218,5 +218,8 @@
         &:hover button {
             opacity: 1;
         }
+    }
+    .el-button--mini, .el-button--mini.is-round {
+        padding: 5px 15px;
     }
 </style>

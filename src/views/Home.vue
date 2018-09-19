@@ -1,9 +1,9 @@
 <template>
   <div class="home">
-    <section class="main-section">
-      <div class="video-bg" :style="{backgroundImage: `url(${ imageBGHD })`, backgroundColor: '#ffcf47'}">
+    <section class="main-section" :style="{backgroundImage: `url(${ imageBGHD })`, backgroundColor: '#ffcf47', backgroundAttachment: 'fixed'}">
+      <!--<div class="video-bg" style="background: rgba(0,0,0,.3);">-->
         <!--<progressive-img :src="imageBGHD" :placeholder="imageBGThumb"></progressive-img>-->
-      </div>
+      <!--</div>-->
       <div class="container">
         <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 100vh;  padding: 120px 0">
           <h1 class="mb-5" style="font-size: 3em">Love2Work - Таланты и деньги в одном месте!</h1>
@@ -30,44 +30,40 @@
     </section>
     <section class="bg-white">
       <div class="container">
-        <div class="d-flex flex-column align-items-center justify-content-center py-5" style="min-height: 100vh">
-          <h2 class="my-5">Что делает Love2Work</h2>
-          <div class="my-5 py-5">
-            <iframe width="560px" style="max-width: 100%" height="315" src="https://www.youtube.com/embed/bol8uj3tdOQ" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+        <div class="d-flex flex-column align-items-center justify-content-center py-5">
+          <h2 class="my-3">Что делает Love2Work</h2>
+          <div class="py-5">
+            <iframe width="560px" style="max-width: 100%" height="315" src="https://www.youtube.com/embed/aKTHpEtZxz0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
           </div>
           <div class="d-flex justify-content-around my-5 w-100 flex-wrap">
             <div class="text-center mb-5 mb-md-0" style="max-width: 200px">
               <div style="height: 80px; line-height:80px; vertical-align: bottom">
-                <img src="https://image.flaticon.com/icons/svg/616/616489.svg" alt="" height="60px" class="mb-4"/>
+                <img src="https://image.flaticon.com/icons/svg/1043/1043718.svg" alt="" height="60px" class="mb-4"/>
               </div>
-              <p style="font-size: 1.6rem">Мы помогаем лучшим студентам найти свое место под солнцем</p>
+              <p style="font-size: 1.6rem">Человек без опыта работы, но с желанием трудоустроиться</p>
             </div>
             <div class="text-center mb-5 mb-md-0" style="max-width: 200px">
               <div style="height: 80px; line-height:80px; vertical-align: bottom">
-                <img src="https://image.flaticon.com/icons/svg/838/838615.svg" alt="" height="70px" class="mb-4"/>
+                <img src="https://image.flaticon.com/icons/svg/179/179408.svg" alt="" height="70px" class="mb-4"/>
               </div>
-              <p style="font-size: 1.6rem">Компании нанимают тех, кто им подходит и остаются довольны</p>
+              <p style="font-size: 1.6rem">Мы - платформа которая поможет Вам найти друг друга!</p>
             </div>
             <div class="text-center mb-5 mb-md-0" style="max-width: 200px">
               <div style="height: 80px; line-height:80px; vertical-align: bottom">
-                <img src="https://image.flaticon.com/icons/svg/744/744422.svg" alt="" height="60px" class="mb-4">
+                <img src="https://image.flaticon.com/icons/svg/236/236816.svg" alt="" height="60px" class="mb-4">
               </div>
-              <p style="font-size: 1.6rem">На нашем сайте вы пройдете уникальный тест профориентации</p>
+              <p style="font-size: 1.6rem">Компания, которая в поисках свежих умов и талантливых студентов</p>
             </div>
           </div>
         </div>
       </div>
     </section>
     <section class="bg-white" style="overflow: auto; position: relative">
-      <!--<div class="ocean">-->
-        <!--<div class="wave"></div>-->
-        <!--<div class="wave"></div>-->
-      <!--</div>-->
       <div class="d-flex flex-column align-items-center justify-content-center mt-5 py-5" style="position: relative">
         <h2 class="mb-4">Вы готовы работать?</h2>
         <div class="d-flex justify-content-center my-5 flex-wrap">
           <router-link tag="div" to="/login"><el-button class="d-block mx-5 mb-4 mb-md-0" style="min-width: 200px" type="primary">Найти работу</el-button></router-link>
-          <router-link tag="div" to="/vacancies"><el-button class="d-block mx-5 mb-4 mb-md-0" style="min-width: 200px" type="danger">Все вакансии</el-button></router-link>
+          <router-link tag="div" to="/vacancies"><el-button class="d-block mx-5 mb-4 mb-md-0" style="min-width: 200px" type="default">Все вакансии</el-button></router-link>
           <router-link tag="div" to="/login-company"><el-button class="d-block mx-5 mb-4 mb-md-0" style="min-width: 200px" type="success">Найти работника</el-button></router-link>
         </div>
       </div>
@@ -79,7 +75,7 @@
 <script>
 import imageBGThumb from '../assets/images/bg@.5x.jpg'
 import imageBGSrc from '../assets/images/bg@1x.jpg'
-import imageBGHD from '../assets/images/bg@2x.jpg'
+import imageBGHD from '../assets/images/bg@2x-dark.jpg'
 import Vue from 'vue'
 import VueProgressiveImage from 'vue-progressive-image'
 
@@ -111,6 +107,14 @@ export default {
 </script>
 
 <style scoped lang="scss">
+  .el-button--success {
+    background-color: #3db39e;
+    border-color: #3db39e;
+    &:hover {
+      background: #4cd598;
+      border-color: #4cd598;
+    }
+  }
   .main-section {
     position: relative;
     overflow: hidden;
@@ -125,6 +129,9 @@ export default {
         max-width: 200px;
         max-height: 80px;
       }
+    }
+    .el-button--success {
+
     }
     .video-bg {
       position: fixed;

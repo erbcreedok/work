@@ -8,13 +8,8 @@
             </div>
             <div>
                 <div class="d-flex align-items-center mb-3">
-                    <h2 class="mr-3" v-if="user.firstName || user.lastName">{{ (user.firstName || '') + ' ' + (user.lastName || '')}}</h2>
-                    <h2 class="mr-3" v-if="!user.firstName && !user.lastName">Имя не указано</h2>
-                    <el-rate
-                            class="text-nowrap"
-                            v-model="user.rate"
-                            disabled>
-                    </el-rate>
+                    <h3 class="mr-4" v-if="user.firstName || user.lastName">{{ (user.firstName || '') + ' ' + (user.lastName || '')}}</h3>
+                    <h3 class="mr-4" v-if="!user.firstName && !user.lastName">Имя не указано</h3>
                 </div>
                 <div class="mb-3 icon-text">
                     <template v-if="user.phone">
@@ -27,7 +22,7 @@
                     </template>
                 </div>
                 <div class="icon-text">
-                    <a :href="`tel: ${user.email}`">
+                    <a :href="`mailto: ${user.email}`">
                         <i class="far fa-envelope mr-2"></i> {{user.email}}
                     </a>
                 </div>
@@ -182,8 +177,8 @@
 
 <style scoped="" lang="scss">
     .profile-image {
-        width: 120px;
-        height: 120px;
+        width: 100px;
+        height: 100px;
         background-size: cover;
         border-radius: 50%;
         box-shadow: 0 2px 20px rgba(0, 0, 0, 0.18);
@@ -202,14 +197,14 @@
     .profile-info {
         .icon-text {
             color: #6f7175;
-            font-size: 16px;
+            font-size: 14px;
             transition: .3s;
             line-height: 26px;
             i {
-                font-size: 20px;
+                font-size: 14px;
                 display: inline-block;
-                width: 25px;
-                margin: 0 5px;
+                width: 20px;
+                margin: 0 5px 0 -5px;
                 text-align: center;
             }
         }
@@ -253,5 +248,8 @@
         width: 118px;
         height: 118px;
         display: block;
+    }
+    .el-button--mini, .el-button--mini.is-round {
+        padding: 5px 15px;
     }
 </style>

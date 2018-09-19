@@ -2,7 +2,7 @@
     <header>
         <b-navbar toggleable="md" fixed="top">
             <div class="container h-100">
-                <router-link to="/">Love2Work</router-link>
+                <div class="navbar-brand"><router-link to="/">Love<span class="alternate-color">2</span>Work</router-link></div>
                 <b-navbar-toggle v-if="!isLogged" target="nav_collapse"></b-navbar-toggle>
                 <div v-if="isLogged === USER">
                     <ul class="flex-nowrap navbar-nav ml-auto align-items-center">
@@ -190,6 +190,13 @@
     a, a:hover {
         color: inherit;
         text-decoration: none;
+    }
+    .navbar-brand {
+        font-size: 2rem;
+        padding-left: 10px;
+        .alternate-color {
+            color: #409eff;
+        }
     }
     .profile-image {
         height: 40px;

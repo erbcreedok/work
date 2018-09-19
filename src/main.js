@@ -18,14 +18,14 @@ Vue.use(ElementUI, { locale })
 Vue.use(BootstrapVue)
 Vue.use(wysiwyg, {})
 
-// Auto authentication
+// Проверка авторизации
 const token = localStorage.getItem('user-token')
 if (token) {
-    setAuth(token)
+    setAuth(token) // Добавление хидэра Authentication в параметры HTTP сервиса axios
 }
 
 new Vue({
-  router,
-  store,
-  render: h => h(App)
+  router, //Routing parameters
+  store, //Storage
+  render: h => h(App)//Rendering Application
 }).$mount('#app')
