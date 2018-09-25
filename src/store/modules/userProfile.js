@@ -55,8 +55,6 @@ const actions = {
     [GET_PROFILE]: ({commit}) => new Promise(() => {
         commit(PROFILE_REQUEST)
         api.get('student/private/profile').then(res => {
-            console.log(JSON.parse(JSON.stringify(res.data)))
-            console.log(res.data)
             res.data.image = baseURL + '/student/image-avatar/' + res.data.id + '.png'
             commit(PROFILE_SUCCESS)
             commit(MERGE_PROFILE, res.data)

@@ -88,12 +88,12 @@
 </template>
 
 <script>
-    import NewVacancy from './Forms/NewVacancy.vue'
-    import {COMPANY_PROFILE, GET_PROFILE} from '../store/types/companyProfile'
-    import {GET_OWN_VACANCIES, VACANCIES} from "../store/types/vacancies"
+    import NewVacancy from '../Forms/NewVacancy.vue'
+    import {COMPANY_PROFILE, GET_PROFILE} from '../../store/types/companyProfile'
+    import {GET_OWN_VACANCIES, VACANCIES} from "../../store/types/vacancies"
     import { mask } from 'vue-the-mask'
-    import {AUTH, GET_TOKEN} from "../store/types/auth";
-    import api, {baseURL} from "../store/api/main";
+    import {AUTH, GET_TOKEN} from "../../store/types/auth";
+    import api, {baseURL} from "../../store/api/main";
 
     export default {
         name: 'company-profile',

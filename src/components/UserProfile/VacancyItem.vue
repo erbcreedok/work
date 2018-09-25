@@ -94,16 +94,16 @@
 </template>
 
 <script>
-    import {SET_VACANCY_STATUS, USER} from '../store/mutation-types'
-    import {GET_ALL_STUDENT_VACANCIES, GET_VACANCY, VACANCIES} from "../store/types/vacancies";
-    import {AUTH, IS_LOGGED} from '../store/types/auth';
+    import {SET_VACANCY_STATUS, USER} from '../../store/mutation-types'
+    import {GET_ALL_STUDENT_VACANCIES, GET_VACANCY, VACANCIES} from "../../store/types/vacancies";
+    import {AUTH, IS_LOGGED} from '../../store/types/auth';
     import {
         ACCEPT_VACANCY,
         APPLICATIONS,
         APPLY_VACANCY, CANCEL_VACANCY,
         DISCARD_VACANCY,
         REJECT_VACANCY
-    } from "../store/types/applications";
+    } from "../../store/types/applications";
 
     export default {
         name: 'vacancy-item',

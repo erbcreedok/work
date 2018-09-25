@@ -12,8 +12,8 @@
 </template>
 
 <script>
-    import VacancyItem from '../components/VacancyItem.vue'
-    import FilterVacancy from '../components/FilterVacancy.vue'
+    import VacancyItem from '../components/UserProfile/VacancyItem.vue'
+    import FilterVacancy from '../components/UserProfile/FilterVacancy.vue'
     import {
         GET_ALL_STUDENT_VACANCIES,
         GET_ALL_VACANCIES,

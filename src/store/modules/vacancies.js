@@ -97,7 +97,6 @@ const getters = {
         const list =  Object.values(state.all).sort((a, b) => a.order - b.order)
         if(rootState.auth.role === USER) {
             list.map(v => {
-                console.log(JSON.parse(JSON.stringify(v)));
                 return v
             })
         }

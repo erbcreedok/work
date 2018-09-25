@@ -44,29 +44,20 @@
 
 <script>
     import { mapGetters } from 'vuex'
-    import {
-        GET_ACCEPTED_CVS,
-        GET_INCOME_CVS,
-        GET_OUTCOME_CVS,
-        GET_OWN_VACANCIES,
-        GET_REJECTED_CVS,
-        VACANCIES
-    } from "../store/types/vacancies";
-    import {GET_ALL_STUDENTS, STUDENTS} from "../store/types/students";
     import StudentVacancyItem from "./StudentVacancyItem";
-    import {COMPANY_PROFILE, GET_PROFILE} from "../store/types/companyProfile";
-    import {GET_COMPANY_APPLICATIONS} from "../store/mutation-types";
+    import {COMPANY_PROFILE, GET_PROFILE} from "../../store/types/companyProfile";
     import {
         APPLICATIONS,
         GET_ACCEPTED_APPLICATIONS,
         GET_APPLICATIONS, GET_INCOME_APPLICATIONS, GET_OUTCOME_APPLICATIONS,
         GET_REJECTED_APPLICATIONS
-    } from "../store/types/applications";
+    } from "../../store/types/applications";
 
     export default {
         name: 'company-requests',
         components: {
-            StudentVacancyItem},
+            StudentVacancyItem
+        },
         props: {
             type: String
         },

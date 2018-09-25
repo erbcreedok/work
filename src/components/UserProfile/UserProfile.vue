@@ -90,10 +90,10 @@
             <h3 class="my-4">Тесты</h3>
             <div class="row flex-column cups" style="height: 400px">
                 <div class="col-3 my-4" v-for="(item, index) in [{name: 'Амбиции', percent: 100}, {name: 'Образование', percent: 90},  {name: 'Навыки', percent: 50},  {name: 'Аналитика', percent: 0},  {name: 'Творчество', percent: 30},  {name: 'Критичиское мышление', percent: 30}]" :key="index">
-                    <div class="d-flex align-items-end">
+                    <router-link :to="'profile/survey/' + index" tag="div" style="cursor: pointer" class="d-flex align-items-end">
                         <coffee-cup class="mr-3" :percents="item.percent"></coffee-cup>
                         <p class="">{{index+1}}. {{item.name}}</p>
-                    </div>
+                    </router-link>
                 </div>
             </div>
         </div>
@@ -108,11 +108,11 @@
 
 <script>
     import CoffeeCup from './CoffeeCup.vue'
-    import {GET_PROFILE, USER_PROFILE} from "../store/types/userProfile"
+    import {GET_PROFILE, USER_PROFILE} from "../../store/types/userProfile"
     import { mask } from 'vue-the-mask'
-    import {AUTH, GET_TOKEN} from "../store/types/auth";
-    import api, {baseURL} from "../store/api/main";
-    import ElInput from "../../node_modules/element-ui/packages/input/src/input";
+    import {AUTH, GET_TOKEN} from "../../store/types/auth";
+    import api, {baseURL} from "../../store/api/main";
+    import ElInput from "../../../node_modules/element-ui/packages/input/src/input";
 
     export default {
         name: 'user-profile',

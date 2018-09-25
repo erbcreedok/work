@@ -10,6 +10,7 @@ import companyProfile from "./modules/companyProfile";
 import companies from "./modules/companies";
 import applications from "./modules/applications";
 import students from "./modules/students";
+import surveys from "./modules/surveys";
 import {GET_COMPANY_APPLICATIONS} from "./mutation-types";
 import {
     APPLICATIONS, APPLICATIONS_ERROR, APPLICATIONS_REQUEST, APPLICATIONS_SUCCESS,
@@ -97,7 +98,8 @@ const store = new Vuex.Store({
         companyProfile,
         companies,
         students,
-        applications
+        applications,
+        surveys
     },
 })
 export default store

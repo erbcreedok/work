@@ -70,12 +70,12 @@
 </template>
 
 <script>
-    import {COMPANY, USER} from '../store/mutation-types'
-    import {GET_STUDENT, STUDENTS} from "../store/types/students";
-    import {AUTH, IS_LOGGED} from "../store/types/auth";
-    import ElDialog from "../../node_modules/element-ui/packages/dialog/src/component";
-    import {GET_OWN_VACANCIES, VACANCIES} from "../store/types/vacancies";
-    import {APPLICATIONS, APPLY_STUDENT_VACANCY} from "../store/types/applications";
+    import {COMPANY, USER} from '../../store/mutation-types'
+    import {GET_STUDENT, STUDENTS} from "../../store/types/students";
+    import {AUTH, IS_LOGGED} from "../../store/types/auth";
+    import ElDialog from "../../../node_modules/element-ui/packages/dialog/src/component";
+    import {GET_OWN_VACANCIES, VACANCIES} from "../../store/types/vacancies";
+    import {APPLICATIONS, APPLY_STUDENT_VACANCY} from "../../store/types/applications";
     export default {
         components: {ElDialog},
         name: 'student-item',

@@ -27,9 +27,9 @@
     import {
         GET_ACCEPTED_VACANCIES, GET_ALL_STUDENT_VACANCIES,
         GET_INCOME_VACANCIES,
-        GET_OUTCOME_VACANCIES, GET_OWN_VACANCIES, GET_REJECTED_VACANCIES,
+        GET_OUTCOME_VACANCIES, GET_REJECTED_VACANCIES,
         VACANCIES
-    } from "../store/types/vacancies";
+    } from "../../store/types/vacancies";
 
     export default {
         name: 'user-requests',

@@ -70,16 +70,16 @@
 </template>
 
 <script>
-    import {COMPANY, USER} from '../store/mutation-types'
-    import {GET_STUDENT, STUDENTS} from "../store/types/students";
-    import {AUTH, IS_LOGGED} from "../store/types/auth";
-    import {GET_VACANCY, VACANCIES} from "../store/types/vacancies";
+    import {COMPANY, USER} from '../../store/mutation-types'
+    import {GET_STUDENT} from "../../store/types/students";
+    import {AUTH, IS_LOGGED} from "../../store/types/auth";
+    import {GET_VACANCY} from "../../store/types/vacancies";
     import {
         ACCEPT_STUDENT_VACANCY,
         APPLICATIONS, APPLY_STUDENT_VACANCY, CANCEL_STUDENT_VACANCY,
         DISCARD_STUDENT_VACANCY, GET_APPLICATIONS,
         REJECT_STUDENT_VACANCY
-    } from "../store/types/applications";
+    } from "../../store/types/applications";
     export default {
         name: 'student-vacancy-item',
         props: {
