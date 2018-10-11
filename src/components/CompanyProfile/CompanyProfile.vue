@@ -156,6 +156,7 @@
         mounted() {
             if (this.$store.state.companyProfile.status === 'clean') {
                 this.$store.dispatch(COMPANY_PROFILE + GET_PROFILE)
+//                this.$store.dispatch(VACANCIES + GET_OWN_VACANCIES)
             }
             this.loadVacancies()
         }

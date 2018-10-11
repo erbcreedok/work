@@ -1,9 +1,6 @@
 <template>
   <div class="home">
     <section class="main-section" :style="{backgroundImage: `url(${ imageBGHD })`, backgroundColor: '#ffcf47', backgroundAttachment: 'fixed'}">
-      <!--<div class="video-bg" style="background: rgba(0,0,0,.3);">-->
-        <!--<progressive-img :src="imageBGHD" :placeholder="imageBGThumb"></progressive-img>-->
-      <!--</div>-->
       <div class="container">
         <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 100vh;  padding: 120px 0">
           <h1 class="mb-5" style="font-size: 3em">Love2Work - Таланты и деньги в одном месте!</h1>

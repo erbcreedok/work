@@ -1,8 +1,8 @@
 <template>
   <div id="app">
-    <Header></Header>
-    <router-view></router-view>
-    <Footer></Footer>
+    <Header></Header> <!-- Шапка приложения -->
+    <router-view></router-view> <!-- Компонент отображающий контент в зависимости от маршрута -->
+    <Footer></Footer> <!-- Нижний колонтитул -->
   </div>
 </template>
 
@@ -21,7 +21,6 @@
           Footer
       },
       computed: {
-
           isLogged() {
               // Проверка авторизации в storage.
               // Возвращает false(не авторизован),

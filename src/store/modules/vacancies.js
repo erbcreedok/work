@@ -88,8 +88,10 @@ const getters = {
         return r
     },
     [GET_OWN_VACANCIES]: (state, getters, rootState) => {
-        const companyId = rootState.companyProfile.profile.id
+        const companyId = rootState.companyProfile.profile._id
+        console.log(companyId);
         return getters[GET_ALL_VACANCIES].filter(v => {
+            console.log(v.companyId);
             return v.companyId === companyId
         }).sort((a, b) => a.order - b.order)
     },
@@ -169,7 +171,7 @@ const mutations = {
 }
 const actions = {
     [CREATE_VACANCY]: (_, payload) => new Promise((resolve, reject) => {
-        return api.post('/company/vacancy/', payload)
+        return api.put('/company/vacancy/', payload)
             .then(res => {
                 resolve(res)
             })

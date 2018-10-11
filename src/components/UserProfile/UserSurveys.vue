@@ -1,50 +1,32 @@
 <template>
     <div class="px-0 py-5 px-md-5">
-        <h2 class="mb-5">Тестовый сэт #{{$route.params.set}}</h2>
-        <el-form label-position="top" v-if="surveys && surveys.length">
-            <el-form-item v-for="(survey, index) in surveys"
-                          :key="index"
+        <h2 class="mb-5" v-if="!surveys">Загружаем вопросы</h2>
+        <h2 class="mb-5" v-if="surveys && surveys.length > 0">{{surveys[0].setName}}</h2>
+        <el-form label-position="top"
+                 v-if="surveys && surveys.length"
+                 :hide-required-asterisk="true"
+        >
+            <el-form-item v-for="(survey, i) in surveys"
+                          :key="i"
                           :label="survey.questionText"
                           class="py-3 mb-5"
-                          :rules="{required: true, message: 'Ответье на этот вопросы', trigger: 'blur'}"
+                          :rules="{required: true, message: 'Ответьте на эти вопросы', trigger: 'blur'}"
             >
                 <template v-if="survey.questionType === 'singlechoice'">
-                    <el-radio-group v-model="formValues[survey.id][0]">
-                        <el-radio v-for="(answer, index) in survey.answers"
-                                  :key="index"
-                                  :label="answer"
-                        >{{answer}}</el-radio>
-                    </el-radio-group>
+                    <single-choice :survey="survey"></single-choice>
                 </template>
                 <template v-if="survey.questionType === 'multichoice'">
-                    <el-checkbox-group v-model="formValues[survey.id]">
-                        <el-checkbox v-for="(answer, index) in survey.answers"
-                                     :key="index"
-                                     :label="answer"
-                        ></el-checkbox>
-                    </el-checkbox-group>
+                    <multiple-choice :survey="survey"></multiple-choice>
                 </template>
                 <template v-if="survey.questionType === 'dropdown'">
-                    <el-select placeholder="Выберите ответ"
-                               v-model="formValues[survey.id][0]"
-                               class="mt-3">
-                        <el-option
-                                v-for="answer in survey.answers"
-                                :key="answer"
-                                :label="answer"
-                                :value="answer">
-                        </el-option>
-                    </el-select>
+                    <dropdown-survey :survey="survey"></dropdown-survey>
                 </template>
                 <template v-if="survey.questionType === 'openended'">
-                    <el-input placeholder="Введите ваш ответ"
-                              class="mt-3"
-                              v-model="formValues[survey.id][0]"
-                    ></el-input>
+                    <open-ended :survey="survey"></open-ended>
                 </template>
             </el-form-item>
         </el-form>
-        <h3 style="opacity: .6" v-if="!surveys || !surveys.length">
+        <h3 style="opacity: .6" v-if="surveys && surveys.length === 0">
             В этом сэте не нашлось ни одного вопроса, пока...
         </h3>
     </div>
@@ -52,28 +34,28 @@
 
 <script>
     import {GET_SET_QUESTIONS, GET_SET_SURVEYS, SURVEYS} from "../../store/types/surveys"
+    import SingleChoice from './UserSurveyTypes/SingleChoice'
+    import MultipleChoice from "./UserSurveyTypes/MultipleChoice";
+    import DropdownSurvey from "./UserSurveyTypes/Dropdown";
+    import OpenEnded from "./UserSurveyTypes/OpenEnded";
     export default {
         data() {
             return {
-                formValues: {},
-                str: '',
-                arr: [],
             }
+        },
+        components: {
+            OpenEnded,
+            DropdownSurvey,
+            MultipleChoice,
+            SingleChoice
         },
         computed: {
             surveys() {
-                const surveys = this.$store.getters[SURVEYS + GET_SET_SURVEYS](this.$route.params.set-0)
-                this.generateFormValues(surveys)
+                const surveys = this.$store.getters[SURVEYS + GET_SET_SURVEYS](this.$route.params.set - 0)
                 return surveys
             }
         },
         methods: {
-            generateFormValues(surveys) {
-                console.log('вот так часто меняются данные')
-                surveys.forEach((survey) => {
-                    this.formValues[survey.id] = survey.questionType === 'multichoice' ? [] : ['']
-                })
-            }
         },
         watch: {
             $route (to, from){
@@ -85,9 +67,7 @@
         mounted() {
             window.scrollTo(0, 0);
             if (this.$route.params.set) {
-                this.$store.dispatch(SURVEYS + GET_SET_QUESTIONS, this.$route.params.set).then(
-                    () => {this.generateFormValues(this.surveys)}
-                )
+                this.$store.dispatch(SURVEYS + GET_SET_QUESTIONS, this.$route.params.set)
             }
         }
     }

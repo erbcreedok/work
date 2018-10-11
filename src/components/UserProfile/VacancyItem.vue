@@ -94,7 +94,7 @@
 </template>
 
 <script>
-    import {SET_VACANCY_STATUS, USER} from '../../store/mutation-types'
+    import {USER} from '../../store/mutation-types'
     import {GET_ALL_STUDENT_VACANCIES, GET_VACANCY, VACANCIES} from "../../store/types/vacancies";
     import {AUTH, IS_LOGGED} from '../../store/types/auth';
     import {
@@ -156,9 +156,6 @@
                 this.$store.dispatch(APPLICATIONS + DISCARD_VACANCY, this.vacancyId).then(() => {
                     this.updateVacancy()
                 })
-            },
-            setStatus(val) {
-                this.$store.commit('vacancies/' + SET_VACANCY_STATUS, { id: this.vacancy.id, val: val } )
             }
         }
     }

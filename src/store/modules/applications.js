@@ -35,16 +35,16 @@ const getters = {
         } return []
     },
     [GET_INCOME_APPLICATIONS]: (state, getters) => {
-        return getters[GET_ALL_APPLICATIONS].filter(a => a.status === 'pending' && a.sender === 'student')
+        return getters[GET_ALL_APPLICATIONS].filter(a => a.status === 1)
     },
     [GET_OUTCOME_APPLICATIONS]: (state, getters) => {
-        return getters[GET_ALL_APPLICATIONS].filter(a => a.status === 'pending' && a.sender === 'company')
+        return getters[GET_ALL_APPLICATIONS].filter(a => a.status === 2)
     },
     [GET_ACCEPTED_APPLICATIONS]: (state, getters,) => {
-        return getters[GET_ALL_APPLICATIONS].filter(a => a.status === 'accepted')
+        return getters[GET_ALL_APPLICATIONS].filter(a => a.status === 3)
     },
     [GET_REJECTED_APPLICATIONS]: (state, getters) => {
-        return getters[GET_ALL_APPLICATIONS].filter(a => a.status === 'rejected')
+        return getters[GET_ALL_APPLICATIONS].filter(a => a.status === 4)
     },
     [GET_VACANCY]: (state, getters, rootState) => id => {
         if (!state.all.vacancies[id]) return null
@@ -109,6 +109,7 @@ const mutations = {
 const actions = {
     [APPLY_VACANCY]: ({commit}, payload) => new Promise((respond, reject) => {
         commit(APPLICATIONS_REQUEST)
+        console.log(payload)
         api.post('/student/vacancy/apply/', {vacancyId: payload})
             .then(res => {
                 console.log(res)

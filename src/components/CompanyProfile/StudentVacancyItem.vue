@@ -135,14 +135,6 @@
                     this.updateApplication()
                 })
             },
-        },
-        mounted() {
-//            if (!this.person) {
-//                this.$store.dispatch(STUDENTS + GET_STUDENT, this.personId)
-//            }
-//            if (!this.vacancy) {
-//                this.$store.dispatch(VACANCIES + GET_VACANCY, this.vacancyId)
-//            }
         }
     }
 </script>

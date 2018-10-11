@@ -19,6 +19,7 @@ const getters = {
         return JSON.parse(JSON.stringify(list))
     },
     [GET_SET_SURVEYS]: (state, getters) => (set) => {
+        console.log(set)
         return getters[GET_ALL_SURVEYS].filter(s => {
             return s.setNumber === set
         })
@@ -56,9 +57,9 @@ const mutations = {
 const actions = {
     [GET_ALL_QUESTIONS]: ({commit}) => new Promise((resolve, reject) => {
         commit(SURVEYS_REQUEST)
-        return api.get('questionnaire/all-questions')
+        return api.get('questionnaire/all-question-sets')
             .then(res => {
-                const questions = res.data.questions
+                const questions = res.data.questionSets
                 commit(MERGE_SURVEYS, questions)
                 commit(SURVEYS_SUCCESS)
                 resolve(res)
@@ -70,12 +71,12 @@ const actions = {
     }),
     [GET_SET_QUESTIONS]: ({commit}, payload = 0) => new Promise((resolve, reject) => {
         commit(SURVEYS_REQUEST)
-        return api.get('questionnaire/set-questions/' + payload)
+        return api.get('questionnaire/question-set/' + payload)
             .then(res => {
-                const questions = res.data.questions
+                const questions = res.data.questionSet
                 commit(MERGE_SURVEYS, questions)
                 commit(SURVEYS_SUCCESS)
-                resolve(questions)
+                resolve(JSON.parse(JSON.stringify(questions)))
             })
             .catch(err => {
                 commit(SURVEYS_ERROR)

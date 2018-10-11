@@ -17,29 +17,19 @@
                             </span>
                                 <el-dropdown-menu slot="dropdown">
                                     <router-link to="/profile">
-                                        <el-dropdown-item>
-                                            Профиль
-                                        </el-dropdown-item>
+                                        <el-dropdown-item>Профиль</el-dropdown-item>
                                     </router-link>
                                     <router-link to="/vacancies" class="d-block d-md-none">
-                                        <el-dropdown-item>
-                                            Все вакансии
-                                        </el-dropdown-item>
+                                        <el-dropdown-item>Все вакансии</el-dropdown-item>
                                     </router-link>
                                     <router-link to="/profile/request">
-                                        <el-dropdown-item>
-                                            Заявки
-                                        </el-dropdown-item>
+                                        <el-dropdown-item>Заявки</el-dropdown-item>
                                     </router-link>
                                     <router-link to="/profile/settings">
-                                        <el-dropdown-item>
-                                            Настройки
-                                        </el-dropdown-item>
+                                        <el-dropdown-item>Настройки</el-dropdown-item>
                                     </router-link>
                                     <div @click="logout">
-                                        <el-dropdown-item>
-                                            Выход
-                                        </el-dropdown-item>
+                                        <el-dropdown-item>Выход</el-dropdown-item>
                                     </div>
                                 </el-dropdown-menu>
                             </el-dropdown>
@@ -59,39 +49,25 @@
                             </span>
                                 <el-dropdown-menu slot="dropdown">
                                     <router-link to="/profile">
-                                        <el-dropdown-item>
-                                            Профиль
-                                        </el-dropdown-item>
+                                        <el-dropdown-item>Профиль</el-dropdown-item>
                                     </router-link>
                                     <router-link to="/vacancies" class="d-block d-md-none">
-                                        <el-dropdown-item>
-                                            Все вакансии
-                                        </el-dropdown-item>
+                                        <el-dropdown-item>Все вакансии</el-dropdown-item>
                                     </router-link>
                                     <router-link to="/profile/workers">
-                                        <el-dropdown-item>
-                                            Найти работника
-                                        </el-dropdown-item>
+                                        <el-dropdown-item>Найти работника</el-dropdown-item>
                                     </router-link>
                                     <router-link to="/profile/request">
-                                        <el-dropdown-item>
-                                            Заявки
-                                        </el-dropdown-item>
+                                        <el-dropdown-item>Заявки</el-dropdown-item>
                                     </router-link>
                                     <router-link to="/profile/settings">
-                                        <el-dropdown-item>
-                                            Настройки
-                                        </el-dropdown-item>
+                                        <el-dropdown-item>Настройки</el-dropdown-item>
                                     </router-link>
                                     <router-link to="/profile/premium">
-                                        <el-dropdown-item>
-                                            Премиум
-                                        </el-dropdown-item>
+                                        <el-dropdown-item>Премиум</el-dropdown-item>
                                     </router-link>
                                     <div @click="logout">
-                                        <el-dropdown-item>
-                                            Выход
-                                        </el-dropdown-item>
+                                        <el-dropdown-item>Выход</el-dropdown-item>
                                     </div>
                                 </el-dropdown-menu>
                             </el-dropdown>
