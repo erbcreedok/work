@@ -6,6 +6,7 @@
                 <student-vacancy-item class="col-12 mb-5 py-5"
                                       v-for="application in income"
                                       :key="application.studentId + application.vacancyId"
+                                      :application="application"
                                       :vacancyId="application.vacancyId"
                                       :personId="application.studentId"
                                       :status="'income'"></student-vacancy-item>
@@ -15,6 +16,7 @@
                 <student-vacancy-item class="col-12 mb-5 py-5"
                                       v-for="application in outcome"
                                       :key="application.studentId + application.vacancyId"
+                                      :application="application"
                                       :vacancyId="application.vacancyId"
                                       :personId="application.studentId"
                                       :status="'outcome'"></student-vacancy-item>
@@ -24,6 +26,7 @@
                 <student-vacancy-item class="col-12 mb-5 py-5"
                                       v-for="application in accepted"
                                       :key="application.studentId + application.vacancyId"
+                                      :application="application"
                                       :vacancyId="application.vacancyId"
                                       :personId="application.studentId"
                                       :status="'accept'"></student-vacancy-item>
@@ -33,6 +36,7 @@
                 <student-vacancy-item class="col-12 mb-5 py-5"
                                       v-for="application in declined"
                                       :key="application.studentId + application.vacancyId"
+                                      :application="application"
                                       :vacancyId="application.vacancyId"
                                       :personId="application.studentId"
                                       :status="'reject'"></student-vacancy-item>

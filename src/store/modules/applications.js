@@ -14,7 +14,6 @@ import {
     SET_APPLICATION
 } from "../types/applications";
 import {GET_VACANCY} from "../types/vacancies";
-import {USER} from "../mutation-types";
 import {GET_STUDENT} from "../types/students";
 
 const state = {
@@ -46,12 +45,12 @@ const getters = {
     [GET_REJECTED_APPLICATIONS]: (state, getters) => {
         return getters[GET_ALL_APPLICATIONS].filter(a => a.status === 4)
     },
-    [GET_VACANCY]: (state, getters, rootState) => id => {
+    [GET_VACANCY]: (state) => id => {
         if (!state.all.vacancies[id]) return null
         const vacancy = state.all.vacancies[id]
         return vacancy
     },
-    [GET_STUDENT]: (state, getters, rootState) => id => {
+    [GET_STUDENT]: (state) => id => {
         if (!state.all.students[id]) return null
         const student = state.all.students[id]
         return student
@@ -97,12 +96,12 @@ const mutations = {
         state.list = Object.values(state.all.applications).sort((a, b) => a.order - b.order)
     },
     [MERGE_APPLICATION](state, payload) {
-        // payload.application.id = payload._id || payload.id
-        // delete payload._id
-        // payload.application.order = state.all[payload.id].order || state.all.length
-        // state.all[payload.id] = payload
-        // state.all = JSON.parse(JSON.stringify(state.all))
-        // state.list = Object.values(state.all).sort((a, b) => a.order - b.order)
+        payload.application.id = payload._id || payload.id
+        delete payload._id
+        payload.application.order = state.all[payload.id].order || state.all.length
+        state.all[payload.id] = payload
+        state.all = JSON.parse(JSON.stringify(state.all))
+        state.list = Object.values(state.all).sort((a, b) => a.order - b.order)
     },
 }
 
@@ -110,7 +109,7 @@ const actions = {
     [APPLY_VACANCY]: ({commit}, payload) => new Promise((respond, reject) => {
         commit(APPLICATIONS_REQUEST)
         console.log(payload)
-        api.post('/student/vacancy/apply/', {vacancyId: payload})
+        api.post('/student/vacancy/apply/', payload)
             .then(res => {
                 console.log(res)
                 respond(res)

@@ -52,7 +52,7 @@ export default new Router({
           component: NotFound
         }
       ]
-  },
+    },
     {
       path: '/vacancies',
       name: 'vacancies',

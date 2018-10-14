@@ -1,5 +1,9 @@
 <template>
-    <el-radio-group v-model="selected" @change="handleChange($event)" v-if="survey">
+    <el-radio-group v-model="selected"
+                    @change="handleChange($event)"
+                    v-if="survey"
+                    v-loading="loading"
+    >
         <el-radio v-for="(answer, j) in survey.answers"
                   :key="j"
                   :label="answer"
@@ -8,19 +12,31 @@
 </template>
 
 <script>
+    import {SET_SURVEY_ANSWER, SURVEYS} from "../../../store/types/surveys";
     export default {
         name: 'single-choice',
         data() {
             return {
-                selected: ''
+                selected: '',
+                loading: false
             }
         },
         props: {
-            survey: {}
+            survey: {},
+            setNumber: Number
         },
         methods: {
             handleChange(value) {
-                console.log(value)
+                this.loading = true
+                const setNumber = this.setNumber
+                const questionNumber = this.survey.questionNumber
+                this.$store.dispatch(SURVEYS + SET_SURVEY_ANSWER, {setNumber, questionNumber, answers: [value]})
+                    .then(() => {
+                        this.loading = false
+                    })
+                    .catch(() => {
+                        this.loading = false
+                    })
             }
         },
         mounted() {

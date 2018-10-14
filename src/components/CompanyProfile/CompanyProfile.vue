@@ -114,7 +114,7 @@
                 return this.$store.getters[VACANCIES + GET_OWN_VACANCIES]// Загрузка списка вакансии из store
             },
             company() {
-                return this.$store.getters[COMPANY_PROFILE + 'getProfile']
+                return this.$store.getters[COMPANY_PROFILE + GET_PROFILE]
             },
             token() {
                 return this.$store.getters[AUTH + GET_TOKEN]

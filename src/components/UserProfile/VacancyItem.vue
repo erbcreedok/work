@@ -56,7 +56,7 @@
                     <el-button class="mb-3 ml-0 w-100"
                                type="primary"
                                size="small"
-                               @click="apply()" >Подать заявку</el-button>
+                               @click="coverVisible = true" >Подать заявку</el-button>
                 </template>
                 <el-button class="mb-3 ml-0 w-100"
                            size="small"
@@ -89,6 +89,33 @@
                 <p>Телефон: <a href="tel: +7 777 777 77 77">+7 778 213 45 67</a></p>
                 <p>Почта: <a href="mailto: info@letswork.kz">info@letswork.kz</a></p>
             </el-dialog>
+            <el-dialog title="Отправить заявку"
+                       :visible.sync="coverVisible"
+                       width="35%"
+                       @close="handleClose"
+                       :el-loading="formLoading"
+
+            >
+                <p>Введите сопроводительное письмо</p>
+                <form @submit.prevent="validateForm">
+                    <wysiwyg v-model="coverLetter"
+                             class="editor"
+                             placeholder="Введите письмо сюда"
+                             :class="{danger: dirtyForm, shake: shake}"
+                    ></wysiwyg>
+                    <p v-if="!formValid" class="text d-inline-block" :class="{danger: dirtyForm, shake: shake}">
+                        Еще минимум {{requiredLength - this.coverLetterWordCount}} слов
+                    </p>
+                    <div class="d-flex justify-content-end my-3">
+                        <el-button @click="coverVisible = false">
+                            Отменить
+                        </el-button>
+                        <el-button type="primary" nativeType="submit" :disabled="!formValid">
+                            Отправить
+                        </el-button>
+                    </div>
+                </form>
+            </el-dialog>
         </div>
     </div>
 </template>
@@ -104,8 +131,15 @@
         DISCARD_VACANCY,
         REJECT_VACANCY
     } from "../../store/types/applications";
+    import ElDialog from "../../../node_modules/element-ui/packages/dialog/src/component";
+    import ElForm from "../../../node_modules/element-ui/packages/form/src/form";
+    import ElInput from "../../../node_modules/element-ui/packages/input/src/input";
 
     export default {
+        components: {
+            ElInput,
+            ElForm,
+            ElDialog},
         name: 'vacancy-item',
         props: {
             vacancyId: String,
@@ -115,6 +149,12 @@
             return {
                 dialogVisible: false,
                 contactsVisible: false,
+                coverVisible: false,
+                coverLetter: '',
+                requiredLength: 15,
+                dirtyForm: false,
+                formLoading: false,
+                shake: false,
                 USER: USER
             }
         },
@@ -125,16 +165,45 @@
             isLogged() {
                 return this.$store.getters[AUTH + IS_LOGGED]
             },
+            coverLetterWordCount() {
+                return this.coverLetter.split(' ').filter(x => x!=='' && x!=='&nbsp;' && x!==' ').length
+            },
+            formValid() {
+                return this.coverLetterWordCount >= this.requiredLength ||
+                    this.coverLetter.length === 0
+            }
 
         },
         methods: {
+
             updateVacancy() {
-//                this.$store.dispatch(VACANCIES + GET_VACANCY, this.vacancyId)
                 this.$store.dispatch(VACANCIES + GET_ALL_STUDENT_VACANCIES)
             },
+            handleClose() {
+                this.dirtyForm = false;
+                this.shake = false;
+            },
+            validateForm() {
+                if (this.formValid) {
+                    this.dirtyForm = false;
+                    this.shake = false;
+                    this.apply()
+                } else {
+                    this.dirtyForm = true
+                    this.shake = true
+                    setTimeout(() => this.shake = false, 300)
+                }
+            },
             apply() {
-                this.$store.dispatch(APPLICATIONS + APPLY_VACANCY, this.vacancyId).then(() => {
+                if (!this.formValid) return
+                this.formLoading = true
+                const vacancyId = this.vacancyId
+                const coverLetter = this.coverLetter
+                this.coverLetter = ''
+                this.$store.dispatch(APPLICATIONS + APPLY_VACANCY, {vacancyId, coverLetter}).then(() => {
                     this.updateVacancy()
+                    this.formLoading = false
+                    this.coverVisible = false
                 })
             },
             accept() {
@@ -164,5 +233,32 @@
 <style scoped="" lang="scss">
     .accepted {
         background: rgba(197, 234, 184, 0.19);
+    }
+    .danger.text {
+        color: red;
+        &.shake {
+            position: relative;
+            transform-origin: center center;
+            animation: shake 300ms ease-in-out;
+        }
+    }
+    .editor {
+        border-radius: 8px;
+        overflow: hidden;
+        &.danger:not(:focus) {
+            border-color: red;
+        }
+    }
+    @keyframes shake {
+        0%, 100% {
+            transform: rotate(0deg);
+        }
+        25%, 75% {
+            transform: rotate(-15deg);
+        }
+        50% {
+            transform: rotate(15deg);
+        }
+
     }
 </style>

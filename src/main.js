@@ -12,11 +12,18 @@ import './assets/style/scss/index.scss'
 import '@fortawesome/fontawesome-free/css/all.css'
 import {setAuth} from './store/api/main'
 import wysiwyg from 'vue-wysiwyg'
+import VueScrollTo from 'vue-scrollto'
 
 Vue.config.productionTip = false
 Vue.use(ElementUI, { locale })
 Vue.use(BootstrapVue)
 Vue.use(wysiwyg, {})
+Vue.use(VueScrollTo, {
+    container: "body",
+    duration: 300,
+    easing: "ease",
+    offset: 0
+})
 
 // Проверка авторизации
 const token = localStorage.getItem('user-token')

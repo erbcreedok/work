@@ -1,7 +1,9 @@
 <template>
     <el-select v-model="selected" @change="handleChange($event)" v-if="survey"
                placeholder="Выберите ответ"
-               class="mt-3">
+               class="mt-3"
+               v-loading="loading"
+    >
         <el-option
                 v-for="answer in survey.answers"
                 :key="answer"
@@ -12,19 +14,31 @@
 </template>
 
 <script>
+    import {SET_SURVEY_ANSWER, SURVEYS} from "../../../store/types/surveys";
     export default {
         name: 'dropdown-survey',
         data() {
             return {
-                selected: ''
+                selected: '',
+                loading: false
             }
         },
         props: {
-            survey: {}
+            survey: {},
+            setNumber: Number,
         },
         methods: {
             handleChange(value) {
-                console.log(value)
+                this.loading = true
+                const setNumber = this.setNumber
+                const questionNumber = this.survey.questionNumber
+                this.$store.dispatch(SURVEYS + SET_SURVEY_ANSWER, {setNumber, questionNumber, answers: [value]})
+                    .then(() => {
+                        this.loading = false
+                    })
+                    .catch(() => {
+                        this.loading = false
+                    })
             }
         },
         mounted() {

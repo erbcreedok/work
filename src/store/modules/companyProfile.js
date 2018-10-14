@@ -17,7 +17,7 @@ const state = {
 }
 
 const getters = {
-    getProfile: state => state.profile
+    [GET_PROFILE]: state => state.profile
 }
 
 const mutations = {

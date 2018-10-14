@@ -1,5 +1,9 @@
 <template>
-    <el-checkbox-group v-model.lazy="selected" @change="handleChange($event)" v-if="survey">
+    <el-checkbox-group v-model.lazy="selected"
+                       @change="handleChange($event)"
+                       v-if="survey"
+                       v-loading="loading"
+    >
         <el-checkbox v-for="(answer, j) in survey.answers"
                      :key="j"
                      :label="answer"
@@ -8,19 +12,31 @@
 </template>
 
 <script>
+    import {SET_SURVEY_ANSWER, SURVEYS} from "../../../store/types/surveys";
     export default {
         name: 'multiple-choice',
         data() {
             return {
-                selected: []
+                selected: [],
+                loading: false
             }
         },
         props: {
-            survey: {}
+            survey: {},
+            setNumber: Number
         },
         methods: {
             handleChange(value) {
-                console.log(value)
+                this.loading = true
+                const setNumber = this.setNumber
+                const questionNumber = this.survey.questionNumber
+                this.$store.dispatch(SURVEYS + SET_SURVEY_ANSWER, {setNumber, questionNumber, answers: value})
+                    .then(() => {
+                        this.loading = false
+                    })
+                    .catch(() => {
+                        this.loading = false
+                    })
             }
         },
         mounted() {

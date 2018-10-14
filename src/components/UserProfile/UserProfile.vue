@@ -22,7 +22,7 @@
                     </template>
                 </div>
                 <div class="icon-text">
-                    <a :href="`mailto: ${user.email}`">
+                    <a :href="`mailto: ${user.email}`" v-if="user.email">
                         <i class="far fa-envelope mr-2"></i> {{user.email}}
                     </a>
                 </div>
@@ -78,7 +78,7 @@
             <h3>Обо мне</h3>
             <template v-if="!edit">
                 <p v-if="user.description" v-html="user.description"/>
-                <p v-if="!user.description" style="cursor: pointer;">
+                <p v-if="!user.description" style="cursor: pointer; opacity: .5">
                     Введите данные о себе
                 </p>
             </template>
@@ -88,36 +88,38 @@
         </div>
         <div class="py-5 my-5">
             <h3 class="my-4">Тесты</h3>
-            <div class="row flex-column cups" style="height: 400px">
-                <div class="col-3 my-4" v-for="(item, index) in [{name: 'Амбиции', percent: 100}, {name: 'Образование', percent: 90},  {name: 'Навыки', percent: 50},  {name: 'Аналитика', percent: 0},  {name: 'Творчество', percent: 30},  {name: 'Критичиское мышление', percent: 30}]" :key="index">
-                    <router-link :to="'profile/survey/' + index" tag="div" style="cursor: pointer" class="d-flex align-items-end">
-                        <coffee-cup class="mr-3" :percents="item.percent"></coffee-cup>
-                        <p class="">{{index+1}}. {{item.name}}</p>
+            <div class="row flex-row cups">
+                <div class="col-4 my-4" v-for="item in tests" :key="item.setNumber">
+                    <router-link :to="'profile/survey/' + item.setNumber" tag="div" style="cursor: pointer" class="d-flex align-items-end">
+                        <coffee-cup class="mr-3" :percents="15 + 85 * item.answers / item.questions"></coffee-cup>
+                        <p class="">{{item.setName}}</p>
                     </router-link>
                 </div>
             </div>
         </div>
-        <div class="py-5 my-5">
-            <h3 class="mb-4">Сколько стоит час твоей работы?</h3>
-            <div class="box d-inline-block">
-                <p style="font-size: 3rem" class="mb-0 d-flex align-items-center"><span class="mr-3">2000</span> <span class="small">₸/час</span></p>
-            </div>
-        </div>
+        <!--<div class="py-5 my-5">-->
+            <!--<h3 class="mb-4">Сколько стоит час твоей работы?</h3>-->
+            <!--<div class="box d-inline-block">-->
+                <!--<p style="font-size: 3rem" class="mb-0 d-flex align-items-center"><span class="mr-3">2000</span> <span class="small">₸/час</span></p>-->
+            <!--</div>-->
+        <!--</div>-->
     </div>
 </template>
 
 <script>
     import CoffeeCup from './CoffeeCup.vue'
-    import {GET_PROFILE, USER_PROFILE} from "../../store/types/userProfile"
+    import {GET_PROFILE, GET_TESTS, USER_PROFILE} from "../../store/types/userProfile"
     import { mask } from 'vue-the-mask'
     import {AUTH, GET_TOKEN} from "../../store/types/auth";
     import api, {baseURL} from "../../store/api/main";
     import ElInput from "../../../node_modules/element-ui/packages/input/src/input";
+    import ElButton from "../../../node_modules/element-ui/packages/button/src/button";
 
     export default {
         name: 'user-profile',
         directives: { mask },
         components: {
+            ElButton,
             ElInput,
             CoffeeCup
         },
@@ -130,7 +132,10 @@
         },
         computed: {
             user() {
-                return this.$store.getters[USER_PROFILE + 'getProfile']
+                return this.$store.getters[USER_PROFILE + GET_PROFILE]
+            },
+            tests() {
+                return this.$store.getters[USER_PROFILE + GET_TESTS]
             },
             token() {
                 return this.$store.getters[AUTH + GET_TOKEN]

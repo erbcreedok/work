@@ -116,10 +116,10 @@
         },
         computed: {
             user() {
-              return this.$store.getters[USER_PROFILE + 'getProfile']
+              return this.$store.getters[USER_PROFILE + GET_PROFILE]
             },
             company() {
-                return this.$store.getters[COMPANY_PROFILE + 'getProfile']
+                return this.$store.getters[COMPANY_PROFILE + [GET_PROFILE]]
             },
             isLogged() {
                 return this.$store.getters['auth/isLogged']

@@ -40,7 +40,7 @@
                         <el-button class="mb-3 ml-0 w-100"
                                    type="primary"
                                    size="small"
-                                   @click="dialogVisible = true">Контакты</el-button>
+                                   @click="dialogVisible = true">Информация</el-button>
                     </template>
                     <template v-if="status === 'reject'">
                         <p style="opacity: .6;">Вакансия отклонена</p>
@@ -53,9 +53,13 @@
                 <el-button v-if="status !== 'accept'" class="ml-0 w-100" size="small" @click="dialogVisible = true">Информация</el-button>
             </div>
             <el-dialog
-                    title="Контакты"
+                    title="Информация"
                     :visible.sync="dialogVisible"
                     width="30%">
+                <template  v-if="application.coverLetter">
+                    <p class="coverLetter mb-4" v-html="application.coverLetter">
+                    </p>
+                </template>
                 <template v-if="person.phone || person.credentials.email || person.description">
                     <p v-if="person.phone">Телефон: <a target="_blank" :href="'tel:'  +  person.phone">{{person.phone}}</a></p>
                     <p v-if="person.credentials.email">Почта: <a target="_blank" :href="'mailto:'  +  person.credentials.email">{{person.credentials.email}}</a></p>
@@ -85,7 +89,8 @@
         props: {
             personId: String,
             vacancyId: String,
-            status: String
+            status: String,
+            application: {},
         },
         data() {
             return {

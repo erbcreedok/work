@@ -31,7 +31,7 @@
 
       },
       beforeMount() {
-          if (this.isLogged) { //isLogged - переменная из computed()
+          if (!this.isLogged) { //isLogged - переменная из computed()
               this.$router.push('/') //Переадресация на корневую страницы в случае не авторизованности
           } else if (this.isLogged === USER) {
               this.$store.dispatch(USER_PROFILE + USER_GET_PROFILE) //Загрузка профиля студента из Бэка при случае авторизации от лица студента

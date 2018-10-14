@@ -1,5 +1,7 @@
 export const SURVEYS = 'surveys/'
 
+
+export const GET_SURVEYS_STATUS = 'GET_SURVEYS_STATUS'
 export const SURVEYS_REQUEST = 'SURVEYS_REQUEST'
 export const SURVEYS_SUCCESS = 'SURVEYS_SUCCESS'
 export const SURVEYS_ERROR = 'SURVEYS_ERROR'
@@ -7,6 +9,8 @@ export const SURVEYS_CLEAN = 'SURVEYS_CLEAN'
 
 export const GET_ALL_SURVEYS = 'GET_ALL_SURVEYS'
 export const GET_SET_SURVEYS = 'GET_SET_SURVEYS'
+export const GET_SET_SURVEY = 'GET_SET_SURVEY'
+export const SET_SURVEY_ANSWER = 'SET_SURVEY_ANSWER'
 
 export const MERGE_SURVEYS = 'MERGE_SURVEYS'
 

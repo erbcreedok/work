@@ -1,29 +1,20 @@
 import api from '../api/main'
 import {
-    GET_ALL_QUESTIONS, GET_ALL_SURVEYS, GET_SET_QUESTIONS, GET_SET_SURVEYS, MERGE_SURVEYS, SURVEYS_CLEAN, SURVEYS_ERROR,
-    SURVEYS_REQUEST,
+    GET_ALL_QUESTIONS, GET_SET_QUESTIONS, GET_SET_SURVEY, MERGE_SURVEYS, SET_SURVEY_ANSWER,
+    SURVEYS_CLEAN, SURVEYS_ERROR,
+    SURVEYS_REQUEST, GET_SURVEYS_STATUS,
     SURVEYS_SUCCESS
 } from "../types/surveys"
 
 const state = {
-    all: {},
-    list: [],
-    loadedList: [],
-    status: 'clear'
+    status: 'clear',
+    survey: {}
 }
 
 
 const getters = {
-    [GET_ALL_SURVEYS]: (state) => {
-        const list =  Object.values(state.all).sort((a, b) => a.order - b.order)
-        return JSON.parse(JSON.stringify(list))
-    },
-    [GET_SET_SURVEYS]: (state, getters) => (set) => {
-        console.log(set)
-        return getters[GET_ALL_SURVEYS].filter(s => {
-            return s.setNumber === set
-        })
-    }
+    [GET_SET_SURVEY]: (state) => JSON.parse(JSON.stringify(state.survey)),
+    [GET_SURVEYS_STATUS]: (state) => JSON.parse(JSON.stringify(state.status))
 }
 
 const mutations = {
@@ -38,28 +29,25 @@ const mutations = {
     },
     [SURVEYS_CLEAN] (state) {
         state.status = 'clean'
-        state.all = {}
-        state.list = []
-        state.loadedList = []
+        state.survey = {}
     },
     [MERGE_SURVEYS](state, payload) {
-        const all = state.all
-        payload.forEach(i => {
+        payload.id = payload._id
+        delete payload._id
+        payload.questions.forEach(i => {
             i.id = i._id || i.id
             delete i._id
-            i.order = Object.values(all).length
-            all[i.id] = i
         })
-        state.all = JSON.parse(JSON.stringify(all))
-        state.list = JSON.parse(JSON.stringify(Object.values(state.all).sort((a, b) => a.order - b.order)))
+        state.survey = JSON.parse(JSON.stringify(payload))
     },
 }
+
 const actions = {
     [GET_ALL_QUESTIONS]: ({commit}) => new Promise((resolve, reject) => {
         commit(SURVEYS_REQUEST)
         return api.get('questionnaire/all-question-sets')
             .then(res => {
-                const questions = res.data.questionSets
+                const questions = res.data.questionSets[0]
                 commit(MERGE_SURVEYS, questions)
                 commit(SURVEYS_SUCCESS)
                 resolve(res)
@@ -71,9 +59,9 @@ const actions = {
     }),
     [GET_SET_QUESTIONS]: ({commit}, payload = 0) => new Promise((resolve, reject) => {
         commit(SURVEYS_REQUEST)
-        return api.get('questionnaire/question-set/' + payload)
+        return api.get(`questionnaire/question-set/${payload}`)
             .then(res => {
-                const questions = res.data.questionSet
+                const questions = res.data.questionSet[0]
                 commit(MERGE_SURVEYS, questions)
                 commit(SURVEYS_SUCCESS)
                 resolve(JSON.parse(JSON.stringify(questions)))
@@ -83,8 +71,21 @@ const actions = {
                 reject(err)
             })
     }),
+    [SET_SURVEY_ANSWER]: ({commit}, {setNumber, questionNumber, answers}) => new Promise((resolve, reject) => {
+        commit(SURVEYS_REQUEST)
+        return api.post(`/student/questionnaire/answer/${setNumber}/${questionNumber}`, {answers})
+            .then(res => {
+                commit(SURVEYS_SUCCESS)
+                resolve(res)
+            })
+            .catch(err => {
+                commit(SURVEYS_ERROR)
+                reject(err)
+            })
+    })
 
 }
+
 export default {
     namespaced: true,
     state,

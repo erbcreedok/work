@@ -1,14 +1,14 @@
 import api, {baseURL} from '../api/main'
 import {
-    GET_PROFILE, MERGE_PROFILE, PROFILE_CLEAN, PROFILE_ERROR, PROFILE_REQUEST,
+    GET_PROFILE, GET_TESTS, MERGE_PROFILE, PROFILE_CLEAN, PROFILE_ERROR, PROFILE_REQUEST,
     PROFILE_SUCCESS
 } from "../types/userProfile";
 import {logoutActions} from "../../actions/auth";
-const state = {
+
+const initState = {
     status: 'clean',
     profile: {
         id: null,
-        name: null,
         firstName: null,
         lastName: null,
         rate: 5,
@@ -16,16 +16,24 @@ const state = {
         email: null,
         image: null,
         description: null
-    }
+    },
+    tests: []
 }
 
+const state = JSON.parse(JSON.stringify(initState))
+
 const getters = {
-    getProfile: state => state.profile
+    [GET_PROFILE]   : state => state.profile,
+    [GET_TESTS]     : state => state.tests
 }
 
 const mutations = {
-    [MERGE_PROFILE]: (state, payload) => {
-        state.profile = {...state.profile, ...payload}
+    [MERGE_PROFILE]: (state, {student, questionSets}) => {
+        student.id = student._id
+        delete student._id
+        student.image = baseURL + '/student/image-avatar/' + student.id + '.png'
+        state.profile   = {...state.profile, ...student}
+        state.tests     = {...state.tests, ...questionSets}
     },
     [PROFILE_REQUEST]: state => {
         state.status = 'loading'
@@ -37,17 +45,9 @@ const mutations = {
         state.status = 'error'
     },
     [PROFILE_CLEAN]: state => {
-        state.status = 'clean'
-        state.profile = {
-            id: null,
-            name: null,
-            firstName: null,
-            lastName: null,
-            phone: null,
-            email: null,
-            image: null,
-            description: null
-        }
+        state = JSON.parse(JSON.stringify(initState))
+        return state
+
     }
 }
 
@@ -55,9 +55,8 @@ const actions = {
     [GET_PROFILE]: ({commit}) => new Promise(() => {
         commit(PROFILE_REQUEST)
         api.get('student/private/profile').then(res => {
-            res.data.image = baseURL + '/student/image-avatar/' + res.data._id + '.png'
             commit(PROFILE_SUCCESS)
-            commit(MERGE_PROFILE, res.data)
+            commit(MERGE_PROFILE, JSON.parse(JSON.stringify(res.data)))
         }).catch(err => {
             if (err.response.status === 401 || err.response.status === 403) {
                 logoutActions()

@@ -1,49 +1,71 @@
 <template>
     <div class="px-0 py-5 px-md-5">
-        <h2 class="mb-5" v-if="!surveys">Загружаем вопросы</h2>
-        <h2 class="mb-5" v-if="surveys && surveys.length > 0">{{surveys[0].setName}}</h2>
+        <h2 class="mb-5" v-if="surveys==={} && isLoading" style="opacity: .7">Загружаем вопросы</h2>
+        <h2 class="mb-2"
+            style="border-left: 3px #56a8ff solid;padding-left: 10px;"
+            v-if="surveys">{{surveys.setName}}</h2>
         <el-form label-position="top"
-                 v-if="surveys && surveys.length"
+                 v-if="surveys && surveys.questions && surveys.questions.length"
                  :hide-required-asterisk="true"
         >
-            <el-form-item v-for="(survey, i) in surveys"
-                          :key="i"
-                          :label="survey.questionText"
-                          class="py-3 mb-5"
-                          :rules="{required: true, message: 'Ответьте на эти вопросы', trigger: 'blur'}"
+            <template v-for="(survey, i) in surveys.questions"
             >
-                <template v-if="survey.questionType === 'singlechoice'">
-                    <single-choice :survey="survey"></single-choice>
-                </template>
-                <template v-if="survey.questionType === 'multichoice'">
-                    <multiple-choice :survey="survey"></multiple-choice>
-                </template>
-                <template v-if="survey.questionType === 'dropdown'">
-                    <dropdown-survey :survey="survey"></dropdown-survey>
-                </template>
-                <template v-if="survey.questionType === 'openended'">
-                    <open-ended :survey="survey"></open-ended>
-                </template>
-            </el-form-item>
+                <el-form-item :label="survey.questionText"
+                              class="my-5"
+                              :key="i"
+                              v-if="simpleQuestionTypes.includes(survey.questionType)"
+                              :rules="{required: true, message: 'Ответьте на эти вопросы', trigger: 'blur'}"
+                >
+                    <template v-if="survey.questionType === 'singlechoice'">
+                        <single-choice :survey="survey"
+                                       :setNumber="surveys.setNumber"
+                        ></single-choice>
+                    </template>
+                    <template v-if="survey.questionType === 'multichoice'">
+                        <multiple-choice :survey="survey"
+                                         :setNumber="surveys.setNumber"
+                        ></multiple-choice>
+                    </template>
+                    <template v-if="survey.questionType === 'dropdown'">
+                        <dropdown-survey :survey="survey"
+                                         :setNumber="surveys.setNumber"
+                        ></dropdown-survey>
+                    </template>
+                    <template v-if="survey.questionType === 'openended'">
+                        <open-ended :survey="survey"
+                                    :setNumber="surveys.setNumber"
+                        ></open-ended>
+                    </template>
+                </el-form-item>
+            </template>
+            <belbin-survey :surveys="surveys.questions"
+                           :setNumber="surveys.setNumber"
+                           v-if="surveys.questions[0] && surveys.questions[0].questionType === 'belbin'"
+            ></belbin-survey>
         </el-form>
-        <h3 style="opacity: .6" v-if="surveys && surveys.length === 0">
+        <h3 style="opacity: .6" v-if="surveys && surveys.questions && surveys.questions.length === 0">
             В этом сэте не нашлось ни одного вопроса, пока...
         </h3>
     </div>
 </template>
 
 <script>
-    import {GET_SET_QUESTIONS, GET_SET_SURVEYS, SURVEYS} from "../../store/types/surveys"
+    import {GET_SET_QUESTIONS, GET_SET_SURVEY, GET_SURVEYS_STATUS, SURVEYS} from "../../store/types/surveys"
     import SingleChoice from './UserSurveyTypes/SingleChoice'
     import MultipleChoice from "./UserSurveyTypes/MultipleChoice";
     import DropdownSurvey from "./UserSurveyTypes/Dropdown";
     import OpenEnded from "./UserSurveyTypes/OpenEnded";
+    import ElInputNumber from "../../../node_modules/element-ui/packages/input-number/src/input-number";
+    import BelbinSurvey from "./UserSurveyTypes/Belbin/Belbin";
     export default {
         data() {
             return {
+                simpleQuestionTypes: ['singlechoice', 'multichoice', 'dropdown', 'openended']
             }
         },
         components: {
+            BelbinSurvey,
+            ElInputNumber,
             OpenEnded,
             DropdownSurvey,
             MultipleChoice,
@@ -51,29 +73,43 @@
         },
         computed: {
             surveys() {
-                const surveys = this.$store.getters[SURVEYS + GET_SET_SURVEYS](this.$route.params.set - 0)
-                return surveys
+                return this.$store.getters[SURVEYS + GET_SET_SURVEY]
+            },
+            isLoading() {
+                return this.$store.getters[SURVEYS + GET_SURVEYS_STATUS] === 'loading'
             }
         },
         methods: {
+            getSurvey(set) {
+                this.$store.dispatch(SURVEYS + GET_SET_QUESTIONS, set)
+            }
         },
         watch: {
             $route (to, from){
                 if (to.params.set && to.params.set !== from.params.set) {
-                    this.$store.dispatch(SURVEYS + GET_SET_QUESTIONS, to.params.set)
+                    this.getSurvey(to.params.set)
                 }
             }
         },
         mounted() {
             window.scrollTo(0, 0);
             if (this.$route.params.set) {
-                this.$store.dispatch(SURVEYS + GET_SET_QUESTIONS, this.$route.params.set)
+                this.getSurvey(this.$route.params.set)
             }
         }
     }
 </script>
 
 <style lang="scss" scoped="">
+    .el-form-item {
+        padding: 10px 15px;
+        border: 1px solid #0000000d;
+        border-radius: 5px;
+        max-width: 650px;
+        box-shadow: 0 12px 16px 5px rgba(63, 89, 115, 0.16);
+        position: relative;
+        background: white;
+    }
     /deep/ {
         .el-form-item__label {
             font-size: 1.6rem;

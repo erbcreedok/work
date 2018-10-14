@@ -1,34 +1,16 @@
-import {SET_VACANCY_STATUS, SET_VACANCIES, CREATE_VACANCY, USER, COMPANY} from '../mutation-types'
+import {SET_VACANCY_STATUS, SET_VACANCIES, CREATE_VACANCY, USER} from '../mutation-types'
 import api, {baseURL} from '../api/main'
 import {
-    GET_ACCEPTED_CVS,
     GET_ACCEPTED_VACANCIES, GET_ALL_STUDENT_VACANCIES,
-    GET_ALL_VACANCIES, GET_FILTERED_STUDENT_VACANCIES, GET_FILTERED_VACANCIES, GET_INCOME_CVS, GET_INCOME_VACANCIES,
+    GET_ALL_VACANCIES, GET_FILTERED_STUDENT_VACANCIES, GET_FILTERED_VACANCIES, GET_INCOME_VACANCIES,
     GET_LOAD_VACANCIES,
     GET_LOADING_STATUS,
-    GET_OUTCOME_CVS, GET_OUTCOME_VACANCIES,
+    GET_OUTCOME_VACANCIES,
     GET_OWN_VACANCIES,
-    GET_REJECTED_CVS,
     GET_REJECTED_VACANCIES,
     GET_VACANCY,
     MERGE_VACANCIES, MERGE_VACANCY, SET_LOADED_VACANCY, VACANCY_CLEAN, VACANCY_ERROR, VACANCY_REQUEST, VACANCY_SUCCESS
 } from "../types/vacancies";
-
-const getRandom = (num) => Math.floor(Math.random() * (num + 1))
-const students = [
-    '5b858b0fe96833624959c954',
-    '5b85a704e96833624959c99d',
-    '5b8c30b93e530769da65d40a',
-    '5b8cf1be3e530769da65d439'
-]
-const statuses = [
-    'user pending',
-    'company pending',
-    'user accepted',
-    'company accepted',
-    'user reject',
-    'company reject',
-]
 
 const state = {
     all: {},
@@ -51,47 +33,9 @@ const getters = {
     [GET_REJECTED_VACANCIES]: (state, getters) => {
         return getters[GET_ALL_VACANCIES].filter(v => v.status === 4)
     },
-    [GET_INCOME_CVS]: (state, getters, rootState) => {
-        const r = []
-        if (rootState.auth.role === COMPANY && getters[GET_OWN_VACANCIES]) {
-            getters[GET_OWN_VACANCIES].forEach(vacancy => {
-                r.push({studentId: students[getRandom(3)], vacancyId: vacancy.id})
-            });
-        }
-        return r
-    },
-    [GET_OUTCOME_CVS]: (state, getters, rootState) => {
-        const r = []
-        if (rootState.auth.role === COMPANY && getters[GET_OWN_VACANCIES]) {
-            getters[GET_OWN_VACANCIES].forEach(vacancy => {
-                r.push({studentId: students[getRandom(3)], vacancyId: vacancy.id})
-            })
-        }
-        return r
-    },
-    [GET_ACCEPTED_CVS]: (state, getters, rootState) => {
-        const r = []
-        if (rootState.auth.role === COMPANY && getters[GET_OWN_VACANCIES]) {
-            getters[GET_OWN_VACANCIES].forEach(vacancy => {
-                r.push({studentId: students[getRandom(3)], vacancyId: vacancy.id})
-            })
-        }
-        return r
-    },
-    [GET_REJECTED_CVS]: (state, getters, rootState) => {
-        const r = []
-        if (rootState.auth.role === COMPANY && getters[GET_OWN_VACANCIES]) {
-            getters[GET_OWN_VACANCIES].forEach(vacancy => {
-                r.push({studentId: students[getRandom(3)], vacancyId: vacancy.id})
-            })
-        }
-        return r
-    },
     [GET_OWN_VACANCIES]: (state, getters, rootState) => {
         const companyId = rootState.companyProfile.profile._id
-        console.log(companyId);
         return getters[GET_ALL_VACANCIES].filter(v => {
-            console.log(v.companyId);
             return v.companyId === companyId
         }).sort((a, b) => a.order - b.order)
     },
@@ -104,11 +48,9 @@ const getters = {
         }
         return list
     },
-    [GET_VACANCY]: (state, getters, rootState) => id => {
+    [GET_VACANCY]: (state) => id => {
         if (!state.all[id]) return null
         const vacancy = state.all[id]
-        if(rootState.auth.role === USER) {
-        }
         return vacancy
     },
     [GET_LOAD_VACANCIES]: (state) => {
