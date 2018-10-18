@@ -20,43 +20,69 @@
                            @click="dialogVisible = true" >Подробнее</el-button>
             </div>
             <div class="col-4 col-md-3 d-flex align-items-center flex-column justify-content-center" v-if="isLogged === USER">
-                <template v-if="vacancy.status=== 1">
-                    <p style="opacity: .6;">Входящая заявка</p>
-                    <el-button-group class="w-100 mb-3" size="small">
-                        <el-tooltip class="item" effect="dark" content="Принять" placement="left">
-                            <el-button type="success" class="w-50" icon="el-icon-check" size="small" @click="accept()"></el-button>
-                        </el-tooltip>
-                        <el-tooltip class="item" effect="dark" content="Отклонить" placement="right">
-                            <el-button type="danger" class="w-50" icon="el-icon-delete" size="small" @click="reject()"></el-button>
-                        </el-tooltip>
-                    </el-button-group>
-                </template>
-                <template v-if="vacancy.status === 2">
-                    <p style="opacity: .6;">Исходящая заявка</p>
-                    <el-button class="mb-3 ml-0 w-100"
-                               type="danger"
-                               size="small"
-                               @click="cancel()">Отменить</el-button>
-                </template>
-                <template v-if="vacancy.status === 3">
-                    <p style="opacity: .6;">Вакансия принята</p>
-                    <el-button class="mb-3 ml-0 w-100"
-                               type="primary"
-                               size="small"
-                               @click="contactsVisible = true">Контакты</el-button>
-                </template>
-                <template v-if="vacancy.status === 4">
-                    <p style="opacity: .6;">Вакансия отклонена</p>
-                    <el-button class="mb-3 ml-0 w-100"
-                               type="warning"
-                               size="small"
-                               @click="discard()">Убрать</el-button>
-                </template>
-                <template v-if="vacancy.status === 0">
-                    <el-button class="mb-3 ml-0 w-100"
-                               type="primary"
-                               size="small"
-                               @click="coverVisible = true" >Подать заявку</el-button>
+                <template v-if="isConfirmed">
+                    <template v-if="vacancy.status=== 1">
+                        <p style="opacity: .6;">Входящая заявка</p>
+                        <el-button-group class="w-100 mb-3" size="small">
+                            <el-tooltip class="item" effect="dark" content="Принять" placement="left">
+                                <el-button type="success" class="w-50" icon="el-icon-check" size="small" @click="accept()"></el-button>
+                            </el-tooltip>
+                            <el-tooltip class="item" effect="dark" content="Отклонить" placement="right">
+                                <el-button type="danger" class="w-50" icon="el-icon-delete" size="small" @click="reject()"></el-button>
+                            </el-tooltip>
+                        </el-button-group>
+                    </template>
+                    <template v-if="vacancy.status === 2">
+                        <p style="opacity: .6;">Исходящая заявка</p>
+                        <el-button class="mb-3 ml-0 w-100"
+                                   type="danger"
+                                   size="small"
+                                   @click="cancel()">Отменить</el-button>
+                    </template>
+                    <template v-if="vacancy.status === 3">
+                        <p style="opacity: .6;">Вакансия принята</p>
+                        <el-button class="mb-3 ml-0 w-100"
+                                   type="primary"
+                                   size="small"
+                                   @click="contactsVisible = true">Контакты</el-button>
+                    </template>
+                    <template v-if="vacancy.status === 4">
+                        <p style="opacity: .6;">Вакансия отклонена</p>
+                        <el-button class="mb-3 ml-0 w-100"
+                                   type="warning"
+                                   size="small"
+                                   @click="discard()">Убрать</el-button>
+                    </template>
+                    <template v-if="vacancy.status === 0">
+                        <el-button class="mb-3 ml-0 w-100"
+                                   type="primary"
+                                   size="small"
+                                   @click="coverVisible = true" >Подать заявку</el-button>
+                        <el-dialog title="Отправить заявку"
+                                   :visible.sync="coverVisible"
+                                   width="35%"
+                                   @close="handleClose"
+                                   :el-loading="formLoading">
+                            <p>Введите сопроводительное письмо</p>
+                            <form @submit.prevent="validateForm">
+                                <wysiwyg v-model="coverLetter"
+                                         class="editor"
+                                         placeholder="Введите письмо сюда"
+                                         :class="{danger: dirtyForm, shake: shake}"></wysiwyg>
+                                <p v-if="!formValid" class="text d-inline-block" :class="{danger: dirtyForm, shake: shake}">
+                                    Еще минимум {{requiredLength - this.coverLetterWordCount}} слов
+                                </p>
+                                <div class="d-flex justify-content-end my-3">
+                                    <el-button @click="coverVisible = false">
+                                        Отменить
+                                    </el-button>
+                                    <el-button type="primary" nativeType="submit" :disabled="!formValid">
+                                        Отправить
+                                    </el-button>
+                                </div>
+                            </form>
+                        </el-dialog>
+                    </template>
                 </template>
                 <el-button class="mb-3 ml-0 w-100"
                            size="small"
@@ -65,8 +91,7 @@
             <el-dialog
                     :title="vacancy.vacancyName"
                     :visible.sync="dialogVisible"
-                    width="50%"
-            >
+                    width="50%">
                 <p class="mb-4">Компания: {{vacancy.companyName}}</p>
                 <template v-if="vacancy.demands.length > 0">
                 <p>Требования:</p>
@@ -84,37 +109,9 @@
             <el-dialog
                     :title="'Контакты ' + vacancy.vacancyName"
                     :visible.sync="contactsVisible"
-                    width="30%"
-            >
+                    width="30%">
                 <p>Телефон: <a href="tel: +7 777 777 77 77">+7 778 213 45 67</a></p>
                 <p>Почта: <a href="mailto: info@letswork.kz">info@letswork.kz</a></p>
-            </el-dialog>
-            <el-dialog title="Отправить заявку"
-                       :visible.sync="coverVisible"
-                       width="35%"
-                       @close="handleClose"
-                       :el-loading="formLoading"
-
-            >
-                <p>Введите сопроводительное письмо</p>
-                <form @submit.prevent="validateForm">
-                    <wysiwyg v-model="coverLetter"
-                             class="editor"
-                             placeholder="Введите письмо сюда"
-                             :class="{danger: dirtyForm, shake: shake}"
-                    ></wysiwyg>
-                    <p v-if="!formValid" class="text d-inline-block" :class="{danger: dirtyForm, shake: shake}">
-                        Еще минимум {{requiredLength - this.coverLetterWordCount}} слов
-                    </p>
-                    <div class="d-flex justify-content-end my-3">
-                        <el-button @click="coverVisible = false">
-                            Отменить
-                        </el-button>
-                        <el-button type="primary" nativeType="submit" :disabled="!formValid">
-                            Отправить
-                        </el-button>
-                    </div>
-                </form>
             </el-dialog>
         </div>
     </div>
@@ -134,6 +131,7 @@
     import ElDialog from "../../../node_modules/element-ui/packages/dialog/src/component";
     import ElForm from "../../../node_modules/element-ui/packages/form/src/form";
     import ElInput from "../../../node_modules/element-ui/packages/input/src/input";
+    import {USER_PROFILE, GET_PROFILE} from "../../store/types/userProfile";
 
     export default {
         components: {
@@ -171,6 +169,12 @@
             formValid() {
                 return this.coverLetterWordCount >= this.requiredLength ||
                     this.coverLetter.length === 0
+            },
+            profile() {
+                return this.$store.getters[USER_PROFILE + GET_PROFILE]
+            },
+            isConfirmed() {
+                return (this.profile && this.profile.confirmed)
             }
 
         },

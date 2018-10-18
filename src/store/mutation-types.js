@@ -20,3 +20,6 @@ export const GET_COMPANY_APPLICATIONS = 'GET_COMPANY_APPLICATIONS'
 
 export const USER = 'user'
 export const COMPANY = 'company'
+
+export const GET_STATUS = 'GET_STATUS'
+export const RESEND_VERIFICATION = 'RESEND_VERIFICATION'

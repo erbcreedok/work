@@ -88,17 +88,6 @@ export default {
       }
   },
   methods: {
-      isLogged() {
-          return this.$store.getters['auth/isLogged']
-      },
-  },
-  components: {
-  },
-  beforeMount() {
-      // Временный обход security роутинга, для зарегестрированных пользователей
-      if (this.$store.getters['auth/isLogged']) {
-          this.$router.push('/profile')
-      }
   }
 }
 </script>

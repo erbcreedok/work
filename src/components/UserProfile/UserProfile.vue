@@ -1,92 +1,93 @@
 <template>
     <div class="px-0 py-5 px-md-5">
-        <div class="d-flex profile-info mb-5" v-if="!edit">
-            <div class="mr-3 mr-md-5">
-                <div class="image-container">
-                    <div class="profile-image" :style="{backgroundImage: `url(${user.image})`}"></div>
-                </div>
-            </div>
-            <div>
-                <div class="d-flex align-items-center mb-3">
-                    <h3 class="mr-4" v-if="user.firstName || user.lastName">{{ (user.firstName || '') + ' ' + (user.lastName || '')}}</h3>
-                    <h3 class="mr-4" v-if="!user.firstName && !user.lastName">Имя не указано</h3>
-                </div>
-                <div class="mb-3 icon-text">
-                    <template v-if="user.phone">
-                        <a :href="`tel: ${user.phone}`">
-                            <i class="fa fa-mobile-alt mr-2"></i> {{user.phone}}
-                        </a>
-                    </template>
-                    <template v-if="!user.phone">
-                        <i class="fa fa-mobile-alt mr-2"></i> Телефон не указан
-                    </template>
-                </div>
-                <div class="icon-text">
-                    <a :href="`mailto: ${user.email}`" v-if="user.email">
-                        <i class="far fa-envelope mr-2"></i> {{user.email}}
-                    </a>
-                </div>
-                <div class="icon-text" v-if="!user.email">
-                    <i class="far fa-envelope"></i> Почта не указана
-                </div>
-            </div>
-            <div>
-                <el-button size="mini" icon="el-icon-edit" round @click="startEdit">изменить</el-button>
-            </div>
-        </div>
-        <div class="d-flex profile-info mb-5" v-if="edit" v-loading="loading">
-            <div class="mr-5">
-                <div class="image-container">
-                    <el-tooltip class="item" effect="dark" content="Изменить изображение" placement="top-start">
-                        <el-upload
-                                class="avatar-uploader"
-                                :action="baseURL + '/student/private/image-avatar'"
-                                name="avatar"
-                                :headers="{'Authorization': token}"
-                                :show-file-list="false"
-                                :on-success="handleAvatarSuccess"
-                                :before-upload="beforeAvatarUpload">
-                            <img v-if="user.image" :src="user.image" class="avatar">
-                            <i class="el-icon-plus avatar-uploader-icon" v-else></i>
-                        </el-upload>
-                    </el-tooltip>
-                </div>
-            </div>
-            <div class="mr-5">
-                <div class="d-flex align-items-center mb-4">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <label>Имя</label>
-                            <el-input v-model="user.firstName" size="medium"></el-input>
-                        </div>
-                        <div class="col-md-6">
-                            <label>Фамилия</label>
-                            <el-input v-model="user.lastName" size="medium"></el-input>
-                        </div>
+        <template v-if="userStatus === 'success'">
+            <div class="d-flex profile-info mb-5" v-if="!edit">
+                <div class="mr-3 mr-md-5">
+                    <div class="image-container">
+                        <div class="profile-image" :style="{backgroundImage: `url(${user.image})`}"></div>
                     </div>
                 </div>
-                <div class="mb-3">
-                    <el-input size="mini" class="mb-3" v-model="user.email" placeholder="Почта" disabled=""></el-input>
-                    <el-input size="mini" class="mb-3"  v-model="user.phone" placeholder="Номер телефона" v-mask="'+7(7##)### ####'"></el-input>
+                <div>
+                    <div class="d-flex align-items-center mb-3">
+                        <h3 class="mr-4" v-if="user.firstName || user.lastName">{{ (user.firstName || '') + ' ' + (user.lastName || '')}}</h3>
+                        <h3 class="mr-4" v-if="!user.firstName && !user.lastName">Имя не указано</h3>
+                    </div>
+                    <div class="mb-3 icon-text">
+                        <template v-if="user.phone">
+                            <a :href="`tel: ${user.phone}`">
+                                <i class="fa fa-mobile-alt mr-2"></i> {{user.phone}}
+                            </a>
+                        </template>
+                        <template v-if="!user.phone" style="opacity: .5;">
+                            <i class="fa fa-mobile-alt mr-2"></i> Телефон не указан
+                        </template>
+                    </div>
+                    <div class="icon-text">
+                        <a :href="`mailto: ${user.email}`" v-if="user.email">
+                            <i class="far fa-envelope mr-2"></i> {{user.email}}
+                        </a>
+                    </div>
+                    <div class="icon-text" v-if="!user.email" style="opacity: .5;">
+                        <i class="far fa-envelope"></i> Почта не указана
+                    </div>
+                </div>
+                <div>
+                    <el-button size="mini" icon="el-icon-edit" round @click="startEdit">изменить</el-button>
                 </div>
             </div>
-            <div>
-                <el-button size="mini" icon="el-icon-check" type="success" round @click="saveData">Сохранить</el-button>
+            <div class="d-flex profile-info mb-5" v-if="edit" v-loading="loading">
+                <div class="mr-5">
+                    <div class="image-container">
+                        <el-tooltip class="item" effect="dark" content="Изменить изображение" placement="top-start">
+                            <el-upload
+                                    class="avatar-uploader"
+                                    :action="baseURL + '/student/private/image-avatar'"
+                                    name="avatar"
+                                    :headers="{'Authorization': token}"
+                                    :show-file-list="false"
+                                    :on-success="handleAvatarSuccess"
+                                    :before-upload="beforeAvatarUpload">
+                                <img v-if="user.image" :src="user.image" class="avatar">
+                                <i class="el-icon-plus avatar-uploader-icon" v-else></i>
+                            </el-upload>
+                        </el-tooltip>
+                    </div>
+                </div>
+                <div class="mr-5">
+                    <div class="d-flex align-items-center mb-4">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label>Имя</label>
+                                <el-input v-model="user.firstName" size="medium"></el-input>
+                            </div>
+                            <div class="col-md-6">
+                                <label>Фамилия</label>
+                                <el-input v-model="user.lastName" size="medium"></el-input>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <el-input size="mini" class="mb-3" v-model="user.email" placeholder="Почта" disabled=""></el-input>
+                        <el-input size="mini" class="mb-3"  v-model="user.phone" placeholder="Номер телефона" v-mask="'+7(7##)### ####'"></el-input>
+                    </div>
+                </div>
+                <div>
+                    <el-button size="mini" icon="el-icon-check" type="success" round @click="saveData">Сохранить</el-button>
+                </div>
             </div>
-        </div>
-        <div class="py-5" v-loading="loading">
-            <h3>Обо мне</h3>
-            <template v-if="!edit">
-                <p v-if="user.description" v-html="user.description"/>
-                <p v-if="!user.description" style="cursor: pointer; opacity: .5">
-                    Введите данные о себе
-                </p>
-            </template>
-            <template v-if="edit">
-                <wysiwyg v-model="user.description" placeholder="Опишите вашу вакансию"/>
-            </template>
-        </div>
-        <div class="py-5 my-5">
+            <div class="py-5" v-loading="loading">
+                <h3>Обо мне</h3>
+                <template v-if="!edit">
+                    <p v-if="user.description" v-html="user.description"/>
+                    <p v-if="!user.description" style="cursor: pointer; opacity: .5">
+                        Введите данные о себе
+                    </p>
+                </template>
+                <template v-if="edit">
+                    <wysiwyg v-model="user.description" placeholder="Опишите вашу вакансию"/>
+                </template>
+            </div>
+            <div class="py-5 my-5" v-if="user.confirmed">
             <h3 class="my-4">Тесты</h3>
             <div class="row flex-row cups">
                 <div class="col-4 my-4" v-for="item in tests" :key="item.setNumber">
@@ -97,12 +98,25 @@
                 </div>
             </div>
         </div>
-        <!--<div class="py-5 my-5">-->
-            <!--<h3 class="mb-4">Сколько стоит час твоей работы?</h3>-->
-            <!--<div class="box d-inline-block">-->
-                <!--<p style="font-size: 3rem" class="mb-0 d-flex align-items-center"><span class="mr-3">2000</span> <span class="small">₸/час</span></p>-->
-            <!--</div>-->
-        <!--</div>-->
+        </template>
+        <template v-if="userStatus !== 'success'">
+            <div class="d-flex profile-info mb-5" v-if="!edit">
+                <div class="mr-3 mr-md-5">
+                    <div class="image-container">
+                        <div class="profile-image loading-placeholder"></div>
+                    </div>
+                </div>
+                <div class="">
+                    <div class="d-flex align-items-center mt-1 mb-5">
+                        <h3 class="loading-placeholder" style="height: 20px; width: 180px;"></h3>
+                    </div>
+                    <div>
+                        <p class="loading-placeholder" style="height: 15px; width: 80px;"></p>
+                        <p class="loading-placeholder" style="height: 15px; width: 80px;"></p>
+                    </div>
+                </div>
+            </div>
+        </template>
     </div>
 </template>
 
@@ -114,6 +128,7 @@
     import api, {baseURL} from "../../store/api/main";
     import ElInput from "../../../node_modules/element-ui/packages/input/src/input";
     import ElButton from "../../../node_modules/element-ui/packages/button/src/button";
+    import {GET_STATUS} from "../../store/mutation-types";
 
     export default {
         name: 'user-profile',
@@ -139,6 +154,9 @@
             },
             token() {
                 return this.$store.getters[AUTH + GET_TOKEN]
+            },
+            userStatus() {
+                return this.$store.getters[USER_PROFILE + GET_STATUS]
             }
         },
         methods: {

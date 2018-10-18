@@ -18,3 +18,12 @@ button, button:focus {
   min-height: 100vh;
   min-height: calc(100vh - 275px);
 }
+.loading-placeholder {
+  background-color: #f0f0f0;
+}
+h3.loading-placeholder {
+  border-radius: 5px;
+}
+p.loading-placeholder {
+  border-radius: 7px;
+}

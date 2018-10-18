@@ -4,6 +4,7 @@ import {
     PROFILE_SUCCESS
 } from "../types/userProfile";
 import {logoutActions} from "../../actions/auth";
+import {GET_STATUS, RESEND_VERIFICATION} from "../mutation-types";
 
 const initState = {
     status: 'clean',
@@ -15,7 +16,8 @@ const initState = {
         phone: null,
         email: null,
         image: null,
-        description: null
+        description: null,
+        confirmed: false
     },
     tests: []
 }
@@ -24,7 +26,8 @@ const state = JSON.parse(JSON.stringify(initState))
 
 const getters = {
     [GET_PROFILE]   : state => state.profile,
-    [GET_TESTS]     : state => state.tests
+    [GET_TESTS]     : state => state.tests,
+    [GET_STATUS]: state => state.status,
 }
 
 const mutations = {
@@ -64,7 +67,8 @@ const actions = {
             console.log(err)
             commit(PROFILE_ERROR)
         })
-    })
+    }),
+    [RESEND_VERIFICATION]: () => api.get('student/auth/resend-verification')
 }
 
 

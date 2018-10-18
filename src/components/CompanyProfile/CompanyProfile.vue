@@ -1,89 +1,111 @@
 <template>
     <div class="px-0 py-5 px-md-5">
-        <div class="d-flex profile-info mb-5" v-if="!edit">
-            <div class="mr-5">
-                <div class="image-container">
-                    <div class="profile-image" :style="{backgroundImage: `url(${company.image})`}"></div>
+        <template v-if="companyStatus === 'success'">
+            <div class="d-flex profile-info mb-5" v-if="!edit">
+                <div class="mr-5">
+                    <div class="image-container">
+                        <div class="profile-image" :style="{backgroundImage: `url(${company.image})`}"></div>
+                    </div>
+                </div>
+                <div class="mr-5">
+                    <div class="d-flex align-items-center mb-3">
+                        <h3 class="mr-3">{{company.name}}</h3>
+                    </div>
+                    <div class="mb-3">
+                        <p>Brand</p>
+                        <p v-if="company.email">{{company.email}}</p>
+                        <p v-if="company.phone">{{company.phone}}</p>
+                    </div>
+                </div>
+                <div>
+                    <el-button size="mini" icon="el-icon-edit" round @click="startEdit">изменить</el-button>
                 </div>
             </div>
-            <div class="mr-5">
-                <div class="d-flex align-items-center mb-3">
-                    <h3 class="mr-3">{{company.name}}</h3>
+            <div class="d-flex profile-info mb-5" v-if="edit" v-loading="loading">
+                <div class="mr-5">
+                    <div class="image-container">
+                        <el-tooltip class="item" effect="dark" content="Изменить изображение" placement="top-start">
+                            <el-upload
+                                    class="avatar-uploader"
+                                    :action="baseURL + '/company/private/image-avatar'"
+                                    name="avatar"
+                                    :headers="{'Authorization': token}"
+                                    :show-file-list="false"
+                                    :on-success="handleAvatarSuccess"
+                                    :before-upload="beforeAvatarUpload">
+                                <img v-if="company.image" :src="company.image" class="avatar">
+                                <i class="el-icon-plus avatar-uploader-icon" v-else></i>
+                            </el-upload>
+                        </el-tooltip>
+                    </div>
                 </div>
-                <div class="mb-3">
-                    <p>Brand</p>
-                    <p v-if="company.email">{{company.email}}</p>
-                    <p v-if="company.phone">{{company.phone}}</p>
+                <div class="mr-5">
+                    <div class="d-flex align-items-center mb-4">
+                        <el-input v-model="company.name" size="medium"></el-input>
+                    </div>
+                    <div class="mb-3">
+                        <el-input size="mini" class="mb-3" v-model="company.email" placeholder="Почта" disabled=""></el-input>
+                        <el-input size="mini" class="mb-3"  v-model="company.phone" placeholder="Номер телефона" v-mask="'+7(7##)### ####'"></el-input>
+                    </div>
                 </div>
-            </div>
-            <div>
-                <el-button size="mini" icon="el-icon-edit" round @click="startEdit">изменить</el-button>
-            </div>
-        </div>
-        <div class="d-flex profile-info mb-5" v-if="edit" v-loading="loading">
-            <div class="mr-5">
-                <div class="image-container">
-                    <el-tooltip class="item" effect="dark" content="Изменить изображение" placement="top-start">
-                        <el-upload
-                                class="avatar-uploader"
-                                :action="baseURL + '/company/private/image-avatar'"
-                                name="avatar"
-                                :headers="{'Authorization': token}"
-                                :show-file-list="false"
-                                :on-success="handleAvatarSuccess"
-                                :before-upload="beforeAvatarUpload">
-                            <img v-if="company.image" :src="company.image" class="avatar">
-                            <i class="el-icon-plus avatar-uploader-icon" v-else></i>
-                        </el-upload>
-                    </el-tooltip>
-                </div>
-            </div>
-            <div class="mr-5">
-                <div class="d-flex align-items-center mb-4">
-                    <el-input v-model="company.name" size="medium"></el-input>
-                </div>
-                <div class="mb-3">
-                    <el-input size="mini" class="mb-3" v-model="company.email" placeholder="Почта" disabled=""></el-input>
-                    <el-input size="mini" class="mb-3"  v-model="company.phone" placeholder="Номер телефона" v-mask="'+7(7##)### ####'"></el-input>
+                <div>
+                    <el-button size="mini" icon="el-icon-check" type="success" round @click="saveData">Сохранить</el-button>
                 </div>
             </div>
-            <div>
-                <el-button size="mini" icon="el-icon-check" type="success" round @click="saveData">Сохранить</el-button>
-            </div>
-        </div>
-        <div class="py-5 my-5">
-            <div class="d-flex mb-5 align-items-center">
-                <h3 class="mr-5">Наши вакансии</h3>
-                <el-button size="mini" type="success" round icon="el-icon-circle-plus" @click="dialogFormVisible = true"> Новая вакансия</el-button>
-            </div>
-            <div class="col-12">
-                <div class="row my-5 py-4 align-items-center vacancy-item" style="border-top: 1px solid #efefef" v-for="vacancy in vacancies" :key="vacancy.id">
-                    <div class="col-9">
-                        <p class="mb-1 small" style="color: #999"> {{ vacancy.vacancyField }}</p>
-                        <h3 class="mb-4">{{vacancy.vacancyName}}</h3>
-                        <p v-if="vacancy.description" v-html="vacancy.description"></p>
-                        <template v-if="vacancy.demands.length > 0">
-                            <p>Требования:</p>
-                            <ul class="mb-3">
-                                <li v-for="(requirement, index) in vacancy.demands" :key="index">
-                                    {{requirement}}
-                                </li>
-                            </ul>
-                        </template>
-                        <div style="opacity: .5">
-                            <p v-if="vacancy.type.length > 0" class="mb-2">Занятость: {{ vacancy.type.join(', ') }}</p>
-                            <p class="mb-0">Заработная плата: {{vacancy.minSalary}} - {{vacancy.maxSalary}}</p>
+            <template v-if="company.confirmed">
+                <div class="py-5 my-5">
+                    <div class="d-flex mb-5 align-items-center">
+                        <h3 class="mr-5">Наши вакансии</h3>
+                        <el-button size="mini" type="success" round icon="el-icon-circle-plus" @click="dialogFormVisible = true"> Новая вакансия</el-button>
+                    </div>
+                    <div class="col-12">
+                        <div class="row my-5 py-4 align-items-center vacancy-item" style="border-top: 1px solid #efefef" v-for="vacancy in vacancies" :key="vacancy.id">
+                            <div class="col-9">
+                                <p class="mb-1 small" style="color: #999"> {{ vacancy.vacancyField }}</p>
+                                <h3 class="mb-4">{{vacancy.vacancyName}}</h3>
+                                <p v-if="vacancy.description" v-html="vacancy.description"></p>
+                                <template v-if="vacancy.demands.length > 0">
+                                    <p>Требования:</p>
+                                    <ul class="mb-3">
+                                        <li v-for="(requirement, index) in vacancy.demands" :key="index">
+                                            {{requirement}}
+                                        </li>
+                                    </ul>
+                                </template>
+                                <div style="opacity: .5">
+                                    <p v-if="vacancy.type.length > 0" class="mb-2">Занятость: {{ vacancy.type.join(', ') }}</p>
+                                    <p class="mb-0">Заработная плата: {{vacancy.minSalary}} - {{vacancy.maxSalary}}</p>
+                                </div>
+                            </div>
+                            <el-tooltip class="item" effect="dark" content="Переместить в архив" placement="left">
+                                <el-button type="danger" icon="el-icon-delete" circle></el-button>
+                            </el-tooltip>
                         </div>
                     </div>
-                    <el-tooltip class="item" effect="dark" content="Переместить в архив" placement="left">
-                        <el-button type="danger" icon="el-icon-delete" circle></el-button>
-                    </el-tooltip>
+                </div>
+                <el-dialog title="Новая вакансия" :visible.sync="dialogFormVisible" v-if="dialogFormVisible">
+                    <new-vacancy @success="dialogFormVisible = false; loadVacancies()" @cancel="dialogFormVisible = false"></new-vacancy>
+                </el-dialog>
+            </template>
+        </template>
+        <template v-if="companyStatus !== 'success'">
+            <div class="d-flex profile-info mb-5" v-if="!edit">
+                <div class="mr-5">
+                    <div class="image-container">
+                        <div class="profile-image loading-placeholder"></div>
+                    </div>
+                </div>
+                <div class="">
+                    <div class="d-flex align-items-center mt-3 mb-5">
+                        <h3 class="loading-placeholder" style="height: 20px; width: 180px;"></h3>
+                    </div>
+                    <div>
+                        <p class="loading-placeholder" style="height: 15px; width: 80px;"></p>
+                        <p class="loading-placeholder" style="height: 15px; width: 80px;"></p>
+                    </div>
                 </div>
             </div>
-        </div>
-        <el-dialog title="Новая вакансия" :visible.sync="dialogFormVisible" v-if="dialogFormVisible">
-            <new-vacancy @success="dialogFormVisible = false; loadVacancies()" @cancel="dialogFormVisible = false"></new-vacancy>
-        </el-dialog>
+        </template>
     </div>
 </template>
 
@@ -94,6 +116,7 @@
     import { mask } from 'vue-the-mask'
     import {AUTH, GET_TOKEN} from "../../store/types/auth";
     import api, {baseURL} from "../../store/api/main";
+    import {GET_STATUS} from "../../store/mutation-types";
 
     export default {
         name: 'company-profile',
@@ -118,6 +141,9 @@
             },
             token() {
                 return this.$store.getters[AUTH + GET_TOKEN]
+            },
+            companyStatus() {
+                return this.$store.getters[COMPANY_PROFILE + GET_STATUS]
             }
 
         },
@@ -154,10 +180,6 @@
             }
         },
         mounted() {
-            if (this.$store.state.companyProfile.status === 'clean') {
-                this.$store.dispatch(COMPANY_PROFILE + GET_PROFILE)
-//                this.$store.dispatch(VACANCIES + GET_OWN_VACANCIES)
-            }
             this.loadVacancies()
         }
     }

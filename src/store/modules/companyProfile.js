@@ -4,6 +4,7 @@ import {
     PROFILE_SUCCESS
 } from '../types/companyProfile';
 import {logoutActions} from "../../actions/auth";
+import {GET_STATUS, RESEND_VERIFICATION} from "../mutation-types";
 const state = {
     status: 'clean',
     profile: {
@@ -12,12 +13,14 @@ const state = {
         phone: null,
         email: null,
         image: null,
-        description: null
+        description: null,
+        confirmed: false
     }
 }
 
 const getters = {
-    [GET_PROFILE]: state => state.profile
+    [GET_PROFILE]: state => state.profile,
+    [GET_STATUS]: state => state.status,
 }
 
 const mutations = {
@@ -61,7 +64,8 @@ const actions = {
             commit(PROFILE_ERROR)
             console.log(err)
         })
-    })
+    }),
+    [RESEND_VERIFICATION]: () => api.get('company/auth/resend-verification')
 }
 
 
