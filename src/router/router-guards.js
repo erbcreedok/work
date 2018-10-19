@@ -15,7 +15,7 @@ export const requireAuth = (to, from, next)  => {
 export const unrequireAuth = (to, from, next) => {
     const isLogged = store.getters['auth/isLogged'];
     if (isLogged === USER || isLogged === COMPANY) {
-        next(from.fullPath)
+        next('/profile')
     } else {
         next()
     }
@@ -39,7 +39,7 @@ export const accountConfirmed = (to, from, next) => {
     else if (store.getters[profileType + GET_STATUS] === 'success') {
         proceed();
     } else {
-        store.watch(store.getters[profileType + GET_STATUS], () => {
+        store.watch((state, getters) => getters[profileType + GET_STATUS], function () {
             if (store.getters[profileType + GET_STATUS] === 'success') {
                 proceed();
             }
